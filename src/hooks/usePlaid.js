@@ -1,14 +1,21 @@
-import { useState, useCallback } from "react";
+// src/hooks/usePlaid.js  v2
+// ─────────────────────────────────────────────────────────────────────
+// FIXES vs v1:
+//  #1  Race condition: connectBank usa `shouldOpenRef` para abrir el modal
+//      solo cuando token+ready están disponibles (evita estado intermedio).
+//  #2  Doble apertura: el modal no puede abrirse 2 veces por el mismo intento.
+//  #3  Memory leak: AbortController cancela fetches pendientes al desmontar.
+//  #4  Doble-click: estado `connecting` bloquea clicks mientras se inicializa.
+//  #5  linkToken stale: se limpia en onExit para que el próximo intento funcione.
+// ─────────────────────────────────────────────────────────────────────
+
+import { useState, useCallback, useRef, useEffect } from "react";
 import { usePlaidLink } from "react-plaid-link";
 
 const BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
+const apiUrl = (path) => (BASE ? `${BASE}${path}` : path);
 
-function apiUrl(path) {
-  const p = path.startsWith("/") ? path : `/${path}`;
-  return BASE ? `${BASE}${p}` : p;
-}
-
-const PLAID_TO_HF_CAT = {
+const PLAID_TO_HF = {
   FOOD_AND_DRINK: "alimentacion",
   RESTAURANTS: "alimentacion",
   GROCERIES: "alimentacion",
@@ -30,8 +37,7 @@ const PLAID_TO_HF_CAT = {
   TRANSFER_OUT: "otros",
   LOAN_PAYMENTS: "seguros",
 };
-
-const mapCategory = (plaidCat) => PLAID_TO_HF_CAT[plaidCat] || "otros";
+const mapHFCat = (c) => PLAID_TO_HF[c] || "otros";
 
 export function usePlaid(userId) {
   const [linkToken, setLinkToken] = useState(null);
@@ -39,147 +45,187 @@ export function usePlaid(userId) {
   const [transactions, setTransactions] = useState([]);
   const [connectedBanks, setConnectedBanks] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [connecting, setConnecting] = useState(false); // FIX #4
   const [syncing, setSyncing] = useState(false);
+  const [error, setError] = useState(null);
   const [lastSync, setLastSync] = useState(null);
 
+  // FIX #2 — un solo intento de apertura por vez
+  const shouldOpenRef = useRef(false);
+  // FIX #3 — AbortController para cancelar fetches al desmontar
+  const abortRef = useRef(null);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
+    return () => ctrl.abort();
+  }, []);
+
+  // ── fetch helpers ────────────────────────────────────────────────────────
+  async function apiFetch(url, opts = {}) {
+    const signal = abortRef.current?.signal;
+    const res = await fetch(apiUrl(url), { ...opts, signal });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const hint =
+        res.status === 404
+          ? "Ruta Plaid no encontrada. Verifica ENABLE_PLAID=true y que el servidor corra en puerto 3001."
+          : json.error || `HTTP ${res.status}`;
+      throw new Error(hint);
+    }
+    return json;
+  }
+
+  // ── Paso 1: obtener link_token ──────────────────────────────────────────
   const initPlaidLink = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(apiUrl("/api/plaid/create-link-token"), {
+      const data = await apiFetch("/api/plaid/create-link-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        const hint =
-          res.status === 404
-            ? "La API no expone Plaid: pon ENABLE_PLAID=true, PLAID_CLIENT_ID y PLAID_SECRET en .env (raíz o server/) y reinicia el servidor."
-            : data.error || `Error ${res.status}`;
-        throw new Error(hint);
-      }
-      if (data.error) throw new Error(data.error);
       setLinkToken(data.link_token);
+      // cuando ready=true el useEffect abrirá el modal (FIX #1)
     } catch (err) {
-      setError(
-        err instanceof Error && err.message && !err.message.includes("fetch")
-          ? err.message
-          : "No se pudo conectar con la API (¿puerto 3001 libre y npm run api:dev en marcha?)."
-      );
-      console.error(err);
+      if (err.name === "AbortError") return;
+      setError(err.message);
+      shouldOpenRef.current = false;
+      setConnecting(false); // FIX #4 — libera botón si falla
     } finally {
       setLoading(false);
     }
   }, [userId]);
 
-  const loadAccounts = useCallback(async () => {
-    setSyncing(true);
+  // ── Paso 2: callback de Plaid ──────────────────────────────────────────
+  const onPlaidSuccess = useCallback(async (publicToken, metadata) => {
+    setLoading(true);
+    setError(null);
     try {
-      const res = await fetch(apiUrl(`/api/plaid/accounts/${encodeURIComponent(userId)}`));
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      setAccounts(data.accounts || []);
+      await apiFetch("/api/plaid/exchange-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          publicToken,
+          userId,
+          institutionName: metadata?.institution?.name || "Banco",
+        }),
+      });
+      const [accsData, banksData] = await Promise.all([
+        apiFetch(`/api/plaid/accounts/${encodeURIComponent(userId)}`),
+        apiFetch(`/api/plaid/connected-banks/${encodeURIComponent(userId)}`),
+      ]);
+      setAccounts(accsData.accounts || []);
+      setConnectedBanks(banksData.banks || []);
     } catch (err) {
-      console.error("Error cargando cuentas:", err);
-    } finally {
-      setSyncing(false);
-    }
-  }, [userId]);
-
-  const loadConnectedBanks = useCallback(async () => {
-    try {
-      const res = await fetch(apiUrl(`/api/plaid/connected-banks/${encodeURIComponent(userId)}`));
-      const data = await res.json();
-      setConnectedBanks(data.banks || []);
-    } catch (err) {
-      console.error("Error cargando bancos:", err);
-    }
-  }, [userId]);
-
-  const onPlaidSuccess = useCallback(
-    async (publicToken, metadata) => {
-      setLoading(true);
-      setError(null);
-      const institutionName = metadata?.institution?.name || "Banco";
-      try {
-        const res = await fetch(apiUrl("/api/plaid/exchange-token"), {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ publicToken, userId, institutionName }),
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        await loadAccounts();
-        await loadConnectedBanks();
-      } catch (err) {
+      if (err.name !== "AbortError")
         setError("Error conectando el banco. Intenta de nuevo.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-        setLinkToken(null);
-      }
-    },
-    [userId, loadAccounts, loadConnectedBanks]
-  );
+    } finally {
+      setLoading(false);
+      setConnecting(false);
+      setLinkToken(null); // FIX #5
+    }
+  }, [userId]);
 
+  // ── Plaid Link hook ─────────────────────────────────────────────────────
   const { open: openPlaidModal, ready } = usePlaidLink({
-    token: linkToken || "",
+    token: linkToken ?? "",
     onSuccess: onPlaidSuccess,
     onExit: (err) => {
-      if (err) console.error("Plaid Link exit with error:", err);
-      setLinkToken(null);
+      if (err) console.error("[Plaid] exit:", err);
+      shouldOpenRef.current = false; // FIX #2
+      setLinkToken(null); // FIX #5
+      setConnecting(false);
     },
   });
 
-  const connectBank = useCallback(async () => {
-    if (!linkToken) {
-      await initPlaidLink();
-    } else if (ready) {
+  // FIX #1 + #2 — abre exactamente una vez cuando token Y ready estén listos
+  useEffect(() => {
+    if (linkToken && ready && shouldOpenRef.current) {
+      shouldOpenRef.current = false;
       openPlaidModal();
     }
-  }, [linkToken, ready, openPlaidModal, initPlaidLink]);
+  }, [linkToken, ready, openPlaidModal]);
 
-  const loadTransactions = useCallback(async (days = 30, accountId = null) => {
+  // ── connectBank (botón principal) ────────────────────────────────────────
+  const connectBank = useCallback(async () => {
+    if (connecting || loading) return; // FIX #4 debounce
+    setConnecting(true);
+    shouldOpenRef.current = true; // marca: abrir cuando token+ready listos
+    if (!linkToken) {
+      await initPlaidLink();
+      // el useEffect abrirá el modal cuando ready=true
+    } else if (ready) {
+      shouldOpenRef.current = false;
+      openPlaidModal();
+      // connecting se libera en onSuccess / onExit
+    }
+    // si linkToken existe pero ready=false → useEffect lo maneja
+  }, [connecting, loading, linkToken, ready, openPlaidModal, initPlaidLink]);
+
+  // ── loadAccounts ─────────────────────────────────────────────────────────
+  const loadAccounts = useCallback(async () => {
     setSyncing(true);
     try {
-      const params = new URLSearchParams({ days: String(days) });
-      if (accountId) params.append("accountId", accountId);
-      const res = await fetch(
-        apiUrl(`/api/plaid/transactions/${encodeURIComponent(userId)}?${params}`)
-      );
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      const enriched = (data.transactions || []).map((tx) => ({
-        ...tx,
-        hfCategory: mapCategory(tx.plaidCategory),
-        displayName: tx.merchantName || tx.name,
-      }));
-      setTransactions(enriched);
-      setLastSync(new Date().toLocaleTimeString("es"));
+      const data = await apiFetch(`/api/plaid/accounts/${encodeURIComponent(userId)}`);
+      setAccounts(data.accounts || []);
     } catch (err) {
-      console.error("Error cargando transacciones:", err);
+      if (err.name !== "AbortError") console.error("[Plaid] accounts:", err.message);
     } finally {
       setSyncing(false);
     }
   }, [userId]);
 
+  // ── loadTransactions ─────────────────────────────────────────────────────
+  const loadTransactions = useCallback(async (days = 30, accountId = null) => {
+    setSyncing(true);
+    try {
+      const p = new URLSearchParams({ days: String(days) });
+      if (accountId) p.append("accountId", accountId);
+      const data = await apiFetch(`/api/plaid/transactions/${encodeURIComponent(userId)}?${p}`);
+      setTransactions(
+        (data.transactions || []).map((tx) => ({
+          ...tx,
+          hfCategory: mapHFCat(tx.plaidCategory),
+          displayName: tx.merchantName || tx.name,
+        }))
+      );
+      setLastSync(new Date().toLocaleTimeString("es"));
+    } catch (err) {
+      if (err.name !== "AbortError") console.error("[Plaid] txns:", err.message);
+    } finally {
+      setSyncing(false);
+    }
+  }, [userId]);
+
+  // ── loadConnectedBanks ───────────────────────────────────────────────────
+  const loadConnectedBanks = useCallback(async () => {
+    try {
+      const data = await apiFetch(`/api/plaid/connected-banks/${encodeURIComponent(userId)}`);
+      setConnectedBanks(data.banks || []);
+    } catch (err) {
+      if (err.name !== "AbortError") console.error("[Plaid] banks:", err.message);
+    }
+  }, [userId]);
+
+  // ── disconnectBank ───────────────────────────────────────────────────────
   const disconnectBank = useCallback(
     async (itemId) => {
       try {
-        await fetch(apiUrl(`/api/plaid/disconnect/${encodeURIComponent(userId)}/${encodeURIComponent(itemId)}`), {
-          method: "DELETE",
-        });
-        await loadConnectedBanks();
-        await loadAccounts();
+        await apiFetch(
+          `/api/plaid/disconnect/${encodeURIComponent(userId)}/${encodeURIComponent(itemId)}`,
+          { method: "DELETE" }
+        );
+        await Promise.all([loadConnectedBanks(), loadAccounts()]);
       } catch (err) {
-        console.error("Error desconectando banco:", err);
+        if (err.name !== "AbortError") console.error("[Plaid] disconnect:", err.message);
       }
     },
     [userId, loadConnectedBanks, loadAccounts]
   );
 
+  // ── Datos derivados ──────────────────────────────────────────────────────
   const creditAccounts = accounts.filter((a) => a.type === "credit");
   const depositAccounts = accounts.filter((a) => a.type === "depository");
 
@@ -205,6 +251,7 @@ export function usePlaid(userId) {
     transactions,
     connectedBanks,
     loading,
+    connecting,
     syncing,
     error,
     lastSync,

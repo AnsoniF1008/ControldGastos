@@ -4,3 +4,4 @@ dist
 .env
 server/.env
 .firebase
+.plaid_tokens.json
