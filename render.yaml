@@ -1,0 +1,27 @@
+# API pública para Plaid. URL típica: https://hogarfinance-api.onrender.com
+# Debe coincidir con VITE_API_URL en .env.production (build Firebase).
+
+services:
+  - type: web
+    name: hogarfinance-api
+    runtime: node
+    plan: free
+    # Sin rootDir: el repo completo está disponible (imports server → ../src/lib).
+    buildCommand: npm install --prefix server
+    startCommand: npm start --prefix server
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: ENABLE_PLAID
+        value: "true"
+      - key: PLAID_ENV
+        value: sandbox
+      - key: PLAID_CLIENT_ID
+        sync: false
+      - key: PLAID_SECRET
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false

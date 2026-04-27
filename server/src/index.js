@@ -14,9 +14,22 @@ initFirebaseAdmin();
 const PORT = Number(process.env.PORT) || 3001;
 const app = express();
 
+const DEFAULT_CORS_ORIGINS = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://controldgastos.web.app",
+  "https://controldgastos.firebaseapp.com",
+];
+const corsOrigins = [
+  ...new Set([
+    ...DEFAULT_CORS_ORIGINS,
+    ...(process.env.CLIENT_ORIGIN?.split(",").map((s) => s.trim()).filter(Boolean) ?? []),
+  ]),
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN?.split(",") || ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: corsOrigins,
     credentials: true,
   })
 );
@@ -35,6 +48,9 @@ function curMonthYear() {
 }
 
 app.get("/api/health", async (_req, res) => {
+  if (!process.env.DATABASE_URL) {
+    return res.json({ ok: true, db: false, plaid: process.env.ENABLE_PLAID === "true" });
+  }
   try {
     await pool.query("SELECT 1");
     res.json({ ok: true, db: true });
@@ -529,6 +545,6 @@ app.use((_req, res) => {
   res.status(404).json({ error: "Not found" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Hogar Finance API http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Hogar Finance API listening on ${PORT}`);
 });
