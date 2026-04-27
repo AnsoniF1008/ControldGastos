@@ -122,7 +122,8 @@ export const TRANSLATIONS = {
       name: "Nombre",
       addToHome: "Añadir al hogar",
       budgetsTitle: "Presupuestos (mensual)",
-      budgetsHint: "Límite opcional por categoría de gasto (se guarda en tu perfil).",
+      budgetsHint:
+        "Importe mensual total del hogar por categoría. El administrador reparte la misma cuota entre todos los perfiles; al añadir un miembro se vuelve a dividir.",
       saveBudgets: "Guardar presupuestos",
       historyTitle: "Historial de meses",
       historyLine:
@@ -382,7 +383,8 @@ export const TRANSLATIONS = {
       name: "Name",
       addToHome: "Add to household",
       budgetsTitle: "Budgets (monthly)",
-      budgetsHint: "Optional spending limit per category (saved on your profile).",
+      budgetsHint:
+        "Monthly household total per category. The admin splits the same share across every profile; adding a member redistributes the totals.",
       saveBudgets: "Save budgets",
       historyTitle: "Month history",
       historyLine:

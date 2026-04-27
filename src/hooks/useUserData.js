@@ -2,7 +2,8 @@
 // Estado + CRUD vía Firebase Data Connect (Cloud SQL).
 
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
-import { CUR_MONTH, CUR_YEAR } from "../lib/constants";
+import { CUR_MONTH, CUR_YEAR, CATS } from "../lib/constants";
+import { splitTotalsEvenly, isHouseholdAdmin } from "../lib/budgetSplit";
 import { getHogarDataConnect } from "../lib/dataConnect";
 import * as dcApi from "../lib/dcApi";
 import {
@@ -446,11 +447,23 @@ export function useUserData() {
   const saveBudgets = async (draft) => {
     const u = uidOrSkip();
     requireMemberContext(u, householdId);
-    const budgetsPatch = Object.fromEntries(
-      Object.entries(draft).map(([k, v]) => [k, parseFloat(v) || 0])
+    const totals = Object.fromEntries(
+      CATS.map((k) => [k, parseFloat(String(draft[k] ?? "").replace(",", ".")) || 0])
     );
     const dc = requireDc();
-    const { users: nu } = await dcApi.patchUserBudgets(dc, householdId, u, budgetsPatch);
+    const me = users.find((x) => x.id === u);
+    if (isHouseholdAdmin(me) && users.length > 0) {
+      const perPerson = splitTotalsEvenly(totals, users.length);
+      const { users: nu } = await dcApi.syncHouseholdBudgetShares(
+        dc,
+        householdId,
+        users,
+        perPerson
+      );
+      applyUsers(nu);
+      return;
+    }
+    const { users: nu } = await dcApi.patchUserBudgets(dc, householdId, u, totals);
     applyUsers(nu);
   };
 

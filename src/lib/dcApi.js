@@ -28,6 +28,7 @@ import {
   resetUserCardsPaid,
 } from "@hogar-finance/dataconnect";
 import { MONTHS } from "./constants";
+import { sumBudgetsByCategory, splitTotalsEvenly } from "./budgetSplit";
 
 function parseBudgets(raw) {
   if (raw == null || raw === "") return {};
@@ -138,6 +139,19 @@ export async function authRegister(dc, profile) {
   return fetchUsers(dc);
 }
 
+/** Misma cuota de presupuesto para todos los perfiles del hogar. */
+export async function syncHouseholdBudgetShares(dc, householdId, userList, perPersonBudgets) {
+  const json = JSON.stringify(perPersonBudgets);
+  for (const u of userList) {
+    await updateUserBudgets(dc, {
+      householdId,
+      userId: u.id,
+      budgets: json,
+    });
+  }
+  return fetchUsers(dc);
+}
+
 export async function addUser(dc, householdId, form, existingUsers) {
   const prev = existingUsers || [];
   const sortOrder =
@@ -150,7 +164,11 @@ export async function addUser(dc, householdId, form, existingUsers) {
     role: form.role || "Miembro",
     sortOrder,
   });
-  return fetchUsers(dc);
+  const totals = sumBudgetsByCategory(prev);
+  const perPerson = splitTotalsEvenly(totals, prev.length + 1);
+  const { users: list, householdId: hid } = await fetchUsers(dc);
+  if (!list?.length) return { users: list, householdId: hid };
+  return syncHouseholdBudgetShares(dc, householdId, list, perPerson);
 }
 
 export async function patchUserBudgets(dc, householdId, userId, budgetsObj) {

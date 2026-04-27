@@ -5,6 +5,7 @@ import { pool, withTx } from "./db.js";
 import { signHouseholdToken, authMiddleware } from "./auth.js";
 import { initFirebaseAdmin, isFirebaseAdminReady, verifyFirebaseIdToken } from "./firebaseAdmin.js";
 import { loadHouseholdUsers, assertUserInHousehold } from "./householdRepo.js";
+import { sumBudgetsByCategory, splitTotalsEvenly } from "../../src/lib/budgetSplit.js";
 import { seedDemoHousehold, DEMO_HOUSEHOLD_ID } from "./seedDemo.js";
 import { mountPlaidRoutes } from "./plaidRoutes.js";
 
@@ -149,11 +150,21 @@ app.post("/api/users", authMiddleware, async (req, res) => {
   );
   const sort = maxSort.rows[0].s;
   try {
+    const beforeUsers = await loadHouseholdUsers(pool, req.householdId);
     await pool.query(
       `INSERT INTO users (id, household_id, name, emoji, color, role, budgets, sort_order)
        VALUES ($1, $2::uuid, $3, $4, $5, $6, '{}'::jsonb, $7)`,
       [uid, req.householdId, name.trim(), emoji || "🙂", color || "#7C3AED", role || "Miembro", sort]
     );
+    const afterUsers = await loadHouseholdUsers(pool, req.householdId);
+    const totals = sumBudgetsByCategory(beforeUsers);
+    const perPerson = splitTotalsEvenly(totals, afterUsers.length);
+    for (const u of afterUsers) {
+      await pool.query(`UPDATE users SET budgets = $2::jsonb WHERE id = $1`, [
+        u.id,
+        JSON.stringify(perPerson),
+      ]);
+    }
     const users = await loadHouseholdUsers(pool, req.householdId);
     res.status(201).json({ users, userId: uid });
   } catch (e) {
@@ -166,12 +177,25 @@ app.patch("/api/users/:userId", authMiddleware, async (req, res) => {
   if (!(await guardUser(req, res))) return;
   const { budgets } = req.body || {};
   if (budgets && typeof budgets === "object") {
-    const cur = await pool.query(`SELECT budgets FROM users WHERE id = $1`, [req.params.userId]);
-    const merged = { ...(cur.rows[0]?.budgets || {}), ...budgets };
-    await pool.query(`UPDATE users SET budgets = $2::jsonb WHERE id = $1`, [
-      req.params.userId,
-      JSON.stringify(merged),
-    ]);
+    const roleRow = await pool.query(`SELECT role FROM users WHERE id = $1`, [req.params.userId]);
+    const role = roleRow.rows[0]?.role;
+    const allUsers = await loadHouseholdUsers(pool, req.householdId);
+    if (role === "Admin" && allUsers.length > 0) {
+      const perPerson = splitTotalsEvenly(budgets, allUsers.length);
+      for (const u of allUsers) {
+        await pool.query(`UPDATE users SET budgets = $2::jsonb WHERE id = $1`, [
+          u.id,
+          JSON.stringify(perPerson),
+        ]);
+      }
+    } else {
+      const cur = await pool.query(`SELECT budgets FROM users WHERE id = $1`, [req.params.userId]);
+      const merged = { ...(cur.rows[0]?.budgets || {}), ...budgets };
+      await pool.query(`UPDATE users SET budgets = $2::jsonb WHERE id = $1`, [
+        req.params.userId,
+        JSON.stringify(merged),
+      ]);
+    }
   }
   const users = await loadHouseholdUsers(pool, req.householdId);
   res.json({ users });
