@@ -1,0 +1,373 @@
+extend type Query {
+  """
+  ✨ Look up a single `Card` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  card(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Card_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Card_FirstRow
+  ): Card @fdc_generated(from: "Card", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Expense` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  expense(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Expense_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Expense_FirstRow
+  ): Expense @fdc_generated(from: "Expense", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Goal` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  goal(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Goal_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Goal_FirstRow
+  ): Goal @fdc_generated(from: "Goal", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Household` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  household(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Household_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Household_FirstRow
+  ): Household @fdc_generated(from: "Household", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `Income` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  income(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Income_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Income_FirstRow
+  ): Income @fdc_generated(from: "Income", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `MonthHistory` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  monthHistory(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: MonthHistory_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: MonthHistory_FirstRow
+  ): MonthHistory @fdc_generated(from: "MonthHistory", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `User` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  user(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User @fdc_generated(from: "User", purpose: QUERY_SINGLE)
+  """
+  ✨ List `Card` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  cards(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Card_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Card_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Card_Having
+  ): [Card!]! @fdc_generated(from: "Card", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Expense` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  expenses(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Expense_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Expense_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Expense_Having
+  ): [Expense!]! @fdc_generated(from: "Expense", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Goal` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  goals(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Goal_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Goal_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Goal_Having
+  ): [Goal!]! @fdc_generated(from: "Goal", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Household` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  households(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Household_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Household_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Household_Having
+  ): [Household!]! @fdc_generated(from: "Household", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `Income` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  incomes(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Income_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Income_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Income_Having
+  ): [Income!]! @fdc_generated(from: "Income", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `MonthHistory` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  monthHistories(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: MonthHistory_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [MonthHistory_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: MonthHistory_Having
+  ): [MonthHistory!]! @fdc_generated(from: "MonthHistory", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `User` objects in the table and return selected fields, optionally filtered by `where` conditions
+  """
+  users(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: User_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [User_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: User_Having
+  ): [User!]! @fdc_generated(from: "User", purpose: QUERY_MULTIPLE)
+}

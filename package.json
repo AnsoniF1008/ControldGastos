@@ -1,0 +1,28 @@
+{
+  "name": "hogar-finance",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "api": "npm run start --prefix server",
+    "api:dev": "npm run dev --prefix server",
+    "dev:full": "concurrently -k \"npm run api:dev\" \"npm run dev\"",
+    "dataconnect:generate": "npx -y firebase-tools@latest dataconnect:sdk:generate",
+    "deploy:firebase": "npm run build && npx -y firebase-tools@latest deploy --only hosting,dataconnect --force"
+  },
+  "dependencies": {
+    "@hogar-finance/dataconnect": "file:src/lib/dataconnect",
+    "firebase": "^12.11.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-plaid-link": "^3.6.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "vite": "^6.0.1"
+  }
+}

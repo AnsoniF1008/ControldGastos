@@ -1,0 +1,72 @@
+# Hogar Finance — Firebase Data Connect
+# ownerUid: Firebase Auth UID del dueño del hogar (sesión anónima o con email).
+
+type Household @table {
+  createdAt: Timestamp!
+  ownerUid: String
+}
+
+type User @table {
+  household: Household!
+  name: String!
+  emoji: String!
+  color: String!
+  role: String!
+  sortOrder: Int!
+  createdAt: Timestamp!
+  budgets: String
+  # Columna legada en Cloud SQL; la app usa Household.ownerUid. Mantener alinea STRICT sin DROP manual.
+  firebaseUid: String
+}
+
+type Income @table {
+  user: User!
+  name: String!
+  amount: Float!
+  frequency: String!
+  category: String!
+  received: Boolean!
+}
+
+type Expense @table {
+  user: User!
+  name: String!
+  amount: Float!
+  frequency: String!
+  category: String!
+  paid: Boolean!
+  dueDay: Int
+}
+
+type Card @table {
+  user: User!
+  name: String!
+  brand: String!
+  creditLimit: Float!
+  balance: Float!
+  minPayment: Float!
+  dueDay: Int!
+  paid: Boolean!
+}
+
+type Goal @table {
+  user: User!
+  name: String!
+  target: Float!
+  saved: Float!
+  monthly: Float!
+  emoji: String!
+  color: String!
+}
+
+type MonthHistory @table {
+  user: User!
+  month: Int!
+  year: Int!
+  totalExp: Float!
+  paidExp: Float!
+  totalInc: Float!
+  recvInc: Float!
+  totalDebt: Float!
+  createdAt: Timestamp!
+}

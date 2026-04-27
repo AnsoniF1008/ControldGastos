@@ -1,0 +1,66 @@
+# USER_ANON incluye inicio de sesión anónimo (Auth en el cliente).
+
+query GetHouseholdForMe @auth(level: USER_ANON) {
+  households(where: { ownerUid: { eq_expr: "auth.uid" } }, limit: 1) {
+    id
+    createdAt
+    ownerUid
+    users_on_household(orderBy: [{ sortOrder: ASC }, { name: ASC }]) {
+      id
+      name
+      emoji
+      color
+      role
+      sortOrder
+      createdAt
+      budgets
+      expenses_on_user {
+        id
+        name
+        amount
+        frequency
+        category
+        paid
+        dueDay
+      }
+      incomes_on_user {
+        id
+        name
+        amount
+        frequency
+        category
+        received
+      }
+      cards_on_user {
+        id
+        name
+        brand
+        creditLimit
+        balance
+        minPayment
+        dueDay
+        paid
+      }
+      goals_on_user {
+        id
+        name
+        target
+        saved
+        monthly
+        emoji
+        color
+      }
+      monthHistories_on_user(orderBy: [{ year: ASC }, { month: ASC }]) {
+        id
+        month
+        year
+        totalExp
+        paidExp
+        totalInc
+        recvInc
+        totalDebt
+        createdAt
+      }
+    }
+  }
+}

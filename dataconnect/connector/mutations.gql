@@ -1,0 +1,416 @@
+mutation RegisterHousehold(
+  $name: String!
+  $emoji: String!
+  $color: String!
+) @auth(level: USER_ANON) @transaction {
+  household_insert(data: { createdAt_expr: "request.time", ownerUid_expr: "auth.uid" })
+  user_insert(data: {
+    householdId_expr: "response.household_insert.id",
+    name: $name,
+    emoji: $emoji,
+    color: $color,
+    role: "Admin",
+    sortOrder: 0,
+    createdAt_expr: "request.time"
+  })
+}
+
+mutation AddHouseholdMember(
+  $householdId: UUID!
+  $name: String!
+  $emoji: String!
+  $color: String!
+  $role: String!
+  $sortOrder: Int!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso al hogar") {
+      id
+    }
+  }
+  user_insert(data: {
+    householdId: $householdId,
+    name: $name,
+    emoji: $emoji,
+    color: $color,
+    role: $role,
+    sortOrder: $sortOrder,
+    createdAt_expr: "request.time"
+  })
+}
+
+mutation UpdateUserBudgets($userId: UUID!, $householdId: UUID!, $budgets: String!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  user_update(
+    first: { where: { id: { eq: $userId }, household: { id: { eq: $householdId } } } },
+    data: { budgets: $budgets }
+  )
+}
+
+mutation InsertExpense(
+  $householdId: UUID!
+  $userId: UUID!
+  $name: String!
+  $amount: Float!
+  $frequency: String!
+  $category: String!
+  $paid: Boolean!
+  $dueDay: Int
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+    targetUser: users(where: { id: { eq: $userId }, household: { id: { eq: $householdId } } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Usuario inválido") {
+      id
+    }
+  }
+  expense_insert(data: {
+    userId: $userId,
+    name: $name,
+    amount: $amount,
+    frequency: $frequency,
+    category: $category,
+    paid: $paid,
+    dueDay: $dueDay
+  })
+}
+
+mutation UpdateExpense(
+  $householdId: UUID!
+  $expenseId: UUID!
+  $name: String!
+  $amount: Float!
+  $frequency: String!
+  $category: String!
+  $paid: Boolean!
+  $dueDay: Int
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  expense_update(
+    first: { where: { id: { eq: $expenseId }, user: { household: { id: { eq: $householdId } } } } },
+    data: {
+      name: $name,
+      amount: $amount,
+      frequency: $frequency,
+      category: $category,
+      paid: $paid,
+      dueDay: $dueDay
+    }
+  )
+}
+
+mutation DeleteExpense($householdId: UUID!, $expenseId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  expense_delete(
+    first: { where: { id: { eq: $expenseId }, user: { household: { id: { eq: $householdId } } } } }
+  )
+}
+
+mutation InsertIncome(
+  $householdId: UUID!
+  $userId: UUID!
+  $name: String!
+  $amount: Float!
+  $frequency: String!
+  $category: String!
+  $received: Boolean!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+    targetUser: users(where: { id: { eq: $userId }, household: { id: { eq: $householdId } } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Usuario inválido") {
+      id
+    }
+  }
+  income_insert(data: {
+    userId: $userId,
+    name: $name,
+    amount: $amount,
+    frequency: $frequency,
+    category: $category,
+    received: $received
+  })
+}
+
+mutation UpdateIncome(
+  $householdId: UUID!
+  $incomeId: UUID!
+  $name: String!
+  $amount: Float!
+  $frequency: String!
+  $category: String!
+  $received: Boolean!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  income_update(
+    first: { where: { id: { eq: $incomeId }, user: { household: { id: { eq: $householdId } } } } },
+    data: {
+      name: $name,
+      amount: $amount,
+      frequency: $frequency,
+      category: $category,
+      received: $received
+    }
+  )
+}
+
+mutation DeleteIncome($householdId: UUID!, $incomeId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  income_delete(first: { where: { id: { eq: $incomeId }, user: { household: { id: { eq: $householdId } } } } })
+}
+
+mutation InsertCard(
+  $householdId: UUID!
+  $userId: UUID!
+  $name: String!
+  $brand: String!
+  $creditLimit: Float!
+  $balance: Float!
+  $minPayment: Float!
+  $dueDay: Int!
+  $paid: Boolean!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+    targetUser: users(where: { id: { eq: $userId }, household: { id: { eq: $householdId } } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Usuario inválido") {
+      id
+    }
+  }
+  card_insert(data: {
+    userId: $userId,
+    name: $name,
+    brand: $brand,
+    creditLimit: $creditLimit,
+    balance: $balance,
+    minPayment: $minPayment,
+    dueDay: $dueDay,
+    paid: $paid
+  })
+}
+
+mutation UpdateCard(
+  $householdId: UUID!
+  $cardId: UUID!
+  $name: String!
+  $brand: String!
+  $creditLimit: Float!
+  $balance: Float!
+  $minPayment: Float!
+  $dueDay: Int!
+  $paid: Boolean!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  card_update(
+    first: { where: { id: { eq: $cardId }, user: { household: { id: { eq: $householdId } } } } },
+    data: {
+      name: $name,
+      brand: $brand,
+      creditLimit: $creditLimit,
+      balance: $balance,
+      minPayment: $minPayment,
+      dueDay: $dueDay,
+      paid: $paid
+    }
+  )
+}
+
+mutation DeleteCard($householdId: UUID!, $cardId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  card_delete(first: { where: { id: { eq: $cardId }, user: { household: { id: { eq: $householdId } } } } })
+}
+
+mutation InsertGoal(
+  $householdId: UUID!
+  $userId: UUID!
+  $name: String!
+  $target: Float!
+  $saved: Float!
+  $monthly: Float!
+  $emoji: String!
+  $color: String!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+    targetUser: users(where: { id: { eq: $userId }, household: { id: { eq: $householdId } } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Usuario inválido") {
+      id
+    }
+  }
+  goal_insert(data: {
+    userId: $userId,
+    name: $name,
+    target: $target,
+    saved: $saved,
+    monthly: $monthly,
+    emoji: $emoji,
+    color: $color
+  })
+}
+
+mutation UpdateGoal(
+  $householdId: UUID!
+  $goalId: UUID!
+  $name: String!
+  $target: Float!
+  $saved: Float!
+  $monthly: Float!
+  $emoji: String!
+  $color: String!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  goal_update(
+    first: { where: { id: { eq: $goalId }, user: { household: { id: { eq: $householdId } } } } },
+    data: {
+      name: $name,
+      target: $target,
+      saved: $saved,
+      monthly: $monthly,
+      emoji: $emoji,
+      color: $color
+    }
+  )
+}
+
+mutation UpdateGoalSaved($householdId: UUID!, $goalId: UUID!, $saved: Float!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  goal_update(
+    first: { where: { id: { eq: $goalId }, user: { household: { id: { eq: $householdId } } } } },
+    data: { saved: $saved }
+  )
+}
+
+mutation DeleteGoal($householdId: UUID!, $goalId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  goal_delete(first: { where: { id: { eq: $goalId }, user: { household: { id: { eq: $householdId } } } } })
+}
+
+mutation InsertMonthHistory(
+  $householdId: UUID!
+  $userId: UUID!
+  $month: Int!
+  $year: Int!
+  $totalExp: Float!
+  $paidExp: Float!
+  $totalInc: Float!
+  $recvInc: Float!
+  $totalDebt: Float!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+    targetUser: users(where: { id: { eq: $userId }, household: { id: { eq: $householdId } } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Usuario inválido") {
+      id
+    }
+  }
+  monthHistory_insert(data: {
+    userId: $userId,
+    month: $month,
+    year: $year,
+    totalExp: $totalExp,
+    paidExp: $paidExp,
+    totalInc: $totalInc,
+    recvInc: $recvInc,
+    totalDebt: $totalDebt,
+    createdAt_expr: "request.time"
+  })
+}
+
+mutation ResetUserExpensesPaid($householdId: UUID!, $userId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  expense_updateMany(
+    where: { user: { id: { eq: $userId } } },
+    data: { paid: false }
+  )
+}
+
+mutation ResetUserIncomesReceived($householdId: UUID!, $userId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  income_updateMany(where: { user: { id: { eq: $userId } } }, data: { received: false })
+}
+
+mutation ResetUserCardsPaid($householdId: UUID!, $userId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  card_updateMany(where: { user: { id: { eq: $userId } } }, data: { paid: false })
+}

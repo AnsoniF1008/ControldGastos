@@ -1,0 +1,786 @@
+extend type Mutation {
+  """
+  ✨ Insert a single `Card` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  card_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Card_Data!
+  ): Card_KeyOutput! @fdc_generated(from: "Card", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Expense` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  expense_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Expense_Data!
+  ): Expense_KeyOutput! @fdc_generated(from: "Expense", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Goal` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  goal_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Goal_Data!
+  ): Goal_KeyOutput! @fdc_generated(from: "Goal", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Household` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  household_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Household_Data!
+  ): Household_KeyOutput! @fdc_generated(from: "Household", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `Income` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  income_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: Income_Data!
+  ): Income_KeyOutput! @fdc_generated(from: "Income", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `MonthHistory` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  monthHistory_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: MonthHistory_Data!
+  ): MonthHistory_KeyOutput! @fdc_generated(from: "MonthHistory", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert a single `User` into the table and return its key. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insert(
+    """
+    Data object to insert into the table.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: INSERT_SINGLE)
+  """
+  ✨ Insert `Card` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  card_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Card_Data!]!
+  ): [Card_KeyOutput!]! @fdc_generated(from: "Card", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Expense` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  expense_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Expense_Data!]!
+  ): [Expense_KeyOutput!]! @fdc_generated(from: "Expense", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Goal` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  goal_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Goal_Data!]!
+  ): [Goal_KeyOutput!]! @fdc_generated(from: "Goal", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Household` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  household_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Household_Data!]!
+  ): [Household_KeyOutput!]! @fdc_generated(from: "Household", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `Income` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  income_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [Income_Data!]!
+  ): [Income_KeyOutput!]! @fdc_generated(from: "Income", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `MonthHistory` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  monthHistory_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [MonthHistory_Data!]!
+  ): [MonthHistory_KeyOutput!]! @fdc_generated(from: "MonthHistory", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert `User` objects into the table and return their keys. Columns not specified in `data` will receive defaults (e.g. `null`).
+  """
+  user_insertMany(
+    """
+    List of data objects to insert into the table.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: INSERT_MULTIPLE)
+  """
+  ✨ Insert or update a single `Card` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Card`.
+  """
+  card_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Card_Data!
+  ): Card_KeyOutput! @fdc_generated(from: "Card", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Expense` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Expense`.
+  """
+  expense_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Expense_Data!
+  ): Expense_KeyOutput! @fdc_generated(from: "Expense", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Goal` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Goal`.
+  """
+  goal_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Goal_Data!
+  ): Goal_KeyOutput! @fdc_generated(from: "Goal", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Household` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Household`.
+  """
+  household_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Household_Data!
+  ): Household_KeyOutput! @fdc_generated(from: "Household", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `Income` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Income`.
+  """
+  income_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: Income_Data!
+  ): Income_KeyOutput! @fdc_generated(from: "Income", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `MonthHistory` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `MonthHistory`.
+  """
+  monthHistory_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: MonthHistory_Data!
+  ): MonthHistory_KeyOutput! @fdc_generated(from: "MonthHistory", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update a single `User` into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsert(
+    """
+    Data object to insert or update if it already exists.
+    """
+    data: User_Data!
+  ): User_KeyOutput! @fdc_generated(from: "User", purpose: UPSERT_SINGLE)
+  """
+  ✨ Insert or update `Card` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Card`.
+  """
+  card_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Card_Data!]!
+  ): [Card_KeyOutput!]! @fdc_generated(from: "Card", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Expense` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Expense`.
+  """
+  expense_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Expense_Data!]!
+  ): [Expense_KeyOutput!]! @fdc_generated(from: "Expense", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Goal` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Goal`.
+  """
+  goal_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Goal_Data!]!
+  ): [Goal_KeyOutput!]! @fdc_generated(from: "Goal", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Household` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Household`.
+  """
+  household_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Household_Data!]!
+  ): [Household_KeyOutput!]! @fdc_generated(from: "Household", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `Income` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `Income`.
+  """
+  income_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [Income_Data!]!
+  ): [Income_KeyOutput!]! @fdc_generated(from: "Income", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `MonthHistory` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `MonthHistory`.
+  """
+  monthHistory_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [MonthHistory_Data!]!
+  ): [MonthHistory_KeyOutput!]! @fdc_generated(from: "MonthHistory", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Insert or update `User` objects into the table, based on the primary key. Returns the key of the newly inserted or existing updated `User`.
+  """
+  user_upsertMany(
+    """
+    List of data objects to insert or update if it already exists.
+    """
+    data: [User_Data!]!
+  ): [User_KeyOutput!]! @fdc_generated(from: "User", purpose: UPSERT_MULTIPLE)
+  """
+  ✨ Update a single `Card` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Card` or `null` if not found.
+  """
+  card_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Card_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Card_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Card_Data!
+  ): Card_KeyOutput @fdc_generated(from: "Card", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Expense` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Expense` or `null` if not found.
+  """
+  expense_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Expense_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Expense_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Expense_Data!
+  ): Expense_KeyOutput @fdc_generated(from: "Expense", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Goal` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Goal` or `null` if not found.
+  """
+  goal_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Goal_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Goal_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Goal_Data!
+  ): Goal_KeyOutput @fdc_generated(from: "Goal", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Household` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Household` or `null` if not found.
+  """
+  household_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Household_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Household_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Household_Data!
+  ): Household_KeyOutput @fdc_generated(from: "Household", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `Income` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `Income` or `null` if not found.
+  """
+  income_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Income_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Income_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: Income_Data!
+  ): Income_KeyOutput @fdc_generated(from: "Income", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `MonthHistory` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `MonthHistory` or `null` if not found.
+  """
+  monthHistory_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: MonthHistory_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: MonthHistory_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: MonthHistory_Data!
+  ): MonthHistory_KeyOutput @fdc_generated(from: "MonthHistory", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update a single `User` based on `id`, `key` or `first`, setting columns specified in `data`. Returns the key of the updated `User` or `null` if not found.
+  """
+  user_update(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+
+    """
+    Data object containing fields to be updated.
+    """
+    data: User_Data!
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: UPDATE_SINGLE)
+  """
+  ✨ Update `Card` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  card_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Card_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Card_Data!
+  ): Int! @fdc_generated(from: "Card", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Expense` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  expense_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Expense_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Expense_Data!
+  ): Int! @fdc_generated(from: "Expense", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Goal` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  goal_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Goal_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Goal_Data!
+  ): Int! @fdc_generated(from: "Goal", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Household` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  household_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Household_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Household_Data!
+  ): Int! @fdc_generated(from: "Household", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `Income` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  income_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: Income_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: Income_Data!
+  ): Int! @fdc_generated(from: "Income", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `MonthHistory` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  monthHistory_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: MonthHistory_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: MonthHistory_Data!
+  ): Int! @fdc_generated(from: "MonthHistory", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Update `User` objects matching `where` conditions (or `all`, if true) according to `data`. Returns the number of rows updated.
+  """
+  user_updateMany(
+    """
+    Filter condition to specify which rows to update.
+    """
+    where: User_Filter
+
+    """
+    Set to true to update all rows.
+    """
+    all: Boolean = false
+
+    """
+    Data object containing fields to update.
+    """
+    data: User_Data!
+  ): Int! @fdc_generated(from: "User", purpose: UPDATE_MULTIPLE)
+  """
+  ✨ Delete a single `Card` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  card_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Card_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Card_FirstRow
+  ): Card_KeyOutput @fdc_generated(from: "Card", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Expense` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  expense_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Expense_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Expense_FirstRow
+  ): Expense_KeyOutput @fdc_generated(from: "Expense", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Goal` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  goal_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Goal_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Goal_FirstRow
+  ): Goal_KeyOutput @fdc_generated(from: "Goal", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Household` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  household_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Household_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Household_FirstRow
+  ): Household_KeyOutput @fdc_generated(from: "Household", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `Income` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  income_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Income_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Income_FirstRow
+  ): Income_KeyOutput @fdc_generated(from: "Income", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `MonthHistory` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  monthHistory_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: MonthHistory_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: MonthHistory_FirstRow
+  ): MonthHistory_KeyOutput @fdc_generated(from: "MonthHistory", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete a single `User` based on `id`, `key` or `first` and return its key (or `null` if not found).
+  """
+  user_delete(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: User_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: User_FirstRow
+  ): User_KeyOutput @fdc_generated(from: "User", purpose: DELETE_SINGLE)
+  """
+  ✨ Delete `Card` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  card_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Card_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Card", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Expense` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  expense_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Expense_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Expense", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Goal` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  goal_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Goal_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Goal", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Household` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  household_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Household_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Household", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `Income` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  income_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: Income_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "Income", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `MonthHistory` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  monthHistory_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: MonthHistory_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory", purpose: DELETE_MULTIPLE)
+  """
+  ✨ Delete `User` objects matching `where` conditions (or `all`, if true). Returns the number of rows deleted.
+  """
+  user_deleteMany(
+    """
+    Filter condition to specify which rows to delete.
+    """
+    where: User_Filter
+
+    """
+    Set to true to delete all rows.
+    """
+    all: Boolean = false
+  ): Int! @fdc_generated(from: "User", purpose: DELETE_MULTIPLE)
+}

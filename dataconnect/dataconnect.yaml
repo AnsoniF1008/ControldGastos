@@ -1,0 +1,14 @@
+specVersion: "v1"
+# Ajusta si tu servicio en Firebase usa otro id o región
+serviceId: "controldgastos-service"
+location: "us-east4"
+schemaValidation: "COMPATIBLE"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      # Nombre de BD en Cloud SQL (revisa en Firebase → Data Connect → Configuración)
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "controldgastos-instance"
+connectorDirs: ["./connector"]

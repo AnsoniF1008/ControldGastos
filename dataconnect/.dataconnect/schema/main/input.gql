@@ -1,0 +1,2843 @@
+"""
+✨ `Card_KeyOutput` returns the primary key fields of table type `Card`.
+
+It has the same format as `Card_Key`, but is only used as mutation return value.
+"""
+scalar Card_KeyOutput
+"""
+✨ `Expense_KeyOutput` returns the primary key fields of table type `Expense`.
+
+It has the same format as `Expense_Key`, but is only used as mutation return value.
+"""
+scalar Expense_KeyOutput
+"""
+✨ `Goal_KeyOutput` returns the primary key fields of table type `Goal`.
+
+It has the same format as `Goal_Key`, but is only used as mutation return value.
+"""
+scalar Goal_KeyOutput
+"""
+✨ `Household_KeyOutput` returns the primary key fields of table type `Household`.
+
+It has the same format as `Household_Key`, but is only used as mutation return value.
+"""
+scalar Household_KeyOutput
+"""
+✨ `Income_KeyOutput` returns the primary key fields of table type `Income`.
+
+It has the same format as `Income_Key`, but is only used as mutation return value.
+"""
+scalar Income_KeyOutput
+"""
+✨ `MonthHistory_KeyOutput` returns the primary key fields of table type `MonthHistory`.
+
+It has the same format as `MonthHistory_Key`, but is only used as mutation return value.
+"""
+scalar MonthHistory_KeyOutput
+"""
+✨ `User_KeyOutput` returns the primary key fields of table type `User`.
+
+It has the same format as `User_Key`, but is only used as mutation return value.
+"""
+scalar User_KeyOutput
+"""
+✨ Generated data input type for table 'Card'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Card_Data {
+  """
+  ✨ Generated from Field `Card`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Card`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Card`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`balance` of type `Float!`
+  """
+  balance: Float
+  """
+  ✨ `_expr` server value variant of `balance` (✨ Generated from Field `Card`.`balance` of type `Float!`)
+  """
+  balance_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `balance` (✨ Generated from Field `Card`.`balance` of type `Float!`)
+  """
+  balance_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`brand` of type `String!`
+  """
+  brand: String
+  """
+  ✨ `_expr` server value variant of `brand` (✨ Generated from Field `Card`.`brand` of type `String!`)
+  """
+  brand_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`creditLimit` of type `Float!`
+  """
+  creditLimit: Float
+  """
+  ✨ `_expr` server value variant of `creditLimit` (✨ Generated from Field `Card`.`creditLimit` of type `Float!`)
+  """
+  creditLimit_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `creditLimit` (✨ Generated from Field `Card`.`creditLimit` of type `Float!`)
+  """
+  creditLimit_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`dueDay` of type `Int!`
+  """
+  dueDay: Int
+  """
+  ✨ `_expr` server value variant of `dueDay` (✨ Generated from Field `Card`.`dueDay` of type `Int!`)
+  """
+  dueDay_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `dueDay` (✨ Generated from Field `Card`.`dueDay` of type `Int!`)
+  """
+  dueDay_update: [Int_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`minPayment` of type `Float!`
+  """
+  minPayment: Float
+  """
+  ✨ `_expr` server value variant of `minPayment` (✨ Generated from Field `Card`.`minPayment` of type `Float!`)
+  """
+  minPayment_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `minPayment` (✨ Generated from Field `Card`.`minPayment` of type `Float!`)
+  """
+  minPayment_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Card`.`name` of type `String!`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Card`.`paid` of type `Boolean!`
+  """
+  paid: Boolean
+  """
+  ✨ `_expr` server value variant of `paid` (✨ Generated from Field `Card`.`paid` of type `Boolean!`)
+  """
+  paid_expr: Boolean_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Card'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Card_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Card_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Card_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Card_Filter!]
+  """
+  ✨ Generated from Field `Card`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Card`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Card`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Card`.`balance` of type `Float!`
+  """
+  balance: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`brand` of type `String!`
+  """
+  brand: String_Filter
+  """
+  ✨ Generated from Field `Card`.`creditLimit` of type `Float!`
+  """
+  creditLimit: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`dueDay` of type `Int!`
+  """
+  dueDay: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`minPayment` of type `Float!`
+  """
+  minPayment: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Card`.`paid` of type `Boolean!`
+  """
+  paid: Boolean_Filter
+}
+"""
+✨ Generated first-row input type for table 'Card'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Card_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Card_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Card_Filter
+}
+"""
+✨ Generated having input type for table 'Card'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Card_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Card_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Card_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Card_Having!]
+  """
+  ✨ Generated from Field `Card`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`balance_count` of type `Int!`
+  """
+  balance_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`brand_count` of type `Int!`
+  """
+  brand_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`creditLimit_count` of type `Int!`
+  """
+  creditLimit_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`dueDay_count` of type `Int!`
+  """
+  dueDay_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`minPayment_count` of type `Int!`
+  """
+  minPayment_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`paid_count` of type `Int!`
+  """
+  paid_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`balance_sum` of type `Float`
+  """
+  balance_sum: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`creditLimit_sum` of type `Float`
+  """
+  creditLimit_sum: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`dueDay_sum` of type `Int`
+  """
+  dueDay_sum: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`minPayment_sum` of type `Float`
+  """
+  minPayment_sum: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`balance_avg` of type `Float`
+  """
+  balance_avg: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`creditLimit_avg` of type `Float`
+  """
+  creditLimit_avg: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`dueDay_avg` of type `Float`
+  """
+  dueDay_avg: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`minPayment_avg` of type `Float`
+  """
+  minPayment_avg: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`balance_min` of type `Float`
+  """
+  balance_min: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`creditLimit_min` of type `Float`
+  """
+  creditLimit_min: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`dueDay_min` of type `Int`
+  """
+  dueDay_min: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`minPayment_min` of type `Float`
+  """
+  minPayment_min: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`balance_max` of type `Float`
+  """
+  balance_max: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`creditLimit_max` of type `Float`
+  """
+  creditLimit_max: Float_Filter
+  """
+  ✨ Generated from Field `Card`.`dueDay_max` of type `Int`
+  """
+  dueDay_max: Int_Filter
+  """
+  ✨ Generated from Field `Card`.`minPayment_max` of type `Float`
+  """
+  minPayment_max: Float_Filter
+}
+"""
+✨ Generated key input type for table 'Card'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Card_Key {
+  """
+  ✨ Generated from Field `Card`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Card`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Card'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Card_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Card_Filter
+}
+"""
+✨ Generated order input type for table 'Card'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Card_Order {
+  """
+  ✨ Generated from Field `Card`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Card`.`balance` of type `Float!`
+  """
+  balance: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`brand` of type `String!`
+  """
+  brand: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`creditLimit` of type `Float!`
+  """
+  creditLimit: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`dueDay` of type `Int!`
+  """
+  dueDay: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`minPayment` of type `Float!`
+  """
+  minPayment: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`paid` of type `Boolean!`
+  """
+  paid: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`balance_count` of type `Int!`
+  """
+  balance_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`brand_count` of type `Int!`
+  """
+  brand_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`creditLimit_count` of type `Int!`
+  """
+  creditLimit_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`dueDay_count` of type `Int!`
+  """
+  dueDay_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`minPayment_count` of type `Int!`
+  """
+  minPayment_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`paid_count` of type `Int!`
+  """
+  paid_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`balance_sum` of type `Float`
+  """
+  balance_sum: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`creditLimit_sum` of type `Float`
+  """
+  creditLimit_sum: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`dueDay_sum` of type `Int`
+  """
+  dueDay_sum: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`minPayment_sum` of type `Float`
+  """
+  minPayment_sum: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`balance_avg` of type `Float`
+  """
+  balance_avg: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`creditLimit_avg` of type `Float`
+  """
+  creditLimit_avg: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`dueDay_avg` of type `Float`
+  """
+  dueDay_avg: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`minPayment_avg` of type `Float`
+  """
+  minPayment_avg: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`balance_min` of type `Float`
+  """
+  balance_min: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`creditLimit_min` of type `Float`
+  """
+  creditLimit_min: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`dueDay_min` of type `Int`
+  """
+  dueDay_min: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`minPayment_min` of type `Float`
+  """
+  minPayment_min: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`balance_max` of type `Float`
+  """
+  balance_max: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`creditLimit_max` of type `Float`
+  """
+  creditLimit_max: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`dueDay_max` of type `Int`
+  """
+  dueDay_max: OrderDirection
+  """
+  ✨ Generated from Field `Card`.`minPayment_max` of type `Float`
+  """
+  minPayment_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Expense'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Expense_Data {
+  """
+  ✨ Generated from Field `Expense`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Expense`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Expense`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`amount` of type `Float!`
+  """
+  amount: Float
+  """
+  ✨ `_expr` server value variant of `amount` (✨ Generated from Field `Expense`.`amount` of type `Float!`)
+  """
+  amount_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `amount` (✨ Generated from Field `Expense`.`amount` of type `Float!`)
+  """
+  amount_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`category` of type `String!`
+  """
+  category: String
+  """
+  ✨ `_expr` server value variant of `category` (✨ Generated from Field `Expense`.`category` of type `String!`)
+  """
+  category_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`dueDay` of type `Int`
+  """
+  dueDay: Int
+  """
+  ✨ `_expr` server value variant of `dueDay` (✨ Generated from Field `Expense`.`dueDay` of type `Int`)
+  """
+  dueDay_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `dueDay` (✨ Generated from Field `Expense`.`dueDay` of type `Int`)
+  """
+  dueDay_update: [Int_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`frequency` of type `String!`
+  """
+  frequency: String
+  """
+  ✨ `_expr` server value variant of `frequency` (✨ Generated from Field `Expense`.`frequency` of type `String!`)
+  """
+  frequency_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Expense`.`name` of type `String!`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Expense`.`paid` of type `Boolean!`
+  """
+  paid: Boolean
+  """
+  ✨ `_expr` server value variant of `paid` (✨ Generated from Field `Expense`.`paid` of type `Boolean!`)
+  """
+  paid_expr: Boolean_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Expense'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Expense_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Expense_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Expense_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Expense_Filter!]
+  """
+  ✨ Generated from Field `Expense`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Expense`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Expense`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Expense`.`amount` of type `Float!`
+  """
+  amount: Float_Filter
+  """
+  ✨ Generated from Field `Expense`.`category` of type `String!`
+  """
+  category: String_Filter
+  """
+  ✨ Generated from Field `Expense`.`dueDay` of type `Int`
+  """
+  dueDay: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`frequency` of type `String!`
+  """
+  frequency: String_Filter
+  """
+  ✨ Generated from Field `Expense`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Expense`.`paid` of type `Boolean!`
+  """
+  paid: Boolean_Filter
+}
+"""
+✨ Generated first-row input type for table 'Expense'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Expense_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Expense_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Expense_Filter
+}
+"""
+✨ Generated having input type for table 'Expense'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Expense_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Expense_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Expense_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Expense_Having!]
+  """
+  ✨ Generated from Field `Expense`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`amount_count` of type `Int!`
+  """
+  amount_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`category_count` of type `Int!`
+  """
+  category_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`dueDay_count` of type `Int!`
+  """
+  dueDay_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`frequency_count` of type `Int!`
+  """
+  frequency_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`paid_count` of type `Int!`
+  """
+  paid_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`amount_sum` of type `Float`
+  """
+  amount_sum: Float_Filter
+  """
+  ✨ Generated from Field `Expense`.`dueDay_sum` of type `Int`
+  """
+  dueDay_sum: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`amount_avg` of type `Float`
+  """
+  amount_avg: Float_Filter
+  """
+  ✨ Generated from Field `Expense`.`dueDay_avg` of type `Float`
+  """
+  dueDay_avg: Float_Filter
+  """
+  ✨ Generated from Field `Expense`.`amount_min` of type `Float`
+  """
+  amount_min: Float_Filter
+  """
+  ✨ Generated from Field `Expense`.`dueDay_min` of type `Int`
+  """
+  dueDay_min: Int_Filter
+  """
+  ✨ Generated from Field `Expense`.`amount_max` of type `Float`
+  """
+  amount_max: Float_Filter
+  """
+  ✨ Generated from Field `Expense`.`dueDay_max` of type `Int`
+  """
+  dueDay_max: Int_Filter
+}
+"""
+✨ Generated key input type for table 'Expense'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Expense_Key {
+  """
+  ✨ Generated from Field `Expense`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Expense`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Expense'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Expense_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Expense_Filter
+}
+"""
+✨ Generated order input type for table 'Expense'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Expense_Order {
+  """
+  ✨ Generated from Field `Expense`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Expense`.`amount` of type `Float!`
+  """
+  amount: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`category` of type `String!`
+  """
+  category: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`dueDay` of type `Int`
+  """
+  dueDay: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`frequency` of type `String!`
+  """
+  frequency: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`paid` of type `Boolean!`
+  """
+  paid: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`amount_count` of type `Int!`
+  """
+  amount_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`category_count` of type `Int!`
+  """
+  category_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`dueDay_count` of type `Int!`
+  """
+  dueDay_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`frequency_count` of type `Int!`
+  """
+  frequency_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`paid_count` of type `Int!`
+  """
+  paid_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`amount_sum` of type `Float`
+  """
+  amount_sum: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`dueDay_sum` of type `Int`
+  """
+  dueDay_sum: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`amount_avg` of type `Float`
+  """
+  amount_avg: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`dueDay_avg` of type `Float`
+  """
+  dueDay_avg: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`amount_min` of type `Float`
+  """
+  amount_min: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`dueDay_min` of type `Int`
+  """
+  dueDay_min: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`amount_max` of type `Float`
+  """
+  amount_max: OrderDirection
+  """
+  ✨ Generated from Field `Expense`.`dueDay_max` of type `Int`
+  """
+  dueDay_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Goal'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Goal_Data {
+  """
+  ✨ Generated from Field `Goal`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Goal`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Goal`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`color` of type `String!`
+  """
+  color: String
+  """
+  ✨ `_expr` server value variant of `color` (✨ Generated from Field `Goal`.`color` of type `String!`)
+  """
+  color_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`emoji` of type `String!`
+  """
+  emoji: String
+  """
+  ✨ `_expr` server value variant of `emoji` (✨ Generated from Field `Goal`.`emoji` of type `String!`)
+  """
+  emoji_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`monthly` of type `Float!`
+  """
+  monthly: Float
+  """
+  ✨ `_expr` server value variant of `monthly` (✨ Generated from Field `Goal`.`monthly` of type `Float!`)
+  """
+  monthly_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `monthly` (✨ Generated from Field `Goal`.`monthly` of type `Float!`)
+  """
+  monthly_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Goal`.`name` of type `String!`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`saved` of type `Float!`
+  """
+  saved: Float
+  """
+  ✨ `_expr` server value variant of `saved` (✨ Generated from Field `Goal`.`saved` of type `Float!`)
+  """
+  saved_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `saved` (✨ Generated from Field `Goal`.`saved` of type `Float!`)
+  """
+  saved_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Goal`.`target` of type `Float!`
+  """
+  target: Float
+  """
+  ✨ `_expr` server value variant of `target` (✨ Generated from Field `Goal`.`target` of type `Float!`)
+  """
+  target_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `target` (✨ Generated from Field `Goal`.`target` of type `Float!`)
+  """
+  target_update: [Float_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Goal'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Goal_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Goal_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Goal_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Goal_Filter!]
+  """
+  ✨ Generated from Field `Goal`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Goal`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Goal`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Goal`.`color` of type `String!`
+  """
+  color: String_Filter
+  """
+  ✨ Generated from Field `Goal`.`emoji` of type `String!`
+  """
+  emoji: String_Filter
+  """
+  ✨ Generated from Field `Goal`.`monthly` of type `Float!`
+  """
+  monthly: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Goal`.`saved` of type `Float!`
+  """
+  saved: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`target` of type `Float!`
+  """
+  target: Float_Filter
+}
+"""
+✨ Generated first-row input type for table 'Goal'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Goal_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Goal_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Goal_Filter
+}
+"""
+✨ Generated having input type for table 'Goal'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Goal_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Goal_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Goal_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Goal_Having!]
+  """
+  ✨ Generated from Field `Goal`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`color_count` of type `Int!`
+  """
+  color_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`emoji_count` of type `Int!`
+  """
+  emoji_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`monthly_count` of type `Int!`
+  """
+  monthly_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`saved_count` of type `Int!`
+  """
+  saved_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`target_count` of type `Int!`
+  """
+  target_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Goal`.`monthly_sum` of type `Float`
+  """
+  monthly_sum: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`saved_sum` of type `Float`
+  """
+  saved_sum: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`target_sum` of type `Float`
+  """
+  target_sum: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`monthly_avg` of type `Float`
+  """
+  monthly_avg: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`saved_avg` of type `Float`
+  """
+  saved_avg: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`target_avg` of type `Float`
+  """
+  target_avg: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`monthly_min` of type `Float`
+  """
+  monthly_min: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`saved_min` of type `Float`
+  """
+  saved_min: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`target_min` of type `Float`
+  """
+  target_min: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`monthly_max` of type `Float`
+  """
+  monthly_max: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`saved_max` of type `Float`
+  """
+  saved_max: Float_Filter
+  """
+  ✨ Generated from Field `Goal`.`target_max` of type `Float`
+  """
+  target_max: Float_Filter
+}
+"""
+✨ Generated key input type for table 'Goal'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Goal_Key {
+  """
+  ✨ Generated from Field `Goal`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Goal`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Goal'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Goal_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Goal_Filter
+}
+"""
+✨ Generated order input type for table 'Goal'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Goal_Order {
+  """
+  ✨ Generated from Field `Goal`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Goal`.`color` of type `String!`
+  """
+  color: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`emoji` of type `String!`
+  """
+  emoji: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`monthly` of type `Float!`
+  """
+  monthly: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`saved` of type `Float!`
+  """
+  saved: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`target` of type `Float!`
+  """
+  target: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`color_count` of type `Int!`
+  """
+  color_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`emoji_count` of type `Int!`
+  """
+  emoji_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`monthly_count` of type `Int!`
+  """
+  monthly_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`saved_count` of type `Int!`
+  """
+  saved_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`target_count` of type `Int!`
+  """
+  target_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`monthly_sum` of type `Float`
+  """
+  monthly_sum: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`saved_sum` of type `Float`
+  """
+  saved_sum: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`target_sum` of type `Float`
+  """
+  target_sum: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`monthly_avg` of type `Float`
+  """
+  monthly_avg: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`saved_avg` of type `Float`
+  """
+  saved_avg: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`target_avg` of type `Float`
+  """
+  target_avg: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`monthly_min` of type `Float`
+  """
+  monthly_min: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`saved_min` of type `Float`
+  """
+  saved_min: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`target_min` of type `Float`
+  """
+  target_min: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`monthly_max` of type `Float`
+  """
+  monthly_max: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`saved_max` of type `Float`
+  """
+  saved_max: OrderDirection
+  """
+  ✨ Generated from Field `Goal`.`target_max` of type `Float`
+  """
+  target_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Household'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Household_Data {
+  """
+  ✨ Generated from Field `Household`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Household`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Household`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `Household`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `Household`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `Household`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Household`.`ownerUid` of type `String`
+  """
+  ownerUid: String
+  """
+  ✨ `_expr` server value variant of `ownerUid` (✨ Generated from Field `Household`.`ownerUid` of type `String`)
+  """
+  ownerUid_expr: String_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Household'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Household_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Household_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Household_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Household_Filter!]
+  """
+  ✨ Generated from Field `Household`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Household`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `Household`.`ownerUid` of type `String`
+  """
+  ownerUid: String_Filter
+  """
+  ✨ Generated from Field `Household`.`users_on_household` of type `[User!]!`
+  """
+  users_on_household: User_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'Household'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Household_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Household_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Household_Filter
+}
+"""
+✨ Generated having input type for table 'Household'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Household_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Household_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Household_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Household_Having!]
+  """
+  ✨ Generated from Field `Household`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Household`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `Household`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Household`.`ownerUid_count` of type `Int!`
+  """
+  ownerUid_count: Int_Filter
+  """
+  ✨ Generated from Field `Household`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `Household`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+}
+"""
+✨ Generated key input type for table 'Household'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Household_Key {
+  """
+  ✨ Generated from Field `Household`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Household`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Household'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Household_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Household_Filter
+}
+"""
+✨ Generated order input type for table 'Household'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Household_Order {
+  """
+  ✨ Generated from Field `Household`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`ownerUid` of type `String`
+  """
+  ownerUid: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`ownerUid_count` of type `Int!`
+  """
+  ownerUid_count: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `Household`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'Income'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input Income_Data {
+  """
+  ✨ Generated from Field `Income`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Income`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Income`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `Income`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Income`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Income`.`amount` of type `Float!`
+  """
+  amount: Float
+  """
+  ✨ `_expr` server value variant of `amount` (✨ Generated from Field `Income`.`amount` of type `Float!`)
+  """
+  amount_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `amount` (✨ Generated from Field `Income`.`amount` of type `Float!`)
+  """
+  amount_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Income`.`category` of type `String!`
+  """
+  category: String
+  """
+  ✨ `_expr` server value variant of `category` (✨ Generated from Field `Income`.`category` of type `String!`)
+  """
+  category_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Income`.`frequency` of type `String!`
+  """
+  frequency: String
+  """
+  ✨ `_expr` server value variant of `frequency` (✨ Generated from Field `Income`.`frequency` of type `String!`)
+  """
+  frequency_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Income`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `Income`.`name` of type `String!`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `Income`.`received` of type `Boolean!`
+  """
+  received: Boolean
+  """
+  ✨ `_expr` server value variant of `received` (✨ Generated from Field `Income`.`received` of type `Boolean!`)
+  """
+  received_expr: Boolean_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'Income'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Income_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [Income_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: Income_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [Income_Filter!]
+  """
+  ✨ Generated from Field `Income`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `Income`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `Income`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `Income`.`amount` of type `Float!`
+  """
+  amount: Float_Filter
+  """
+  ✨ Generated from Field `Income`.`category` of type `String!`
+  """
+  category: String_Filter
+  """
+  ✨ Generated from Field `Income`.`frequency` of type `String!`
+  """
+  frequency: String_Filter
+  """
+  ✨ Generated from Field `Income`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `Income`.`received` of type `Boolean!`
+  """
+  received: Boolean_Filter
+}
+"""
+✨ Generated first-row input type for table 'Income'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input Income_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [Income_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: Income_Filter
+}
+"""
+✨ Generated having input type for table 'Income'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input Income_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [Income_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: Income_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [Income_Having!]
+  """
+  ✨ Generated from Field `Income`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`amount_count` of type `Int!`
+  """
+  amount_count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`category_count` of type `Int!`
+  """
+  category_count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`frequency_count` of type `Int!`
+  """
+  frequency_count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`received_count` of type `Int!`
+  """
+  received_count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `Income`.`amount_sum` of type `Float`
+  """
+  amount_sum: Float_Filter
+  """
+  ✨ Generated from Field `Income`.`amount_avg` of type `Float`
+  """
+  amount_avg: Float_Filter
+  """
+  ✨ Generated from Field `Income`.`amount_min` of type `Float`
+  """
+  amount_min: Float_Filter
+  """
+  ✨ Generated from Field `Income`.`amount_max` of type `Float`
+  """
+  amount_max: Float_Filter
+}
+"""
+✨ Generated key input type for table 'Income'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input Income_Key {
+  """
+  ✨ Generated from Field `Income`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `Income`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'Income'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input Income_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: Income_Filter
+}
+"""
+✨ Generated order input type for table 'Income'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input Income_Order {
+  """
+  ✨ Generated from Field `Income`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `Income`.`amount` of type `Float!`
+  """
+  amount: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`category` of type `String!`
+  """
+  category: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`frequency` of type `String!`
+  """
+  frequency: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`received` of type `Boolean!`
+  """
+  received: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`amount_count` of type `Int!`
+  """
+  amount_count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`category_count` of type `Int!`
+  """
+  category_count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`frequency_count` of type `Int!`
+  """
+  frequency_count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`received_count` of type `Int!`
+  """
+  received_count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`amount_sum` of type `Float`
+  """
+  amount_sum: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`amount_avg` of type `Float`
+  """
+  amount_avg: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`amount_min` of type `Float`
+  """
+  amount_min: OrderDirection
+  """
+  ✨ Generated from Field `Income`.`amount_max` of type `Float`
+  """
+  amount_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'MonthHistory'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input MonthHistory_Data {
+  """
+  ✨ Generated from Field `MonthHistory`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `MonthHistory`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`userId` of type `UUID!`
+  """
+  userId: UUID
+  """
+  ✨ `_expr` server value variant of `userId` (✨ Generated from Field `MonthHistory`.`userId` of type `UUID!`)
+  """
+  userId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`user` of type `User!`
+  """
+  user: User_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `MonthHistory`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `MonthHistory`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `MonthHistory`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`month` of type `Int!`
+  """
+  month: Int
+  """
+  ✨ `_expr` server value variant of `month` (✨ Generated from Field `MonthHistory`.`month` of type `Int!`)
+  """
+  month_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `month` (✨ Generated from Field `MonthHistory`.`month` of type `Int!`)
+  """
+  month_update: [Int_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp` of type `Float!`
+  """
+  paidExp: Float
+  """
+  ✨ `_expr` server value variant of `paidExp` (✨ Generated from Field `MonthHistory`.`paidExp` of type `Float!`)
+  """
+  paidExp_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `paidExp` (✨ Generated from Field `MonthHistory`.`paidExp` of type `Float!`)
+  """
+  paidExp_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc` of type `Float!`
+  """
+  recvInc: Float
+  """
+  ✨ `_expr` server value variant of `recvInc` (✨ Generated from Field `MonthHistory`.`recvInc` of type `Float!`)
+  """
+  recvInc_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `recvInc` (✨ Generated from Field `MonthHistory`.`recvInc` of type `Float!`)
+  """
+  recvInc_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt` of type `Float!`
+  """
+  totalDebt: Float
+  """
+  ✨ `_expr` server value variant of `totalDebt` (✨ Generated from Field `MonthHistory`.`totalDebt` of type `Float!`)
+  """
+  totalDebt_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `totalDebt` (✨ Generated from Field `MonthHistory`.`totalDebt` of type `Float!`)
+  """
+  totalDebt_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp` of type `Float!`
+  """
+  totalExp: Float
+  """
+  ✨ `_expr` server value variant of `totalExp` (✨ Generated from Field `MonthHistory`.`totalExp` of type `Float!`)
+  """
+  totalExp_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `totalExp` (✨ Generated from Field `MonthHistory`.`totalExp` of type `Float!`)
+  """
+  totalExp_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc` of type `Float!`
+  """
+  totalInc: Float
+  """
+  ✨ `_expr` server value variant of `totalInc` (✨ Generated from Field `MonthHistory`.`totalInc` of type `Float!`)
+  """
+  totalInc_expr: Float_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `totalInc` (✨ Generated from Field `MonthHistory`.`totalInc` of type `Float!`)
+  """
+  totalInc_update: [Float_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `MonthHistory`.`year` of type `Int!`
+  """
+  year: Int
+  """
+  ✨ `_expr` server value variant of `year` (✨ Generated from Field `MonthHistory`.`year` of type `Int!`)
+  """
+  year_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `year` (✨ Generated from Field `MonthHistory`.`year` of type `Int!`)
+  """
+  year_update: [Int_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'MonthHistory'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input MonthHistory_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [MonthHistory_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: MonthHistory_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [MonthHistory_Filter!]
+  """
+  ✨ Generated from Field `MonthHistory`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`userId` of type `UUID!`
+  """
+  userId: UUID_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`user` of type `User!`
+  """
+  user: User_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`month` of type `Int!`
+  """
+  month: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp` of type `Float!`
+  """
+  paidExp: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc` of type `Float!`
+  """
+  recvInc: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt` of type `Float!`
+  """
+  totalDebt: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp` of type `Float!`
+  """
+  totalExp: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc` of type `Float!`
+  """
+  totalInc: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`year` of type `Int!`
+  """
+  year: Int_Filter
+}
+"""
+✨ Generated first-row input type for table 'MonthHistory'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input MonthHistory_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [MonthHistory_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: MonthHistory_Filter
+}
+"""
+✨ Generated having input type for table 'MonthHistory'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input MonthHistory_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [MonthHistory_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: MonthHistory_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [MonthHistory_Having!]
+  """
+  ✨ Generated from Field `MonthHistory`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`month_count` of type `Int!`
+  """
+  month_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_count` of type `Int!`
+  """
+  paidExp_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_count` of type `Int!`
+  """
+  recvInc_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_count` of type `Int!`
+  """
+  totalDebt_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_count` of type `Int!`
+  """
+  totalExp_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_count` of type `Int!`
+  """
+  totalInc_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`userId_count` of type `Int!`
+  """
+  userId_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`year_count` of type `Int!`
+  """
+  year_count: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`month_sum` of type `Int`
+  """
+  month_sum: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_sum` of type `Float`
+  """
+  paidExp_sum: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_sum` of type `Float`
+  """
+  recvInc_sum: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_sum` of type `Float`
+  """
+  totalDebt_sum: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_sum` of type `Float`
+  """
+  totalExp_sum: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_sum` of type `Float`
+  """
+  totalInc_sum: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`year_sum` of type `Int`
+  """
+  year_sum: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`month_avg` of type `Float`
+  """
+  month_avg: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_avg` of type `Float`
+  """
+  paidExp_avg: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_avg` of type `Float`
+  """
+  recvInc_avg: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_avg` of type `Float`
+  """
+  totalDebt_avg: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_avg` of type `Float`
+  """
+  totalExp_avg: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_avg` of type `Float`
+  """
+  totalInc_avg: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`year_avg` of type `Float`
+  """
+  year_avg: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`month_min` of type `Int`
+  """
+  month_min: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_min` of type `Float`
+  """
+  paidExp_min: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_min` of type `Float`
+  """
+  recvInc_min: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_min` of type `Float`
+  """
+  totalDebt_min: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_min` of type `Float`
+  """
+  totalExp_min: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_min` of type `Float`
+  """
+  totalInc_min: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`year_min` of type `Int`
+  """
+  year_min: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`month_max` of type `Int`
+  """
+  month_max: Int_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_max` of type `Float`
+  """
+  paidExp_max: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_max` of type `Float`
+  """
+  recvInc_max: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_max` of type `Float`
+  """
+  totalDebt_max: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_max` of type `Float`
+  """
+  totalExp_max: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_max` of type `Float`
+  """
+  totalInc_max: Float_Filter
+  """
+  ✨ Generated from Field `MonthHistory`.`year_max` of type `Int`
+  """
+  year_max: Int_Filter
+}
+"""
+✨ Generated key input type for table 'MonthHistory'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input MonthHistory_Key {
+  """
+  ✨ Generated from Field `MonthHistory`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `MonthHistory`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'MonthHistory'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input MonthHistory_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: MonthHistory_Filter
+}
+"""
+✨ Generated order input type for table 'MonthHistory'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input MonthHistory_Order {
+  """
+  ✨ Generated from Field `MonthHistory`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`userId` of type `UUID!`
+  """
+  userId: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`user` of type `User!`
+  """
+  user: User_Order
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`month` of type `Int!`
+  """
+  month: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp` of type `Float!`
+  """
+  paidExp: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc` of type `Float!`
+  """
+  recvInc: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt` of type `Float!`
+  """
+  totalDebt: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp` of type `Float!`
+  """
+  totalExp: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc` of type `Float!`
+  """
+  totalInc: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`year` of type `Int!`
+  """
+  year: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`month_count` of type `Int!`
+  """
+  month_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_count` of type `Int!`
+  """
+  paidExp_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_count` of type `Int!`
+  """
+  recvInc_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_count` of type `Int!`
+  """
+  totalDebt_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_count` of type `Int!`
+  """
+  totalExp_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_count` of type `Int!`
+  """
+  totalInc_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`userId_count` of type `Int!`
+  """
+  userId_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`year_count` of type `Int!`
+  """
+  year_count: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`month_sum` of type `Int`
+  """
+  month_sum: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_sum` of type `Float`
+  """
+  paidExp_sum: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_sum` of type `Float`
+  """
+  recvInc_sum: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_sum` of type `Float`
+  """
+  totalDebt_sum: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_sum` of type `Float`
+  """
+  totalExp_sum: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_sum` of type `Float`
+  """
+  totalInc_sum: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`year_sum` of type `Int`
+  """
+  year_sum: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`month_avg` of type `Float`
+  """
+  month_avg: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_avg` of type `Float`
+  """
+  paidExp_avg: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_avg` of type `Float`
+  """
+  recvInc_avg: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_avg` of type `Float`
+  """
+  totalDebt_avg: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_avg` of type `Float`
+  """
+  totalExp_avg: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_avg` of type `Float`
+  """
+  totalInc_avg: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`year_avg` of type `Float`
+  """
+  year_avg: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`month_min` of type `Int`
+  """
+  month_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_min` of type `Float`
+  """
+  paidExp_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_min` of type `Float`
+  """
+  recvInc_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_min` of type `Float`
+  """
+  totalDebt_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_min` of type `Float`
+  """
+  totalExp_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_min` of type `Float`
+  """
+  totalInc_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`year_min` of type `Int`
+  """
+  year_min: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`month_max` of type `Int`
+  """
+  month_max: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`paidExp_max` of type `Float`
+  """
+  paidExp_max: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`recvInc_max` of type `Float`
+  """
+  recvInc_max: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalDebt_max` of type `Float`
+  """
+  totalDebt_max: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalExp_max` of type `Float`
+  """
+  totalExp_max: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`totalInc_max` of type `Float`
+  """
+  totalInc_max: OrderDirection
+  """
+  ✨ Generated from Field `MonthHistory`.`year_max` of type `Int`
+  """
+  year_max: OrderDirection
+}
+"""
+✨ Generated data input type for table 'User'. It includes all necessary fields for creating or upserting rows into table.
+"""
+input User_Data {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`householdId` of type `UUID!`
+  """
+  householdId: UUID
+  """
+  ✨ `_expr` server value variant of `householdId` (✨ Generated from Field `User`.`householdId` of type `UUID!`)
+  """
+  householdId_expr: UUID_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`household` of type `Household!`
+  """
+  household: Household_Key @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`budgets` of type `String`
+  """
+  budgets: String
+  """
+  ✨ `_expr` server value variant of `budgets` (✨ Generated from Field `User`.`budgets` of type `String`)
+  """
+  budgets_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`color` of type `String!`
+  """
+  color: String
+  """
+  ✨ `_expr` server value variant of `color` (✨ Generated from Field `User`.`color` of type `String!`)
+  """
+  color_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp
+  """
+  ✨ `_expr` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_expr: Timestamp_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_time` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_time: Timestamp_Relative @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `createdAt` (✨ Generated from Field `User`.`createdAt` of type `Timestamp!`)
+  """
+  createdAt_update: [Timestamp_Update!] @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`emoji` of type `String!`
+  """
+  emoji: String
+  """
+  ✨ `_expr` server value variant of `emoji` (✨ Generated from Field `User`.`emoji` of type `String!`)
+  """
+  emoji_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`firebaseUid` of type `String`
+  """
+  firebaseUid: String
+  """
+  ✨ `_expr` server value variant of `firebaseUid` (✨ Generated from Field `User`.`firebaseUid` of type `String`)
+  """
+  firebaseUid_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`name` of type `String!`
+  """
+  name: String
+  """
+  ✨ `_expr` server value variant of `name` (✨ Generated from Field `User`.`name` of type `String!`)
+  """
+  name_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`role` of type `String!`
+  """
+  role: String
+  """
+  ✨ `_expr` server value variant of `role` (✨ Generated from Field `User`.`role` of type `String!`)
+  """
+  role_expr: String_Expr @fdc_forbiddenInVariables
+  """
+  ✨ Generated from Field `User`.`sortOrder` of type `Int!`
+  """
+  sortOrder: Int
+  """
+  ✨ `_expr` server value variant of `sortOrder` (✨ Generated from Field `User`.`sortOrder` of type `Int!`)
+  """
+  sortOrder_expr: Int_Expr @fdc_forbiddenInVariables
+  """
+  ✨ `_update` server value variant of `sortOrder` (✨ Generated from Field `User`.`sortOrder` of type `Int!`)
+  """
+  sortOrder_update: [Int_Update!] @fdc_forbiddenInVariables
+}
+"""
+✨ Generated filter input type for table 'User'. This input allows filtering objects using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Filter {
+  """
+  Apply multiple filter conditions using `AND` logic.
+  """
+  _and: [User_Filter!]
+  """
+  Negate the result of the provided filter condition.
+  """
+  _not: User_Filter
+  """
+  Apply multiple filter conditions using `OR` logic.
+  """
+  _or: [User_Filter!]
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID_Filter
+  """
+  ✨ Generated from Field `User`.`householdId` of type `UUID!`
+  """
+  householdId: UUID_Filter
+  """
+  ✨ Generated from Field `User`.`household` of type `Household!`
+  """
+  household: Household_Filter
+  """
+  ✨ Generated from Field `User`.`budgets` of type `String`
+  """
+  budgets: String_Filter
+  """
+  ✨ Generated from Field `User`.`color` of type `String!`
+  """
+  color: String_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: Timestamp_Filter
+  """
+  ✨ Generated from Field `User`.`emoji` of type `String!`
+  """
+  emoji: String_Filter
+  """
+  ✨ Generated from Field `User`.`firebaseUid` of type `String`
+  """
+  firebaseUid: String_Filter
+  """
+  ✨ Generated from Field `User`.`name` of type `String!`
+  """
+  name: String_Filter
+  """
+  ✨ Generated from Field `User`.`role` of type `String!`
+  """
+  role: String_Filter
+  """
+  ✨ Generated from Field `User`.`sortOrder` of type `Int!`
+  """
+  sortOrder: Int_Filter
+  """
+  ✨ Generated from Field `User`.`cards_on_user` of type `[Card!]!`
+  """
+  cards_on_user: Card_ListFilter
+  """
+  ✨ Generated from Field `User`.`expenses_on_user` of type `[Expense!]!`
+  """
+  expenses_on_user: Expense_ListFilter
+  """
+  ✨ Generated from Field `User`.`goals_on_user` of type `[Goal!]!`
+  """
+  goals_on_user: Goal_ListFilter
+  """
+  ✨ Generated from Field `User`.`incomes_on_user` of type `[Income!]!`
+  """
+  incomes_on_user: Income_ListFilter
+  """
+  ✨ Generated from Field `User`.`monthHistories_on_user` of type `[MonthHistory!]!`
+  """
+  monthHistories_on_user: MonthHistory_ListFilter
+}
+"""
+✨ Generated first-row input type for table 'User'. This input selects the first row matching the filter criteria, ordered according to the specified conditions.
+"""
+input User_FirstRow {
+  """
+  Order the result by the specified fields.
+  """
+  orderBy: [User_Order!]
+  """
+  Filters rows based on the specified conditions.
+  """
+  where: User_Filter
+}
+"""
+✨ Generated having input type for table 'User'. This input allows you to filter groups during aggregate queries using various conditions. Use `_or`, `_and`, and `_not` to compose complex filters.
+"""
+input User_Having {
+  """
+  Apply multiple Having conditions using `AND` logic.
+  """
+  _and: [User_Having!]
+  """
+  Whether to apply DISTINCT to the aggregate function.
+  """
+  _distinct: Boolean
+  """
+  Negate the result of the provided Having condition.
+  """
+  _not: User_Having
+  """
+  Apply multiple Having conditions using `OR` logic.
+  """
+  _or: [User_Having!]
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`budgets_count` of type `Int!`
+  """
+  budgets_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`color_count` of type `Int!`
+  """
+  color_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`emoji_count` of type `Int!`
+  """
+  emoji_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`firebaseUid_count` of type `Int!`
+  """
+  firebaseUid_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`householdId_count` of type `Int!`
+  """
+  householdId_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`name_count` of type `Int!`
+  """
+  name_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`role_count` of type `Int!`
+  """
+  role_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`sortOrder_count` of type `Int!`
+  """
+  sortOrder_count: Int_Filter
+  """
+  ✨ Generated from Field `User`.`sortOrder_sum` of type `Int`
+  """
+  sortOrder_sum: Int_Filter
+  """
+  ✨ Generated from Field `User`.`sortOrder_avg` of type `Float`
+  """
+  sortOrder_avg: Float_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: Timestamp_Filter
+  """
+  ✨ Generated from Field `User`.`sortOrder_min` of type `Int`
+  """
+  sortOrder_min: Int_Filter
+  """
+  ✨ Generated from Field `User`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: Timestamp_Filter
+  """
+  ✨ Generated from Field `User`.`sortOrder_max` of type `Int`
+  """
+  sortOrder_max: Int_Filter
+}
+"""
+✨ Generated key input type for table 'User'. It represents the primary key fields used to uniquely identify a row in the table.
+"""
+input User_Key {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: UUID
+  """
+  ✨ `_expr` server value variant of `id` (✨ Generated from Field `User`.`id` of type `UUID!`)
+  """
+  id_expr: UUID_Expr @fdc_forbiddenInVariables
+}
+"""
+✨ Generated list filter input type for table 'User'. This input applies filtering logic based on the count or existence of related objects that matches certain criteria.
+"""
+input User_ListFilter {
+  """
+  The desired number of objects that match the condition (defaults to at least one).
+  """
+  count: Int_Filter = {gt:0}
+  """
+  Condition of the related objects to filter for.
+  """
+  exist: User_Filter
+}
+"""
+✨ Generated order input type for table 'User'. This input defines the sorting order of rows in query results based on one or more fields.
+"""
+input User_Order {
+  """
+  ✨ Generated from Field `User`.`id` of type `UUID!`
+  """
+  id: OrderDirection
+  """
+  ✨ Generated from Field `User`.`householdId` of type `UUID!`
+  """
+  householdId: OrderDirection
+  """
+  ✨ Generated from Field `User`.`household` of type `Household!`
+  """
+  household: Household_Order
+  """
+  ✨ Generated from Field `User`.`budgets` of type `String`
+  """
+  budgets: OrderDirection
+  """
+  ✨ Generated from Field `User`.`color` of type `String!`
+  """
+  color: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt` of type `Timestamp!`
+  """
+  createdAt: OrderDirection
+  """
+  ✨ Generated from Field `User`.`emoji` of type `String!`
+  """
+  emoji: OrderDirection
+  """
+  ✨ Generated from Field `User`.`firebaseUid` of type `String`
+  """
+  firebaseUid: OrderDirection
+  """
+  ✨ Generated from Field `User`.`name` of type `String!`
+  """
+  name: OrderDirection
+  """
+  ✨ Generated from Field `User`.`role` of type `String!`
+  """
+  role: OrderDirection
+  """
+  ✨ Generated from Field `User`.`sortOrder` of type `Int!`
+  """
+  sortOrder: OrderDirection
+  """
+  ✨ Generated from Field `User`.`_count` of type `Int!`
+  """
+  _count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`budgets_count` of type `Int!`
+  """
+  budgets_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`color_count` of type `Int!`
+  """
+  color_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_count` of type `Int!`
+  """
+  createdAt_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`emoji_count` of type `Int!`
+  """
+  emoji_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`firebaseUid_count` of type `Int!`
+  """
+  firebaseUid_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`householdId_count` of type `Int!`
+  """
+  householdId_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`id_count` of type `Int!`
+  """
+  id_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`name_count` of type `Int!`
+  """
+  name_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`role_count` of type `Int!`
+  """
+  role_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`sortOrder_count` of type `Int!`
+  """
+  sortOrder_count: OrderDirection
+  """
+  ✨ Generated from Field `User`.`sortOrder_sum` of type `Int`
+  """
+  sortOrder_sum: OrderDirection
+  """
+  ✨ Generated from Field `User`.`sortOrder_avg` of type `Float`
+  """
+  sortOrder_avg: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_min` of type `Timestamp`
+  """
+  createdAt_min: OrderDirection
+  """
+  ✨ Generated from Field `User`.`sortOrder_min` of type `Int`
+  """
+  sortOrder_min: OrderDirection
+  """
+  ✨ Generated from Field `User`.`createdAt_max` of type `Timestamp`
+  """
+  createdAt_max: OrderDirection
+  """
+  ✨ Generated from Field `User`.`sortOrder_max` of type `Int`
+  """
+  sortOrder_max: OrderDirection
+}

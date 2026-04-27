@@ -1,0 +1,1289 @@
+extend type Card {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Card", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Card` table.
+  """
+  _count: Int! @fdc_generated(from: "Card.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `balance` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  balance_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.balance", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `brand` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  brand_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.brand", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `creditLimit` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  creditLimit_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.creditLimit", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `dueDay` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  dueDay_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.dueDay", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `minPayment` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  minPayment_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.minPayment", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `name` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  name_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.name", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `paid` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  paid_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.paid", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Card` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `balance` field in the `Card` table.
+  """
+  balance_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Card.balance", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `creditLimit` field in the `Card` table.
+  """
+  creditLimit_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Card.creditLimit", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `dueDay` field in the `Card` table.
+  """
+  dueDay_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "Card.dueDay", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `minPayment` field in the `Card` table.
+  """
+  minPayment_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Card.minPayment", purpose: QUERY_SUM)
+  """
+  ✨ Average the `balance` field in the `Card` table.
+  """
+  balance_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Card.balance", purpose: QUERY_AVG)
+  """
+  ✨ Average the `creditLimit` field in the `Card` table.
+  """
+  creditLimit_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Card.creditLimit", purpose: QUERY_AVG)
+  """
+  ✨ Average the `dueDay` field in the `Card` table.
+  """
+  dueDay_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Card.dueDay", purpose: QUERY_AVG)
+  """
+  ✨ Average the `minPayment` field in the `Card` table.
+  """
+  minPayment_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Card.minPayment", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `balance` field in the `Card` table.
+  """
+  balance_min: Float @fdc_generated(from: "Card.balance", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `creditLimit` field in the `Card` table.
+  """
+  creditLimit_min: Float @fdc_generated(from: "Card.creditLimit", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `dueDay` field in the `Card` table.
+  """
+  dueDay_min: Int @fdc_generated(from: "Card.dueDay", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `minPayment` field in the `Card` table.
+  """
+  minPayment_min: Float @fdc_generated(from: "Card.minPayment", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `balance` field in the `Card` table.
+  """
+  balance_max: Float @fdc_generated(from: "Card.balance", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `creditLimit` field in the `Card` table.
+  """
+  creditLimit_max: Float @fdc_generated(from: "Card.creditLimit", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `dueDay` field in the `Card` table.
+  """
+  dueDay_max: Int @fdc_generated(from: "Card.dueDay", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `minPayment` field in the `Card` table.
+  """
+  minPayment_max: Float @fdc_generated(from: "Card.minPayment", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "Card.id", purpose: ENTITY_ID)
+}
+extend type Expense {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Expense", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Expense` table.
+  """
+  _count: Int! @fdc_generated(from: "Expense.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `amount` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  amount_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.amount", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `category` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  category_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.category", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `dueDay` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  dueDay_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.dueDay", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `frequency` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  frequency_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.frequency", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `name` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  name_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.name", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `paid` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  paid_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.paid", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Expense` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `amount` field in the `Expense` table.
+  """
+  amount_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Expense.amount", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `dueDay` field in the `Expense` table.
+  """
+  dueDay_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "Expense.dueDay", purpose: QUERY_SUM)
+  """
+  ✨ Average the `amount` field in the `Expense` table.
+  """
+  amount_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Expense.amount", purpose: QUERY_AVG)
+  """
+  ✨ Average the `dueDay` field in the `Expense` table.
+  """
+  dueDay_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Expense.dueDay", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `amount` field in the `Expense` table.
+  """
+  amount_min: Float @fdc_generated(from: "Expense.amount", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `dueDay` field in the `Expense` table.
+  """
+  dueDay_min: Int @fdc_generated(from: "Expense.dueDay", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `amount` field in the `Expense` table.
+  """
+  amount_max: Float @fdc_generated(from: "Expense.amount", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `dueDay` field in the `Expense` table.
+  """
+  dueDay_max: Int @fdc_generated(from: "Expense.dueDay", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "Expense.id", purpose: ENTITY_ID)
+}
+extend type Goal {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Goal", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Goal` table.
+  """
+  _count: Int! @fdc_generated(from: "Goal.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `color` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  color_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.color", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `emoji` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  emoji_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.emoji", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `monthly` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  monthly_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.monthly", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `name` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  name_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.name", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `saved` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  saved_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.saved", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `target` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  target_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.target", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `monthly` field in the `Goal` table.
+  """
+  monthly_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Goal.monthly", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `saved` field in the `Goal` table.
+  """
+  saved_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Goal.saved", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `target` field in the `Goal` table.
+  """
+  target_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Goal.target", purpose: QUERY_SUM)
+  """
+  ✨ Average the `monthly` field in the `Goal` table.
+  """
+  monthly_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Goal.monthly", purpose: QUERY_AVG)
+  """
+  ✨ Average the `saved` field in the `Goal` table.
+  """
+  saved_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Goal.saved", purpose: QUERY_AVG)
+  """
+  ✨ Average the `target` field in the `Goal` table.
+  """
+  target_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Goal.target", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `monthly` field in the `Goal` table.
+  """
+  monthly_min: Float @fdc_generated(from: "Goal.monthly", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `saved` field in the `Goal` table.
+  """
+  saved_min: Float @fdc_generated(from: "Goal.saved", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `target` field in the `Goal` table.
+  """
+  target_min: Float @fdc_generated(from: "Goal.target", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `monthly` field in the `Goal` table.
+  """
+  monthly_max: Float @fdc_generated(from: "Goal.monthly", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `saved` field in the `Goal` table.
+  """
+  saved_max: Float @fdc_generated(from: "Goal.saved", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `target` field in the `Goal` table.
+  """
+  target_max: Float @fdc_generated(from: "Goal.target", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "Goal.id", purpose: ENTITY_ID)
+}
+extend type Household {
+  """
+  ✨ List `User` objects in a one-to-many relationship (where `User`.`household` is this object).
+  """
+  users_on_household(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: User_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [User_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: User_Having
+  ): [User!]! @fdc_generated(from: "User.household", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Household", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Household` table.
+  """
+  _count: Int! @fdc_generated(from: "Household.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Household` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Household.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Household` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Household.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Household` table where the `ownerUid` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  ownerUid_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Household.ownerUid", purpose: QUERY_COUNT)
+  """
+  ✨ Minimum of the `createdAt` field in the `Household` table.
+  """
+  createdAt_min: Timestamp @fdc_generated(from: "Household.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `Household` table.
+  """
+  createdAt_max: Timestamp @fdc_generated(from: "Household.createdAt", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "Household.id", purpose: ENTITY_ID)
+}
+extend type Income {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "Income", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `Income` table.
+  """
+  _count: Int! @fdc_generated(from: "Income.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `amount` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  amount_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.amount", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `category` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  category_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.category", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `frequency` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  frequency_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.frequency", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `name` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  name_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.name", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `received` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  received_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.received", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `amount` field in the `Income` table.
+  """
+  amount_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Income.amount", purpose: QUERY_SUM)
+  """
+  ✨ Average the `amount` field in the `Income` table.
+  """
+  amount_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "Income.amount", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `amount` field in the `Income` table.
+  """
+  amount_min: Float @fdc_generated(from: "Income.amount", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `amount` field in the `Income` table.
+  """
+  amount_max: Float @fdc_generated(from: "Income.amount", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "Income.id", purpose: ENTITY_ID)
+}
+extend type MonthHistory {
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "MonthHistory", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table.
+  """
+  _count: Int! @fdc_generated(from: "MonthHistory.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `month` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  month_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.month", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `paidExp` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  paidExp_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.paidExp", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `recvInc` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  recvInc_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.recvInc", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `totalDebt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  totalDebt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.totalDebt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `totalExp` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  totalExp_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.totalExp", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `totalInc` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  totalInc_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.totalInc", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `userId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  userId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.userId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `MonthHistory` table where the `year` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  year_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "MonthHistory.year", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `month` field in the `MonthHistory` table.
+  """
+  month_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "MonthHistory.month", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `paidExp` field in the `MonthHistory` table.
+  """
+  paidExp_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.paidExp", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `recvInc` field in the `MonthHistory` table.
+  """
+  recvInc_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.recvInc", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `totalDebt` field in the `MonthHistory` table.
+  """
+  totalDebt_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.totalDebt", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `totalExp` field in the `MonthHistory` table.
+  """
+  totalExp_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.totalExp", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `totalInc` field in the `MonthHistory` table.
+  """
+  totalInc_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.totalInc", purpose: QUERY_SUM)
+  """
+  ✨ Sum the `year` field in the `MonthHistory` table.
+  """
+  year_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "MonthHistory.year", purpose: QUERY_SUM)
+  """
+  ✨ Average the `month` field in the `MonthHistory` table.
+  """
+  month_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.month", purpose: QUERY_AVG)
+  """
+  ✨ Average the `paidExp` field in the `MonthHistory` table.
+  """
+  paidExp_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.paidExp", purpose: QUERY_AVG)
+  """
+  ✨ Average the `recvInc` field in the `MonthHistory` table.
+  """
+  recvInc_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.recvInc", purpose: QUERY_AVG)
+  """
+  ✨ Average the `totalDebt` field in the `MonthHistory` table.
+  """
+  totalDebt_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.totalDebt", purpose: QUERY_AVG)
+  """
+  ✨ Average the `totalExp` field in the `MonthHistory` table.
+  """
+  totalExp_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.totalExp", purpose: QUERY_AVG)
+  """
+  ✨ Average the `totalInc` field in the `MonthHistory` table.
+  """
+  totalInc_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.totalInc", purpose: QUERY_AVG)
+  """
+  ✨ Average the `year` field in the `MonthHistory` table.
+  """
+  year_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "MonthHistory.year", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `MonthHistory` table.
+  """
+  createdAt_min: Timestamp @fdc_generated(from: "MonthHistory.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `month` field in the `MonthHistory` table.
+  """
+  month_min: Int @fdc_generated(from: "MonthHistory.month", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `paidExp` field in the `MonthHistory` table.
+  """
+  paidExp_min: Float @fdc_generated(from: "MonthHistory.paidExp", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `recvInc` field in the `MonthHistory` table.
+  """
+  recvInc_min: Float @fdc_generated(from: "MonthHistory.recvInc", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `totalDebt` field in the `MonthHistory` table.
+  """
+  totalDebt_min: Float @fdc_generated(from: "MonthHistory.totalDebt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `totalExp` field in the `MonthHistory` table.
+  """
+  totalExp_min: Float @fdc_generated(from: "MonthHistory.totalExp", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `totalInc` field in the `MonthHistory` table.
+  """
+  totalInc_min: Float @fdc_generated(from: "MonthHistory.totalInc", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `year` field in the `MonthHistory` table.
+  """
+  year_min: Int @fdc_generated(from: "MonthHistory.year", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `MonthHistory` table.
+  """
+  createdAt_max: Timestamp @fdc_generated(from: "MonthHistory.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `month` field in the `MonthHistory` table.
+  """
+  month_max: Int @fdc_generated(from: "MonthHistory.month", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `paidExp` field in the `MonthHistory` table.
+  """
+  paidExp_max: Float @fdc_generated(from: "MonthHistory.paidExp", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `recvInc` field in the `MonthHistory` table.
+  """
+  recvInc_max: Float @fdc_generated(from: "MonthHistory.recvInc", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `totalDebt` field in the `MonthHistory` table.
+  """
+  totalDebt_max: Float @fdc_generated(from: "MonthHistory.totalDebt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `totalExp` field in the `MonthHistory` table.
+  """
+  totalExp_max: Float @fdc_generated(from: "MonthHistory.totalExp", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `totalInc` field in the `MonthHistory` table.
+  """
+  totalInc_max: Float @fdc_generated(from: "MonthHistory.totalInc", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `year` field in the `MonthHistory` table.
+  """
+  year_max: Int @fdc_generated(from: "MonthHistory.year", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "MonthHistory.id", purpose: ENTITY_ID)
+}
+extend type User {
+  """
+  ✨ List `Card` objects in a one-to-many relationship (where `Card`.`user` is this object).
+  """
+  cards_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Card_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Card_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Card_Having
+  ): [Card!]! @fdc_generated(from: "Card.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `Expense` objects in a one-to-many relationship (where `Expense`.`user` is this object).
+  """
+  expenses_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Expense_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Expense_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Expense_Having
+  ): [Expense!]! @fdc_generated(from: "Expense.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `Goal` objects in a one-to-many relationship (where `Goal`.`user` is this object).
+  """
+  goals_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Goal_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Goal_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Goal_Having
+  ): [Goal!]! @fdc_generated(from: "Goal.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `Income` objects in a one-to-many relationship (where `Income`.`user` is this object).
+  """
+  incomes_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Income_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Income_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: Income_Having
+  ): [Income!]! @fdc_generated(from: "Income.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  ✨ List `MonthHistory` objects in a one-to-many relationship (where `MonthHistory`.`user` is this object).
+  """
+  monthHistories_on_user(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: MonthHistory_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [MonthHistory_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+
+    """
+    Set to true to return distinct results.
+    """
+    distinct: Boolean = false
+
+    """
+    Filter condition to apply to the groups of aggregate queries.
+    """
+    having: MonthHistory_Having
+  ): [MonthHistory!]! @fdc_generated(from: "MonthHistory.user", purpose: QUERY_MULTIPLE_ONE_TO_MANY)
+  """
+  Implicit metadata field that cannot be written. It provides extra information about query results.
+  """
+  _metadata: _Metadata @fdc_generated(from: "User", purpose: METADATA_FIELD)
+  """
+  ✨ Count the number of rows in the `User` table.
+  """
+  _count: Int! @fdc_generated(from: "User.", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `budgets` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  budgets_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.budgets", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `color` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  color_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.color", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `createdAt` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  createdAt_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.createdAt", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `emoji` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  emoji_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.emoji", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `firebaseUid` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  firebaseUid_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.firebaseUid", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `householdId` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  householdId_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.householdId", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `id` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  id_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.id", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `name` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  name_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.name", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `role` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  role_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.role", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `User` table where the `sortOrder` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  sortOrder_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "User.sortOrder", purpose: QUERY_COUNT)
+  """
+  ✨ Sum the `sortOrder` field in the `User` table.
+  """
+  sortOrder_sum(
+    """
+    Set to true to sum the distinct values.
+    """
+    distinct: Boolean = false
+  ): Int @fdc_generated(from: "User.sortOrder", purpose: QUERY_SUM)
+  """
+  ✨ Average the `sortOrder` field in the `User` table.
+  """
+  sortOrder_avg(
+    """
+    Set to true to average the distinct values.
+    """
+    distinct: Boolean = false
+  ): Float @fdc_generated(from: "User.sortOrder", purpose: QUERY_AVG)
+  """
+  ✨ Minimum of the `createdAt` field in the `User` table.
+  """
+  createdAt_min: Timestamp @fdc_generated(from: "User.createdAt", purpose: QUERY_MIN)
+  """
+  ✨ Minimum of the `sortOrder` field in the `User` table.
+  """
+  sortOrder_min: Int @fdc_generated(from: "User.sortOrder", purpose: QUERY_MIN)
+  """
+  ✨ Maximum of the `createdAt` field in the `User` table.
+  """
+  createdAt_max: Timestamp @fdc_generated(from: "User.createdAt", purpose: QUERY_MAX)
+  """
+  ✨ Maximum of the `sortOrder` field in the `User` table.
+  """
+  sortOrder_max: Int @fdc_generated(from: "User.sortOrder", purpose: QUERY_MAX)
+  """
+  A generated field that is used for caching results in SDKs.
+  """
+  _id: ID! @fdc_generated(from: "User.id", purpose: ENTITY_ID)
+}
