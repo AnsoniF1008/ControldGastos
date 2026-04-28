@@ -1,9 +1,45 @@
+import { useMemo } from "react";
 import { SectionTitle, StatCard, EmptyState } from "../components/atoms";
-import { fmt } from "../lib/constants";
+import { PieChart, PieLegend, BarChart } from "../components/Charts";
+import { fmt, CAT_ICON } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
+function shortMonth(label, locale) {
+  if (!label) return "";
+  const idx = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+  ].indexOf(label);
+  if (idx < 0) return label.slice(0, 3);
+  const d = new Date(2000, idx, 1);
+  return d.toLocaleString(locale, { month: "short" }).replace(".", "");
+}
+
 export default function HomePage({ D }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  const byCategory = useMemo(() => {
+    const map = new Map();
+    for (const e of D.expenses || []) {
+      map.set(e.category, (map.get(e.category) || 0) + (e.amount || 0));
+    }
+    return [...map.entries()]
+      .map(([cat, value]) => ({
+        label: `${CAT_ICON[cat] || "📌"} ${t(`cat.${cat}`)}`,
+        value,
+      }))
+      .sort((a, b) => b.value - a.value);
+  }, [D.expenses, t]);
+
+  const lastMonths = useMemo(() => {
+    if (!D.history?.length) return [];
+    return D.history.slice(-6).map((h) => ({
+      label: shortMonth(h.month, locale),
+      value: h.totalExp || 0,
+    }));
+  }, [D.history, locale]);
+
+  const totalExpenses = byCategory.reduce((s, d) => s + d.value, 0);
 
   return (
     <div style={{ paddingTop: 8 }}>
@@ -22,6 +58,41 @@ export default function HomePage({ D }) {
           <StatCard label={t("home.cardDebt")} value={fmt(D.totalDebt)} color="#B45309" />
         </div>
       </div>
+
+      {totalExpenses > 0 && (
+        <div
+          style={{
+            background: "var(--card)",
+            borderRadius: 20,
+            border: "1px solid var(--border)",
+            padding: 16,
+            marginBottom: 16,
+          }}
+        >
+          <SectionTitle color={D.acc}>{t("home.byCategory")}</SectionTitle>
+          <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+            <PieChart data={byCategory} size={170} formatValue={(n) => fmt(n)} />
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <PieLegend data={byCategory} formatValue={(n) => fmt(n)} />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {lastMonths.length > 0 && (
+        <div
+          style={{
+            background: "var(--card)",
+            borderRadius: 20,
+            border: "1px solid var(--border)",
+            padding: 16,
+            marginBottom: 16,
+          }}
+        >
+          <SectionTitle color={D.acc}>{t("home.expensesTrend")}</SectionTitle>
+          <BarChart data={lastMonths} color={D.acc} formatValue={(n) => fmt(n)} />
+        </div>
+      )}
 
       <SectionTitle count={D.pendingExp.length} color={D.acc}>{t("home.pending")}</SectionTitle>
       {D.pendingExp.length === 0 ? (

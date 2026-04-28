@@ -12,6 +12,8 @@ This README will guide you through the process of using the generated JavaScript
 - [**Mutations**](#mutations)
   - [*RegisterHousehold*](#registerhousehold)
   - [*AddHouseholdMember*](#addhouseholdmember)
+  - [*UpdateHouseholdMember*](#updatehouseholdmember)
+  - [*DeleteHouseholdMember*](#deletehouseholdmember)
   - [*UpdateUserBudgets*](#updateuserbudgets)
   - [*InsertExpense*](#insertexpense)
   - [*UpdateExpense*](#updateexpense)
@@ -484,6 +486,267 @@ console.log(data.user_insert);
 executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.user_insert);
+});
+```
+
+## UpdateHouseholdMember
+You can execute the `UpdateHouseholdMember` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect/index.d.ts](./index.d.ts):
+```typescript
+updateHouseholdMember(vars: UpdateHouseholdMemberVariables): MutationPromise<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+
+interface UpdateHouseholdMemberRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpdateHouseholdMemberVariables): MutationRef<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+}
+export const updateHouseholdMemberRef: UpdateHouseholdMemberRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+updateHouseholdMember(dc: DataConnect, vars: UpdateHouseholdMemberVariables): MutationPromise<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+
+interface UpdateHouseholdMemberRef {
+  ...
+  (dc: DataConnect, vars: UpdateHouseholdMemberVariables): MutationRef<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+}
+export const updateHouseholdMemberRef: UpdateHouseholdMemberRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the updateHouseholdMemberRef:
+```typescript
+const name = updateHouseholdMemberRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `UpdateHouseholdMember` mutation requires an argument of type `UpdateHouseholdMemberVariables`, which is defined in [dataconnect/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface UpdateHouseholdMemberVariables {
+  householdId: UUIDString;
+  userId: UUIDString;
+  name: string;
+  emoji: string;
+  color: string;
+  role: string;
+}
+```
+### Return Type
+Recall that executing the `UpdateHouseholdMember` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `UpdateHouseholdMemberData`, which is defined in [dataconnect/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface UpdateHouseholdMemberData {
+  user_update?: User_Key | null;
+}
+```
+### Using `UpdateHouseholdMember`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, updateHouseholdMember, UpdateHouseholdMemberVariables } from '@hogar-finance/dataconnect';
+
+// The `UpdateHouseholdMember` mutation requires an argument of type `UpdateHouseholdMemberVariables`:
+const updateHouseholdMemberVars: UpdateHouseholdMemberVariables = {
+  householdId: ..., 
+  userId: ..., 
+  name: ..., 
+  emoji: ..., 
+  color: ..., 
+  role: ..., 
+};
+
+// Call the `updateHouseholdMember()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await updateHouseholdMember(updateHouseholdMemberVars);
+// Variables can be defined inline as well.
+const { data } = await updateHouseholdMember({ householdId: ..., userId: ..., name: ..., emoji: ..., color: ..., role: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await updateHouseholdMember(dataConnect, updateHouseholdMemberVars);
+
+console.log(data.user_update);
+
+// Or, you can use the `Promise` API.
+updateHouseholdMember(updateHouseholdMemberVars).then((response) => {
+  const data = response.data;
+  console.log(data.user_update);
+});
+```
+
+### Using `UpdateHouseholdMember`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, updateHouseholdMemberRef, UpdateHouseholdMemberVariables } from '@hogar-finance/dataconnect';
+
+// The `UpdateHouseholdMember` mutation requires an argument of type `UpdateHouseholdMemberVariables`:
+const updateHouseholdMemberVars: UpdateHouseholdMemberVariables = {
+  householdId: ..., 
+  userId: ..., 
+  name: ..., 
+  emoji: ..., 
+  color: ..., 
+  role: ..., 
+};
+
+// Call the `updateHouseholdMemberRef()` function to get a reference to the mutation.
+const ref = updateHouseholdMemberRef(updateHouseholdMemberVars);
+// Variables can be defined inline as well.
+const ref = updateHouseholdMemberRef({ householdId: ..., userId: ..., name: ..., emoji: ..., color: ..., role: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = updateHouseholdMemberRef(dataConnect, updateHouseholdMemberVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.user_update);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.user_update);
+});
+```
+
+## DeleteHouseholdMember
+You can execute the `DeleteHouseholdMember` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect/index.d.ts](./index.d.ts):
+```typescript
+deleteHouseholdMember(vars: DeleteHouseholdMemberVariables): MutationPromise<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
+
+interface DeleteHouseholdMemberRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeleteHouseholdMemberVariables): MutationRef<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
+}
+export const deleteHouseholdMemberRef: DeleteHouseholdMemberRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+deleteHouseholdMember(dc: DataConnect, vars: DeleteHouseholdMemberVariables): MutationPromise<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
+
+interface DeleteHouseholdMemberRef {
+  ...
+  (dc: DataConnect, vars: DeleteHouseholdMemberVariables): MutationRef<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
+}
+export const deleteHouseholdMemberRef: DeleteHouseholdMemberRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the deleteHouseholdMemberRef:
+```typescript
+const name = deleteHouseholdMemberRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `DeleteHouseholdMember` mutation requires an argument of type `DeleteHouseholdMemberVariables`, which is defined in [dataconnect/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface DeleteHouseholdMemberVariables {
+  householdId: UUIDString;
+  userId: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `DeleteHouseholdMember` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `DeleteHouseholdMemberData`, which is defined in [dataconnect/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface DeleteHouseholdMemberData {
+  expense_deleteMany: number;
+  income_deleteMany: number;
+  card_deleteMany: number;
+  goal_deleteMany: number;
+  monthHistory_deleteMany: number;
+  user_delete?: User_Key | null;
+}
+```
+### Using `DeleteHouseholdMember`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, deleteHouseholdMember, DeleteHouseholdMemberVariables } from '@hogar-finance/dataconnect';
+
+// The `DeleteHouseholdMember` mutation requires an argument of type `DeleteHouseholdMemberVariables`:
+const deleteHouseholdMemberVars: DeleteHouseholdMemberVariables = {
+  householdId: ..., 
+  userId: ..., 
+};
+
+// Call the `deleteHouseholdMember()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await deleteHouseholdMember(deleteHouseholdMemberVars);
+// Variables can be defined inline as well.
+const { data } = await deleteHouseholdMember({ householdId: ..., userId: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await deleteHouseholdMember(dataConnect, deleteHouseholdMemberVars);
+
+console.log(data.expense_deleteMany);
+console.log(data.income_deleteMany);
+console.log(data.card_deleteMany);
+console.log(data.goal_deleteMany);
+console.log(data.monthHistory_deleteMany);
+console.log(data.user_delete);
+
+// Or, you can use the `Promise` API.
+deleteHouseholdMember(deleteHouseholdMemberVars).then((response) => {
+  const data = response.data;
+  console.log(data.expense_deleteMany);
+  console.log(data.income_deleteMany);
+  console.log(data.card_deleteMany);
+  console.log(data.goal_deleteMany);
+  console.log(data.monthHistory_deleteMany);
+  console.log(data.user_delete);
+});
+```
+
+### Using `DeleteHouseholdMember`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, deleteHouseholdMemberRef, DeleteHouseholdMemberVariables } from '@hogar-finance/dataconnect';
+
+// The `DeleteHouseholdMember` mutation requires an argument of type `DeleteHouseholdMemberVariables`:
+const deleteHouseholdMemberVars: DeleteHouseholdMemberVariables = {
+  householdId: ..., 
+  userId: ..., 
+};
+
+// Call the `deleteHouseholdMemberRef()` function to get a reference to the mutation.
+const ref = deleteHouseholdMemberRef(deleteHouseholdMemberVars);
+// Variables can be defined inline as well.
+const ref = deleteHouseholdMemberRef({ householdId: ..., userId: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = deleteHouseholdMemberRef(dataConnect, deleteHouseholdMemberVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.expense_deleteMany);
+console.log(data.income_deleteMany);
+console.log(data.card_deleteMany);
+console.log(data.goal_deleteMany);
+console.log(data.monthHistory_deleteMany);
+console.log(data.user_delete);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.expense_deleteMany);
+  console.log(data.income_deleteMany);
+  console.log(data.card_deleteMany);
+  console.log(data.goal_deleteMany);
+  console.log(data.monthHistory_deleteMany);
+  console.log(data.user_delete);
 });
 ```
 

@@ -46,7 +46,27 @@ export function useUserData() {
   const [sessionError, setSessionError] = useState(null);
   const [householdId, setHouseholdId] = useState(null);
   const [screen, setScreen] = useState("login");
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkModeState] = useState(() => {
+    try {
+      const saved = localStorage.getItem("hf_dark");
+      if (saved === "1") return true;
+      if (saved === "0") return false;
+      return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+    } catch {
+      return false;
+    }
+  });
+  const setDarkMode = useCallback((next) => {
+    setDarkModeState((prev) => {
+      const v = typeof next === "function" ? next(prev) : next;
+      try {
+        localStorage.setItem("hf_dark", v ? "1" : "0");
+      } catch {
+        /* ignore */
+      }
+      return v;
+    });
+  }, []);
   const [users, setUsers] = useState([]);
   const [activeUid, setActiveUid] = useState("u1");
   const [tab, setTab] = useState("home");
@@ -444,6 +464,36 @@ export function useUserData() {
     applyUsers(nu);
   };
 
+  const updateUser = async (userId, profile) => {
+    if (!householdId) throw new Error(t("errors.noHousehold"));
+    const target = users.find((u) => u.id === userId);
+    if (!target) throw new Error(t("errors.noProfile"));
+    const nextRole = profile.role || target.role;
+    if (target.role === "Admin" && nextRole !== "Admin") {
+      const otherAdmins = users.some((u) => u.id !== userId && u.role === "Admin");
+      if (!otherAdmins) throw new Error(t("errors.adminRequired"));
+    }
+    const dc = requireDc();
+    const { users: nu } = await dcApi.patchUser(dc, householdId, userId, {
+      name: (profile.name ?? target.name).trim() || target.name,
+      emoji: profile.emoji ?? target.emoji,
+      color: profile.color ?? target.color,
+      role: nextRole,
+    });
+    applyUsers(nu);
+  };
+
+  const deleteUser = async (userId) => {
+    if (!householdId) throw new Error(t("errors.noHousehold"));
+    const target = users.find((u) => u.id === userId);
+    if (!target) throw new Error(t("errors.noProfile"));
+    if (users.length <= 1) throw new Error(t("errors.lastMember"));
+    if (target.role === "Admin") throw new Error(t("errors.adminRequired"));
+    const dc = requireDc();
+    const { users: nu } = await dcApi.removeUser(dc, householdId, userId, users);
+    applyUsers(nu, activeUid === userId ? nu[0]?.id : undefined);
+  };
+
   const saveBudgets = async (draft) => {
     const u = uidOrSkip();
     requireMemberContext(u, householdId);
@@ -521,6 +571,9 @@ export function useUserData() {
     user,
     acc,
     addUser,
+    updateUser,
+    deleteUser,
+    showToast,
 
     tab,
     setTab,

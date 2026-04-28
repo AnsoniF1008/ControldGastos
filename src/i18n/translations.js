@@ -65,6 +65,8 @@ export const TRANSLATIONS = {
       pending: "Pendientes",
       allSet: "Todo al día",
       noPending: "No hay gastos pendientes este mes",
+      byCategory: "Gastos por categoría",
+      expensesTrend: "Gastos por mes",
     },
     dinero: {
       expenses: "Gastos",
@@ -121,10 +123,15 @@ export const TRANSLATIONS = {
         "Añade a otra persona para llevar sus gastos por separado (misma cuenta de inicio de sesión).",
       name: "Nombre",
       addToHome: "Añadir al hogar",
-      budgetsTitle: "Presupuestos (mensual)",
+      removeMember: "Eliminar",
+      budgetsTitle: "Gastos fijos (mensual)",
       budgetsHint:
-        "Importe mensual total del hogar por categoría. El administrador reparte la misma cuota entre todos los perfiles; al añadir un miembro se vuelve a dividir.",
-      saveBudgets: "Guardar presupuestos",
+        "Importe mensual fijo del hogar por categoría. El administrador reparte la misma cuota entre todos los perfiles; al añadir un miembro se vuelve a dividir.",
+      budgetsTotal: "Total mensual de gastos fijos",
+      budgetRemaining: "Te quedan",
+      budgetOverBy: "Vas por encima por",
+      budgetUsedPct: "Has cubierto {pct}% de tus gastos fijos",
+      saveBudgets: "Guardar gastos fijos",
       historyTitle: "Historial de meses",
       historyLine:
         "Gastos {exp} · Pagado {paid} · Ingresos {inc} · Recibido {recv} · Deuda tarjetas {debt}",
@@ -139,9 +146,25 @@ export const TRANSLATIONS = {
       confirmResetDesc:
         "Se guardará un resumen en el historial y se marcarán como no pagados/no recibidos los movimientos del mes actual.",
       confirmResetBtn: "Sí, reiniciar",
+      confirmDeleteMemberTitle: "¿Eliminar miembro?",
+      confirmDeleteMemberDesc:
+        "Se borrará el perfil de {name} junto con sus gastos, ingresos, tarjetas, metas e historial.",
+      confirmDeleteMemberBtn: "Sí, eliminar miembro",
       errAddMember: "No se pudo añadir el miembro.",
+      errDeleteMember: "No se pudo eliminar el miembro.",
       errSaveBudgets: "Error al guardar.",
       errReset: "No se pudo reiniciar el mes.",
+      memberAdded: "Miembro añadido",
+      memberDeleted: "Miembro eliminado",
+      memberUpdated: "Miembro actualizado",
+      editMember: "Editar miembro",
+      makeAdmin: "Administrador",
+      budgetsSaved: "Gastos fijos guardados",
+      monthReset: "Mes reiniciado",
+      notifReminders: "Recordatorios de vencimiento",
+      notifEnabled: "Recordatorios activados",
+      notifDisabled: "Recordatorios desactivados",
+      notifBlocked: "Permiso de notificaciones denegado",
     },
     addSheet: {
       newExpense: "Nuevo gasto",
@@ -191,6 +214,8 @@ export const TRANSLATIONS = {
       noHouseholdLogin: "No hay hogar para esta cuenta. Crea una cuenta nueva.",
       goalNotFound: "Meta no encontrada.",
       noProfile: "No hay perfil activo.",
+      lastMember: "Debe quedar al menos un miembro en el hogar.",
+      adminRequired: "No se puede eliminar el perfil administrador.",
     },
     toast: {
       expenseDeleted: "Gasto eliminado",
@@ -212,6 +237,12 @@ export const TRANSLATIONS = {
     },
     roles: {
       member: "Miembro",
+    },
+    notif: {
+      dueTitle: "Gasto por pagar",
+      bodyToday: "Vence hoy",
+      bodyTomorrow: "Vence mañana",
+      bodyDays: "Vence en {n} días",
     },
     badges: {
       paid: "Pagado",
@@ -326,6 +357,8 @@ export const TRANSLATIONS = {
       pending: "Pending",
       allSet: "All set",
       noPending: "No pending expenses this month",
+      byCategory: "Expenses by category",
+      expensesTrend: "Expenses by month",
     },
     dinero: {
       expenses: "Expenses",
@@ -382,10 +415,15 @@ export const TRANSLATIONS = {
         "Add someone else to track their spending separately (same login account).",
       name: "Name",
       addToHome: "Add to household",
-      budgetsTitle: "Budgets (monthly)",
+      removeMember: "Delete",
+      budgetsTitle: "Fixed expenses (monthly)",
       budgetsHint:
-        "Monthly household total per category. The admin splits the same share across every profile; adding a member redistributes the totals.",
-      saveBudgets: "Save budgets",
+        "Monthly fixed household amount per category. The admin splits the same share across every profile; adding a member redistributes the totals.",
+      budgetsTotal: "Total monthly fixed expenses",
+      budgetRemaining: "Remaining",
+      budgetOverBy: "Over budget by",
+      budgetUsedPct: "You have covered {pct}% of your fixed expenses",
+      saveBudgets: "Save fixed expenses",
       historyTitle: "Month history",
       historyLine:
         "Expenses {exp} · Paid {paid} · Income {inc} · Received {recv} · Card debt {debt}",
@@ -400,9 +438,25 @@ export const TRANSLATIONS = {
       confirmResetDesc:
         "A summary will be saved to history and current month items will be marked unpaid / not received.",
       confirmResetBtn: "Yes, reset",
+      confirmDeleteMemberTitle: "Delete member?",
+      confirmDeleteMemberDesc:
+        "{name}'s profile will be deleted along with their expenses, income, cards, goals, and history.",
+      confirmDeleteMemberBtn: "Yes, delete member",
       errAddMember: "Could not add member.",
+      errDeleteMember: "Could not delete member.",
       errSaveBudgets: "Could not save.",
       errReset: "Could not reset the month.",
+      memberAdded: "Member added",
+      memberDeleted: "Member deleted",
+      memberUpdated: "Member updated",
+      editMember: "Edit member",
+      makeAdmin: "Administrator",
+      budgetsSaved: "Fixed expenses saved",
+      monthReset: "Month reset",
+      notifReminders: "Due-date reminders",
+      notifEnabled: "Reminders enabled",
+      notifDisabled: "Reminders disabled",
+      notifBlocked: "Notification permission denied",
     },
     addSheet: {
       newExpense: "New expense",
@@ -451,6 +505,8 @@ export const TRANSLATIONS = {
       noHouseholdLogin: "No household for this account. Create a new account.",
       goalNotFound: "Goal not found.",
       noProfile: "No active profile.",
+      lastMember: "At least one member must remain in the household.",
+      adminRequired: "The admin profile cannot be deleted.",
     },
     toast: {
       expenseDeleted: "Expense deleted",
@@ -472,6 +528,12 @@ export const TRANSLATIONS = {
     },
     roles: {
       member: "Member",
+    },
+    notif: {
+      dueTitle: "Bill due",
+      bodyToday: "Due today",
+      bodyTomorrow: "Due tomorrow",
+      bodyDays: "Due in {n} days",
     },
     badges: {
       paid: "Paid",

@@ -40,6 +40,50 @@ mutation AddHouseholdMember(
   })
 }
 
+mutation UpdateHouseholdMember(
+  $householdId: UUID!
+  $userId: UUID!
+  $name: String!
+  $emoji: String!
+  $color: String!
+  $role: String!
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso al hogar") {
+      id
+    }
+  }
+  user_update(
+    first: { where: { id: { eq: $userId }, household: { id: { eq: $householdId } } } },
+    data: {
+      name: $name,
+      emoji: $emoji,
+      color: $color,
+      role: $role
+    }
+  )
+}
+
+mutation DeleteHouseholdMember($householdId: UUID!, $userId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso al hogar") {
+      id
+    }
+    targetUser: users(where: { id: { eq: $userId }, household: { id: { eq: $householdId } } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Miembro no encontrado") {
+      id
+    }
+  }
+  expense_deleteMany(where: { user: { id: { eq: $userId } } })
+  income_deleteMany(where: { user: { id: { eq: $userId } } })
+  card_deleteMany(where: { user: { id: { eq: $userId } } })
+  goal_deleteMany(where: { user: { id: { eq: $userId } } })
+  monthHistory_deleteMany(where: { user: { id: { eq: $userId } } })
+  user_delete(first: { where: { id: { eq: $userId }, household: { id: { eq: $householdId } } } })
+}
+
 mutation UpdateUserBudgets($userId: UUID!, $householdId: UUID!, $budgets: String!) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)

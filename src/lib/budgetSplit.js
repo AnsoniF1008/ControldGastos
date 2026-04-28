@@ -1,4 +1,4 @@
-import { CATS } from "./constants.js";
+import { CATS, toMoney } from "./constants.js";
 
 export function roundMoney(n) {
   return Math.round(Number(n) * 100) / 100;
@@ -11,7 +11,7 @@ export function sumBudgetsByCategory(users, keys = CATS) {
     let s = 0;
     for (const u of users) {
       const v = u?.budgets?.[k];
-      const n = typeof v === "number" && Number.isFinite(v) ? v : parseFloat(v);
+      const n = typeof v === "number" && Number.isFinite(v) ? v : toMoney(v);
       s += Number.isFinite(n) ? n : 0;
     }
     totals[k] = roundMoney(s);

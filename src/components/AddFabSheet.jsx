@@ -218,7 +218,7 @@ export default function AddFabSheet({ D }) {
       }
       close();
     } catch (e) {
-      window.alert(e?.message || t("addSheet.errSave"));
+      D.showToast?.(e?.message || t("addSheet.errSave"), "err");
     } finally {
       setBusy(false);
     }

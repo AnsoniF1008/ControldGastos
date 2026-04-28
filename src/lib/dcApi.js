@@ -8,6 +8,8 @@ import {
   getHouseholdForMeRef,
   registerHousehold,
   addHouseholdMember,
+  updateHouseholdMember,
+  deleteHouseholdMember,
   updateUserBudgets,
   insertExpense,
   updateExpense,
@@ -26,7 +28,7 @@ import {
   resetUserExpensesPaid,
   resetUserIncomesReceived,
   resetUserCardsPaid,
-} from "@hogar-finance/dataconnect";
+} from "./dataconnect/esm/index.esm.js";
 import { MONTHS } from "./constants";
 import { sumBudgetsByCategory, splitTotalsEvenly } from "./budgetSplit";
 
@@ -168,6 +170,28 @@ export async function addUser(dc, householdId, form, existingUsers) {
   const perPerson = splitTotalsEvenly(totals, prev.length + 1);
   const { users: list, householdId: hid } = await fetchUsers(dc);
   if (!list?.length) return { users: list, householdId: hid };
+  return syncHouseholdBudgetShares(dc, householdId, list, perPerson);
+}
+
+export async function patchUser(dc, householdId, userId, profile) {
+  await updateHouseholdMember(dc, {
+    householdId,
+    userId,
+    name: profile.name,
+    emoji: profile.emoji ?? "🙂",
+    color: profile.color ?? "#7C3AED",
+    role: profile.role || "Miembro",
+  });
+  return fetchUsers(dc);
+}
+
+export async function removeUser(dc, householdId, userId, existingUsers) {
+  const prev = existingUsers || [];
+  await deleteHouseholdMember(dc, { householdId, userId });
+  const { users: list, householdId: hid } = await fetchUsers(dc);
+  if (!list?.length) return { users: list, householdId: hid };
+  const totals = sumBudgetsByCategory(prev);
+  const perPerson = splitTotalsEvenly(totals, list.length);
   return syncHouseholdBudgetShares(dc, householdId, list, perPerson);
 }
 

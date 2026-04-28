@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SectionTitle, Bar, EmptyState, Inp } from "../components/atoms";
+import { SectionTitle, Bar, EmptyState, Inp, Confirm } from "../components/atoms";
 import { fmt } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
@@ -7,6 +7,7 @@ export default function MetasPage({ D }) {
   const { t } = useI18n();
   const [contribById, setContribById] = useState({});
   const [busyId, setBusyId] = useState(null);
+  const [toDelete, setToDelete] = useState(null);
 
   return (
     <div style={{ paddingTop: 8 }}>
@@ -57,7 +58,7 @@ export default function MetasPage({ D }) {
                           await D.contributeGoal(g.id, contribById[g.id] ?? "");
                           setContribById((p) => ({ ...p, [g.id]: "" }));
                         } catch (e) {
-                          window.alert(e?.message || t("metas.errContribute"));
+                          D.showToast?.(e?.message || t("metas.errContribute"), "err");
                         } finally {
                           setBusyId(null);
                         }
@@ -101,17 +102,7 @@ export default function MetasPage({ D }) {
                     <button
                       type="button"
                       disabled={busyId === g.id}
-                      onClick={async () => {
-                        if (!window.confirm(t("metas.confirmDelete"))) return;
-                        setBusyId(g.id);
-                        try {
-                          await D.deleteGoal(g.id);
-                        } catch {
-                          /* toast */
-                        } finally {
-                          setBusyId(null);
-                        }
-                      }}
+                      onClick={() => setToDelete(g.id)}
                       style={{
                         fontSize: 12,
                         fontWeight: 800,
@@ -132,6 +123,30 @@ export default function MetasPage({ D }) {
           ))}
         </div>
       )}
+
+      <Confirm
+        open={Boolean(toDelete)}
+        icon="🗑️"
+        title={t("metas.confirmDelete")}
+        desc=""
+        confirmLabel={t("metas.deleteMeta")}
+        cancelLabel={t("addSheet.cancel")}
+        confirmColor="#DC2626"
+        onConfirm={async () => {
+          const id = toDelete;
+          setToDelete(null);
+          if (!id) return;
+          setBusyId(id);
+          try {
+            await D.deleteGoal(id);
+          } catch (err) {
+            D.showToast?.(err?.message || t("addSheet.errSave"), "err");
+          } finally {
+            setBusyId(null);
+          }
+        }}
+        onCancel={() => setToDelete(null)}
+      />
     </div>
   );
 }

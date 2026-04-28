@@ -55,6 +55,20 @@ export interface DeleteGoalVariables {
   goalId: UUIDString;
 }
 
+export interface DeleteHouseholdMemberData {
+  expense_deleteMany: number;
+  income_deleteMany: number;
+  card_deleteMany: number;
+  goal_deleteMany: number;
+  monthHistory_deleteMany: number;
+  user_delete?: User_Key | null;
+}
+
+export interface DeleteHouseholdMemberVariables {
+  householdId: UUIDString;
+  userId: UUIDString;
+}
+
 export interface DeleteIncomeData {
   income_delete?: Income_Key | null;
 }
@@ -324,6 +338,19 @@ export interface UpdateGoalVariables {
   color: string;
 }
 
+export interface UpdateHouseholdMemberData {
+  user_update?: User_Key | null;
+}
+
+export interface UpdateHouseholdMemberVariables {
+  householdId: UUIDString;
+  userId: UUIDString;
+  name: string;
+  emoji: string;
+  color: string;
+  role: string;
+}
+
 export interface UpdateIncomeData {
   income_update?: Income_Key | null;
 }
@@ -376,6 +403,30 @@ export const addHouseholdMemberRef: AddHouseholdMemberRef;
 
 export function addHouseholdMember(vars: AddHouseholdMemberVariables): MutationPromise<AddHouseholdMemberData, AddHouseholdMemberVariables>;
 export function addHouseholdMember(dc: DataConnect, vars: AddHouseholdMemberVariables): MutationPromise<AddHouseholdMemberData, AddHouseholdMemberVariables>;
+
+interface UpdateHouseholdMemberRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: UpdateHouseholdMemberVariables): MutationRef<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: UpdateHouseholdMemberVariables): MutationRef<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+  operationName: string;
+}
+export const updateHouseholdMemberRef: UpdateHouseholdMemberRef;
+
+export function updateHouseholdMember(vars: UpdateHouseholdMemberVariables): MutationPromise<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+export function updateHouseholdMember(dc: DataConnect, vars: UpdateHouseholdMemberVariables): MutationPromise<UpdateHouseholdMemberData, UpdateHouseholdMemberVariables>;
+
+interface DeleteHouseholdMemberRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeleteHouseholdMemberVariables): MutationRef<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: DeleteHouseholdMemberVariables): MutationRef<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
+  operationName: string;
+}
+export const deleteHouseholdMemberRef: DeleteHouseholdMemberRef;
+
+export function deleteHouseholdMember(vars: DeleteHouseholdMemberVariables): MutationPromise<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
+export function deleteHouseholdMember(dc: DataConnect, vars: DeleteHouseholdMemberVariables): MutationPromise<DeleteHouseholdMemberData, DeleteHouseholdMemberVariables>;
 
 interface UpdateUserBudgetsRef {
   /* Allow users to create refs without passing in DataConnect */

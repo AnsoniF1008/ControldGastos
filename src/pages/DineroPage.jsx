@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FreqBadge, StatusBadge, DueBadge, Toggle, SectionTitle, EmptyState } from "../components/atoms";
+import { FreqBadge, StatusBadge, DueBadge, Toggle, SectionTitle, EmptyState, Confirm } from "../components/atoms";
 import { fmt, CAT_ICON, INC_ICON } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
@@ -19,6 +19,7 @@ export default function DineroPage({ D }) {
   const { t } = useI18n();
   const isGastos = D.subTab === "gastos";
   const [deletingId, setDeletingId] = useState(null);
+  const [toDelete, setToDelete] = useState(null);
 
   return (
     <div style={{ paddingTop: 8 }}>
@@ -88,17 +89,7 @@ export default function DineroPage({ D }) {
                         <button
                           type="button"
                           disabled={deletingId === e.id}
-                          onClick={async () => {
-                            if (!window.confirm(t("dinero.confirmDeleteExp"))) return;
-                            setDeletingId(e.id);
-                            try {
-                              await D.deleteExpense(e.id);
-                            } catch {
-                              /* toast */
-                            } finally {
-                              setDeletingId(null);
-                            }
-                          }}
+                          onClick={() => setToDelete({ kind: "expense", id: e.id })}
                           style={{
                             fontSize: 12,
                             fontWeight: 800,
@@ -179,17 +170,7 @@ export default function DineroPage({ D }) {
                         <button
                           type="button"
                           disabled={deletingId === i.id}
-                          onClick={async () => {
-                            if (!window.confirm(t("dinero.confirmDeleteInc"))) return;
-                            setDeletingId(i.id);
-                            try {
-                              await D.deleteIncome(i.id);
-                            } catch {
-                              /* toast */
-                            } finally {
-                              setDeletingId(null);
-                            }
-                          }}
+                          onClick={() => setToDelete({ kind: "income", id: i.id })}
                           style={{
                             fontSize: 12,
                             fontWeight: 800,
@@ -216,6 +197,38 @@ export default function DineroPage({ D }) {
           )}
         </>
       )}
+
+      <Confirm
+        open={Boolean(toDelete)}
+        icon="🗑️"
+        title={
+          toDelete?.kind === "income"
+            ? t("dinero.confirmDeleteInc")
+            : t("dinero.confirmDeleteExp")
+        }
+        desc=""
+        confirmLabel={t("dinero.delete")}
+        cancelLabel={t("addSheet.cancel")}
+        confirmColor="#DC2626"
+        onConfirm={async () => {
+          const target = toDelete;
+          setToDelete(null);
+          if (!target) return;
+          setDeletingId(target.id);
+          try {
+            if (target.kind === "income") {
+              await D.deleteIncome(target.id);
+            } else {
+              await D.deleteExpense(target.id);
+            }
+          } catch (err) {
+            D.showToast?.(err?.message || t("addSheet.errSave"), "err");
+          } finally {
+            setDeletingId(null);
+          }
+        }}
+        onCancel={() => setToDelete(null)}
+      />
     </div>
   );
 }

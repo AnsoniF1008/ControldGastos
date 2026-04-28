@@ -35,6 +35,34 @@ exports.addHouseholdMember = function addHouseholdMember(dcOrVars, vars) {
 }
 ;
 
+const updateHouseholdMemberRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'UpdateHouseholdMember', inputVars);
+}
+updateHouseholdMemberRef.operationName = 'UpdateHouseholdMember';
+exports.updateHouseholdMemberRef = updateHouseholdMemberRef;
+
+exports.updateHouseholdMember = function updateHouseholdMember(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(updateHouseholdMemberRef(dcInstance, inputVars));
+}
+;
+
+const deleteHouseholdMemberRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteHouseholdMember', inputVars);
+}
+deleteHouseholdMemberRef.operationName = 'DeleteHouseholdMember';
+exports.deleteHouseholdMemberRef = deleteHouseholdMemberRef;
+
+exports.deleteHouseholdMember = function deleteHouseholdMember(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  return executeMutation(deleteHouseholdMemberRef(dcInstance, inputVars));
+}
+;
+
 const updateUserBudgetsRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();

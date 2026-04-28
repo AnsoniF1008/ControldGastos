@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { SectionTitle, StatusBadge, Toggle, Bar, EmptyState } from "../components/atoms";
+import { SectionTitle, StatusBadge, Toggle, Bar, EmptyState, Confirm } from "../components/atoms";
 import { fmt, BRAND_COLOR } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
 export default function TarjetasPage({ D }) {
   const { t } = useI18n();
   const [deletingId, setDeletingId] = useState(null);
+  const [toDelete, setToDelete] = useState(null);
 
   return (
     <div style={{ paddingTop: 8 }}>
@@ -70,17 +71,7 @@ export default function TarjetasPage({ D }) {
                       <button
                         type="button"
                         disabled={deletingId === c.id}
-                        onClick={async () => {
-                          if (!window.confirm(t("tarjetas.confirmDelete"))) return;
-                          setDeletingId(c.id);
-                          try {
-                            await D.deleteCard(c.id);
-                          } catch {
-                            /* toast */
-                          } finally {
-                            setDeletingId(null);
-                          }
-                        }}
+                        onClick={() => setToDelete(c.id)}
                         style={{
                           fontSize: 12,
                           fontWeight: 800,
@@ -106,6 +97,30 @@ export default function TarjetasPage({ D }) {
           })}
         </div>
       )}
+
+      <Confirm
+        open={Boolean(toDelete)}
+        icon="🗑️"
+        title={t("tarjetas.confirmDelete")}
+        desc=""
+        confirmLabel={t("tarjetas.delete")}
+        cancelLabel={t("addSheet.cancel")}
+        confirmColor="#DC2626"
+        onConfirm={async () => {
+          const id = toDelete;
+          setToDelete(null);
+          if (!id) return;
+          setDeletingId(id);
+          try {
+            await D.deleteCard(id);
+          } catch (err) {
+            D.showToast?.(err?.message || t("addSheet.errSave"), "err");
+          } finally {
+            setDeletingId(null);
+          }
+        }}
+        onCancel={() => setToDelete(null)}
+      />
     </div>
   );
 }

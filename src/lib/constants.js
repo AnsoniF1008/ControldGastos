@@ -9,11 +9,20 @@ export const NOW       = new Date();
 export const CUR_MONTH = MONTHS[NOW.getMonth()];
 export const CUR_YEAR  = NOW.getFullYear();
 
-export const fmt = (n = 0) =>
-  `$${Math.abs(n).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+export const fmt = (n = 0, locale = "en-US") =>
+  `$${Math.abs(n).toLocaleString(locale, { maximumFractionDigits: 0 })}`;
 
 export const pct = (a, b) =>
   b > 0 ? Math.min(100, Math.round((a / b) * 100)) : 0;
+
+/** Convierte string del usuario (admite coma o punto) a número finito >= 0 o null. */
+export const toMoney = (raw) => {
+  if (raw == null) return null;
+  const s = String(raw).replace(/\s+/g, "").replace(",", ".").trim();
+  if (s === "") return null;
+  const n = parseFloat(s);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+};
 
 // ── Categorías ───────────────────────────────────────────────────────────────
 export const CAT_ICON = {

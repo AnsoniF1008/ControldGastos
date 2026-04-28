@@ -174,7 +174,17 @@ export const Sheet = ({ title, open, onClose, children }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIRM DIALOG
 // ─────────────────────────────────────────────────────────────────────────────
-export const Confirm = ({ open, icon, title, desc, onConfirm, onCancel, confirmLabel = "Confirmar", confirmColor = "#7C3AED" }) => {
+export const Confirm = ({
+  open,
+  icon,
+  title,
+  desc,
+  onConfirm,
+  onCancel,
+  confirmLabel = "Confirmar",
+  cancelLabel = "Cancelar",
+  confirmColor = "#7C3AED",
+}) => {
   if (!open) return null;
   return (
     <div style={{
@@ -190,7 +200,7 @@ export const Confirm = ({ open, icon, title, desc, onConfirm, onCancel, confirmL
         <p style={{ fontSize: 18, fontWeight: 900, color: "var(--text)", marginBottom: 8 }}>{title}</p>
         <p style={{ fontSize: 13, color: "var(--muted)", marginBottom: 24, lineHeight: 1.5 }}>{desc}</p>
         <BtnPrimary onClick={onConfirm} color={confirmColor}>{confirmLabel}</BtnPrimary>
-        <BtnGhost onClick={onCancel}>Cancelar</BtnGhost>
+        <BtnGhost onClick={onCancel}>{cancelLabel}</BtnGhost>
       </div>
     </div>
   );

@@ -10,6 +10,8 @@
     "api": "npm run start --prefix server",
     "api:dev": "npm run dev --prefix server",
     "dev:full": "concurrently -k \"npm run api:dev\" \"npm run dev\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "dataconnect:generate": "npx -y firebase-tools@latest dataconnect:sdk:generate",
     "deploy:firebase": "npm run build && npx -y firebase-tools@latest deploy --only hosting,dataconnect --force"
   },
@@ -22,7 +24,9 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/ui": "^4.1.5",
     "concurrently": "^9.1.2",
-    "vite": "^6.0.1"
+    "vite": "^6.0.1",
+    "vitest": "^4.1.5"
   }
 }

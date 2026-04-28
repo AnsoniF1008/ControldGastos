@@ -2,23 +2,27 @@
 // Shell principal de Hogar Finance.
 // Cada tab es un componente separado — este archivo solo enruta.
 
-import { useMemo, useEffect, useReducer } from "react";
+import { lazy, Suspense, useMemo, useEffect, useReducer } from "react";
 import { useUserData } from "./hooks/useUserData";
 import { isFirebaseWebConfigured } from "./lib/firebase";
 import { THEME_CSS }   from "./lib/theme";
 import { HFLogo }      from "./components/atoms";
 import { useI18n } from "./i18n/I18nContext.jsx";
 import { isPlaidTabVisible } from "./lib/plaidFeature";
+import { notifyDueExpenses } from "./lib/notifications";
+import { fmt } from "./lib/constants";
 
-// Pages (las vamos construyendo paso a paso)
-import LoginPage   from "./pages/LoginPage";
-import AddFabSheet from "./components/AddFabSheet";
-import HomePage    from "./pages/HomePage";
-import DineroPage  from "./pages/DineroPage";
-import TarjetasPage from "./pages/TarjetasPage";
-import MetasPage   from "./pages/MetasPage";
-import MasPage     from "./pages/MasPage";
-import PlaidPage   from "./pages/PlaidPage";
+// HomePage y LoginPage son críticos para el primer render → bundle principal.
+// El resto se carga bajo demanda (mejora cold-start).
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+
+const DineroPage   = lazy(() => import("./pages/DineroPage"));
+const TarjetasPage = lazy(() => import("./pages/TarjetasPage"));
+const MetasPage    = lazy(() => import("./pages/MetasPage"));
+const MasPage      = lazy(() => import("./pages/MasPage"));
+const PlaidPage    = lazy(() => import("./pages/PlaidPage"));
+const AddFabSheet  = lazy(() => import("./components/AddFabSheet"));
 
 /** Primer nombre seguro si falta `name` en el perfil. */
 function firstName(name, fallback) {
@@ -43,6 +47,17 @@ export default function App() {
       D.setTab("home");
     }
   }, [D.tab, plaidUiVersion]);
+
+  useEffect(() => {
+    if (D.screen !== "app") return;
+    if (!D.expenses?.length) return;
+    notifyDueExpenses(D.expenses, fmt, {
+      title: t("notif.dueTitle"),
+      bodyToday: t("notif.bodyToday"),
+      bodyTomorrow: t("notif.bodyTomorrow"),
+      bodyDays: t("notif.bodyDays"),
+    });
+  }, [D.screen, D.expenses, t]);
 
   const navTabs = useMemo(() => {
     const tabs = [
@@ -72,9 +87,18 @@ export default function App() {
 
   if (D.booting) {
     return (
-      <div className="hf-light" style={{ fontFamily: "'Nunito','Segoe UI',sans-serif", background: "var(--bg)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div
+        className={D.darkMode ? "hf-dark" : "hf-light"}
+        style={{
+          fontFamily: "'Nunito','Segoe UI',sans-serif",
+          background: "var(--bg)",
+          minHeight: "100vh",
+          maxWidth: 430,
+          margin: "0 auto",
+        }}
+      >
         <style>{globalStyles}</style>
-        <p style={{ color: "var(--muted)", fontWeight: 800, fontSize: 15 }}>{t("common.loading")}</p>
+        <BootSkeleton />
       </div>
     );
   }
@@ -189,17 +213,19 @@ export default function App() {
           minHeight: "min-content",
         }}
       >
-        {D.tab === "home"     && <HomePage     D={D} />}
-        {D.tab === "dinero"   && <DineroPage   D={D} />}
-        {D.tab === "tarjetas" && <TarjetasPage D={D} />}
-        {D.tab === "metas"    && <MetasPage    D={D} />}
-        {D.tab === "bancos"   && isPlaidTabVisible() && (
-          <PlaidPage
-            userId={D.isFam ? D.users[0]?.id : D.activeUid}
-            acc={D.acc}
-          />
-        )}
-        {D.tab === "mas"      && <MasPage      D={D} />}
+        <Suspense fallback={<PageFallback label={t("common.loading")} />}>
+          {D.tab === "home"     && <HomePage     D={D} />}
+          {D.tab === "dinero"   && <DineroPage   D={D} />}
+          {D.tab === "tarjetas" && <TarjetasPage D={D} />}
+          {D.tab === "metas"    && <MetasPage    D={D} />}
+          {D.tab === "bancos"   && isPlaidTabVisible() && (
+            <PlaidPage
+              userId={D.isFam ? D.users[0]?.id : D.activeUid}
+              acc={D.acc}
+            />
+          )}
+          {D.tab === "mas"      && <MasPage      D={D} />}
+        </Suspense>
       </div>
 
       {/* ── FAB (botón +) ─────────────────────────────────────────────────── */}
@@ -207,7 +233,9 @@ export default function App() {
         <FAB acc={D.acc} onClick={D.openFabSheet} addLabel={t("common.addAria")} />
       )}
 
-      <AddFabSheet D={D} />
+      <Suspense fallback={null}>
+        <AddFabSheet D={D} />
+      </Suspense>
 
       {D.toast && (
         <div
@@ -281,6 +309,64 @@ export default function App() {
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
+const skeletonAnim = `
+  @keyframes hf-shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+  .hf-skel {
+    background: linear-gradient(90deg, var(--sub) 0%, var(--border) 50%, var(--sub) 100%);
+    background-size: 800px 100%;
+    animation: hf-shimmer 1.4s linear infinite;
+    border-radius: 12px;
+  }
+`;
+
+function BootSkeleton() {
+  return (
+    <div>
+      <style>{skeletonAnim}</style>
+      <div
+        style={{
+          background: "linear-gradient(150deg,var(--hdr0),var(--hdr1))",
+          padding: "20px",
+          borderBottomLeftRadius: 22,
+          borderBottomRightRadius: 22,
+          height: 200,
+        }}
+      />
+      <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 12 }}>
+        <div className="hf-skel" style={{ height: 110 }} />
+        <div className="hf-skel" style={{ height: 80 }} />
+        <div className="hf-skel" style={{ height: 80 }} />
+        <div className="hf-skel" style={{ height: 80 }} />
+      </div>
+    </div>
+  );
+}
+
+function PageFallback({ label }) {
+  return (
+    <div style={{ paddingTop: 8 }}>
+      <div
+        style={{
+          background: "var(--card)",
+          borderRadius: 20,
+          border: "1px solid var(--border)",
+          padding: 20,
+          marginBottom: 12,
+          minHeight: 120,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <span style={{ color: "var(--muted)", fontWeight: 700, fontSize: 13 }}>{label}</span>
+      </div>
+    </div>
+  );
+}
+
 const hdrBtn = {
   background: "rgba(255,255,255,0.15)",
   border: "1px solid rgba(255,255,255,0.25)",

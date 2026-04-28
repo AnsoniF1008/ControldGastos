@@ -14,7 +14,7 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { registerHousehold, addHouseholdMember, updateUserBudgets, insertExpense, updateExpense, deleteExpense, insertIncome, updateIncome, deleteIncome, insertCard } from '@hogar-finance/dataconnect';
+import { registerHousehold, addHouseholdMember, updateHouseholdMember, deleteHouseholdMember, updateUserBudgets, insertExpense, updateExpense, deleteExpense, insertIncome, updateIncome } from '@hogar-finance/dataconnect';
 
 
 // Operation RegisterHousehold:  For variables, look at type RegisterHouseholdVars in ../index.d.ts
@@ -22,6 +22,12 @@ const { data } = await RegisterHousehold(dataConnect, registerHouseholdVars);
 
 // Operation AddHouseholdMember:  For variables, look at type AddHouseholdMemberVars in ../index.d.ts
 const { data } = await AddHouseholdMember(dataConnect, addHouseholdMemberVars);
+
+// Operation UpdateHouseholdMember:  For variables, look at type UpdateHouseholdMemberVars in ../index.d.ts
+const { data } = await UpdateHouseholdMember(dataConnect, updateHouseholdMemberVars);
+
+// Operation DeleteHouseholdMember:  For variables, look at type DeleteHouseholdMemberVars in ../index.d.ts
+const { data } = await DeleteHouseholdMember(dataConnect, deleteHouseholdMemberVars);
 
 // Operation UpdateUserBudgets:  For variables, look at type UpdateUserBudgetsVars in ../index.d.ts
 const { data } = await UpdateUserBudgets(dataConnect, updateUserBudgetsVars);
@@ -40,12 +46,6 @@ const { data } = await InsertIncome(dataConnect, insertIncomeVars);
 
 // Operation UpdateIncome:  For variables, look at type UpdateIncomeVars in ../index.d.ts
 const { data } = await UpdateIncome(dataConnect, updateIncomeVars);
-
-// Operation DeleteIncome:  For variables, look at type DeleteIncomeVars in ../index.d.ts
-const { data } = await DeleteIncome(dataConnect, deleteIncomeVars);
-
-// Operation InsertCard:  For variables, look at type InsertCardVars in ../index.d.ts
-const { data } = await InsertCard(dataConnect, insertCardVars);
 
 
 ```
