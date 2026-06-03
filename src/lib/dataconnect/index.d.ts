@@ -181,7 +181,7 @@ export interface InsertCardVariables {
   minPayment: number;
   dueDay: number;
   paid: boolean;
-  currency: string;
+  currency?: string;
 }
 
 export interface InsertExpenseData {
@@ -197,7 +197,7 @@ export interface InsertExpenseVariables {
   category: string;
   paid: boolean;
   dueDay?: number | null;
-  currency: string;
+  currency?: string;
 }
 
 export interface InsertGoalData {
@@ -213,7 +213,7 @@ export interface InsertGoalVariables {
   monthly: number;
   emoji: string;
   color: string;
-  currency: string;
+  currency?: string;
 }
 
 export interface InsertIncomeData {
@@ -228,7 +228,7 @@ export interface InsertIncomeVariables {
   frequency: string;
   category: string;
   received: boolean;
-  currency: string;
+  currency?: string;
 }
 
 export interface InsertMonthHistoryData {
@@ -304,7 +304,7 @@ export interface UpdateCardVariables {
   minPayment: number;
   dueDay: number;
   paid: boolean;
-  currency: string;
+  currency?: string;
 }
 
 export interface UpdateExpenseData {
@@ -320,7 +320,7 @@ export interface UpdateExpenseVariables {
   category: string;
   paid: boolean;
   dueDay?: number | null;
-  currency: string;
+  currency?: string;
 }
 
 export interface UpdateGoalData {
@@ -346,7 +346,7 @@ export interface UpdateGoalVariables {
   monthly: number;
   emoji: string;
   color: string;
-  currency: string;
+  currency?: string;
 }
 
 export interface UpdateHouseholdMemberData {
@@ -374,7 +374,7 @@ export interface UpdateIncomeVariables {
   frequency: string;
   category: string;
   received: boolean;
-  currency: string;
+  currency?: string;
 }
 
 export interface UpdateUserBudgetsData {
@@ -391,18 +391,6 @@ export interface User_Key {
   id: UUIDString;
   __typename?: 'User_Key';
 }
-
-interface GetHouseholdForMeRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<GetHouseholdForMeData, undefined>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<GetHouseholdForMeData, undefined>;
-  operationName: string;
-}
-export const getHouseholdForMeRef: GetHouseholdForMeRef;
-
-export function getHouseholdForMe(options?: ExecuteQueryOptions): QueryPromise<GetHouseholdForMeData, undefined>;
-export function getHouseholdForMe(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<GetHouseholdForMeData, undefined>;
 
 interface RegisterHouseholdRef {
   /* Allow users to create refs without passing in DataConnect */
@@ -667,4 +655,16 @@ export const resetUserCardsPaidRef: ResetUserCardsPaidRef;
 
 export function resetUserCardsPaid(vars: ResetUserCardsPaidVariables): MutationPromise<ResetUserCardsPaidData, ResetUserCardsPaidVariables>;
 export function resetUserCardsPaid(dc: DataConnect, vars: ResetUserCardsPaidVariables): MutationPromise<ResetUserCardsPaidData, ResetUserCardsPaidVariables>;
+
+interface GetHouseholdForMeRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetHouseholdForMeData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<GetHouseholdForMeData, undefined>;
+  operationName: string;
+}
+export const getHouseholdForMeRef: GetHouseholdForMeRef;
+
+export function getHouseholdForMe(options?: ExecuteQueryOptions): QueryPromise<GetHouseholdForMeData, undefined>;
+export function getHouseholdForMe(dc: DataConnect, options?: ExecuteQueryOptions): QueryPromise<GetHouseholdForMeData, undefined>;
 

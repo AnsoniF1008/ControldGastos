@@ -7,21 +7,6 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
-const getHouseholdForMeRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetHouseholdForMe');
-}
-getHouseholdForMeRef.operationName = 'GetHouseholdForMe';
-exports.getHouseholdForMeRef = getHouseholdForMeRef;
-
-exports.getHouseholdForMe = function getHouseholdForMe(dcOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
-  return executeQuery(getHouseholdForMeRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
-}
-;
-
 const registerHouseholdRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -327,5 +312,20 @@ exports.resetUserCardsPaidRef = resetUserCardsPaidRef;
 exports.resetUserCardsPaid = function resetUserCardsPaid(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
   return executeMutation(resetUserCardsPaidRef(dcInstance, inputVars));
+}
+;
+
+const getHouseholdForMeRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetHouseholdForMe');
+}
+getHouseholdForMeRef.operationName = 'GetHouseholdForMe';
+exports.getHouseholdForMeRef = getHouseholdForMeRef;
+
+exports.getHouseholdForMe = function getHouseholdForMe(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(getHouseholdForMeRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
 }
 ;

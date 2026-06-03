@@ -106,7 +106,7 @@ mutation InsertExpense(
   $category: String!
   $paid: Boolean!
   $dueDay: Int
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -139,7 +139,7 @@ mutation UpdateExpense(
   $category: String!
   $paid: Boolean!
   $dueDay: Int
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -181,7 +181,7 @@ mutation InsertIncome(
   $frequency: String!
   $category: String!
   $received: Boolean!
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -212,7 +212,7 @@ mutation UpdateIncome(
   $frequency: String!
   $category: String!
   $received: Boolean!
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -253,7 +253,7 @@ mutation InsertCard(
   $minPayment: Float!
   $dueDay: Int!
   $paid: Boolean!
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -288,7 +288,7 @@ mutation UpdateCard(
   $minPayment: Float!
   $dueDay: Int!
   $paid: Boolean!
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -330,7 +330,7 @@ mutation InsertGoal(
   $monthly: Float!
   $emoji: String!
   $color: String!
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -363,7 +363,7 @@ mutation UpdateGoal(
   $monthly: Float!
   $emoji: String!
   $color: String!
-  $currency: String!
+  $currency: String! = "USD"
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)

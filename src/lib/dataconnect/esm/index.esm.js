@@ -5,19 +5,6 @@ export const connectorConfig = {
   service: 'controldgastos-service',
   location: 'us-east4'
 };
-export const getHouseholdForMeRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetHouseholdForMe');
-}
-getHouseholdForMeRef.operationName = 'GetHouseholdForMe';
-
-export function getHouseholdForMe(dcOrOptions, options) {
-  
-  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
-  return executeQuery(getHouseholdForMeRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
-}
-
 export const registerHouseholdRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -280,5 +267,18 @@ resetUserCardsPaidRef.operationName = 'ResetUserCardsPaid';
 export function resetUserCardsPaid(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
   return executeMutation(resetUserCardsPaidRef(dcInstance, inputVars));
+}
+
+export const getHouseholdForMeRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetHouseholdForMe');
+}
+getHouseholdForMeRef.operationName = 'GetHouseholdForMe';
+
+export function getHouseholdForMe(dcOrOptions, options) {
+  
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateArgsWithOptions(connectorConfig, dcOrOptions, options, undefined,false, false);
+  return executeQuery(getHouseholdForMeRef(dcInstance, inputVars), inputOpts && { fetchPolicy: inputOpts.fetchPolicy });
 }
 

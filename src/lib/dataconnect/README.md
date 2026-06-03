@@ -911,7 +911,7 @@ export interface InsertExpenseVariables {
   category: string;
   paid: boolean;
   dueDay?: number | null;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -939,7 +939,7 @@ const insertExpenseVars: InsertExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertExpense()` function to execute the mutation.
@@ -977,7 +977,7 @@ const insertExpenseVars: InsertExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertExpenseRef()` function to get a reference to the mutation.
@@ -1044,7 +1044,7 @@ export interface UpdateExpenseVariables {
   category: string;
   paid: boolean;
   dueDay?: number | null;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -1072,7 +1072,7 @@ const updateExpenseVars: UpdateExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateExpense()` function to execute the mutation.
@@ -1110,7 +1110,7 @@ const updateExpenseVars: UpdateExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateExpenseRef()` function to get a reference to the mutation.
@@ -1288,7 +1288,7 @@ export interface InsertIncomeVariables {
   frequency: string;
   category: string;
   received: boolean;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -1315,7 +1315,7 @@ const insertIncomeVars: InsertIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertIncome()` function to execute the mutation.
@@ -1352,7 +1352,7 @@ const insertIncomeVars: InsertIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertIncomeRef()` function to get a reference to the mutation.
@@ -1418,7 +1418,7 @@ export interface UpdateIncomeVariables {
   frequency: string;
   category: string;
   received: boolean;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -1445,7 +1445,7 @@ const updateIncomeVars: UpdateIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateIncome()` function to execute the mutation.
@@ -1482,7 +1482,7 @@ const updateIncomeVars: UpdateIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateIncomeRef()` function to get a reference to the mutation.
@@ -1662,7 +1662,7 @@ export interface InsertCardVariables {
   minPayment: number;
   dueDay: number;
   paid: boolean;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -1691,7 +1691,7 @@ const insertCardVars: InsertCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertCard()` function to execute the mutation.
@@ -1730,7 +1730,7 @@ const insertCardVars: InsertCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertCardRef()` function to get a reference to the mutation.
@@ -1798,7 +1798,7 @@ export interface UpdateCardVariables {
   minPayment: number;
   dueDay: number;
   paid: boolean;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -1827,7 +1827,7 @@ const updateCardVars: UpdateCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateCard()` function to execute the mutation.
@@ -1866,7 +1866,7 @@ const updateCardVars: UpdateCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateCardRef()` function to get a reference to the mutation.
@@ -2045,7 +2045,7 @@ export interface InsertGoalVariables {
   monthly: number;
   emoji: string;
   color: string;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -2073,7 +2073,7 @@ const insertGoalVars: InsertGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertGoal()` function to execute the mutation.
@@ -2111,7 +2111,7 @@ const insertGoalVars: InsertGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `insertGoalRef()` function to get a reference to the mutation.
@@ -2178,7 +2178,7 @@ export interface UpdateGoalVariables {
   monthly: number;
   emoji: string;
   color: string;
-  currency: string;
+  currency?: string;
 }
 ```
 ### Return Type
@@ -2206,7 +2206,7 @@ const updateGoalVars: UpdateGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateGoal()` function to execute the mutation.
@@ -2244,7 +2244,7 @@ const updateGoalVars: UpdateGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
-  currency: ..., 
+  currency: ..., // optional
 };
 
 // Call the `updateGoalRef()` function to get a reference to the mutation.

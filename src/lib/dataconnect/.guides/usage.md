@@ -14,11 +14,8 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { getHouseholdForMe, registerHousehold, addHouseholdMember, updateHouseholdMember, deleteHouseholdMember, updateUserBudgets, insertExpense, updateExpense, deleteExpense, insertIncome } from '@hogar-finance/dataconnect';
+import { registerHousehold, addHouseholdMember, updateHouseholdMember, deleteHouseholdMember, updateUserBudgets, insertExpense, updateExpense, deleteExpense, insertIncome, updateIncome } from '@hogar-finance/dataconnect';
 
-
-// Operation GetHouseholdForMe: 
-const { data } = await GetHouseholdForMe(dataConnect);
 
 // Operation RegisterHousehold:  For variables, look at type RegisterHouseholdVars in ../index.d.ts
 const { data } = await RegisterHousehold(dataConnect, registerHouseholdVars);
@@ -46,6 +43,9 @@ const { data } = await DeleteExpense(dataConnect, deleteExpenseVars);
 
 // Operation InsertIncome:  For variables, look at type InsertIncomeVars in ../index.d.ts
 const { data } = await InsertIncome(dataConnect, insertIncomeVars);
+
+// Operation UpdateIncome:  For variables, look at type UpdateIncomeVars in ../index.d.ts
+const { data } = await UpdateIncome(dataConnect, updateIncomeVars);
 
 
 ```
