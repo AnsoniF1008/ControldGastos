@@ -33,7 +33,7 @@ export default function TarjetasPage({ D }) {
                   <div>
                     <p style={{ margin: 0, fontWeight: 900, fontSize: 15, color: "var(--text)" }}>{c.name}</p>
                     <p style={{ margin: "4px 0 0", fontSize: 12, color: "var(--muted)", fontWeight: 600 }}>
-                      {t("tarjetas.dueDay")} {c.dueDay} · {t("tarjetas.minLabel")} {fmt(c.minPayment)}
+                      {t("tarjetas.dueDay")} {c.dueDay} · {t("tarjetas.minLabel")} {fmt(c.minPayment, c.currency)}
                     </p>
                   </div>
                   <StatusBadge
@@ -43,11 +43,11 @@ export default function TarjetasPage({ D }) {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                   <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 700 }}>{t("tarjetas.balance")}</span>
-                  <span style={{ fontWeight: 900 }}>{fmt(c.balance)}</span>
+                  <span style={{ fontWeight: 900 }}>{fmt(c.balance, c.currency)}</span>
                 </div>
                 <Bar value={c.balance} max={c.limit} color={brand} h={8} />
                 <p style={{ margin: "6px 0 0", fontSize: 11, color: "var(--hint)", fontWeight: 600 }}>
-                  {util}% {t("tarjetas.limitPct")} ({fmt(c.limit)})
+                  {util}% {t("tarjetas.limitPct")} ({fmt(c.limit, c.currency)})
                 </p>
                 {!D.isFam && (
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 12, flexWrap: "wrap" }}>

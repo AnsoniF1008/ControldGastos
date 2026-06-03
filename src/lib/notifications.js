@@ -102,7 +102,7 @@ export function notifyDueExpenses(expenses, fmt, labels) {
     try {
       // eslint-disable-next-line no-new
       new Notification(`${labels.title}: ${e.name}`, {
-        body: `${body} · ${fmt(e.amount)}`,
+        body: `${body} · ${fmt(e.amount, e.currency)}`,
         icon: "/icon.svg",
         tag: `hf-due-${e.id}`,
       });

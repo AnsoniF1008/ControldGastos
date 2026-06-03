@@ -2,7 +2,7 @@
 // Estado + CRUD vía Firebase Data Connect (Cloud SQL).
 
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
-import { CUR_MONTH, CUR_YEAR, CATS } from "../lib/constants";
+import { CUR_MONTH, CUR_YEAR, CATS, DEFAULT_CURRENCY, DEFAULT_RATE, normCur, convert } from "../lib/constants";
 import { splitTotalsEvenly, isHouseholdAdmin } from "../lib/budgetSplit";
 import { getHogarDataConnect } from "../lib/dataConnect";
 import * as dcApi from "../lib/dcApi";
@@ -67,6 +67,48 @@ export function useUserData() {
       return v;
     });
   }, []);
+  // Moneda en la que se muestran los totales consolidados (USD o VES).
+  const [displayCurrency, setDisplayCurrencyState] = useState(() => {
+    try {
+      return normCur(localStorage.getItem("hf_display_cur"));
+    } catch {
+      return DEFAULT_CURRENCY;
+    }
+  });
+  const setDisplayCurrency = useCallback((next) => {
+    setDisplayCurrencyState((prev) => {
+      const v = normCur(typeof next === "function" ? next(prev) : next);
+      try {
+        localStorage.setItem("hf_display_cur", v);
+      } catch {
+        /* ignore */
+      }
+      return v;
+    });
+  }, []);
+  // Tasa de cambio: bolívares por 1 dólar.
+  const [rate, setRateState] = useState(() => {
+    try {
+      const saved = parseFloat(localStorage.getItem("hf_rate"));
+      return Number.isFinite(saved) && saved > 0 ? saved : DEFAULT_RATE;
+    } catch {
+      return DEFAULT_RATE;
+    }
+  });
+  const setRate = useCallback((next) => {
+    setRateState((prev) => {
+      const raw = typeof next === "function" ? next(prev) : next;
+      const v = parseFloat(String(raw).replace(",", "."));
+      const safe = Number.isFinite(v) && v > 0 ? v : prev;
+      try {
+        localStorage.setItem("hf_rate", String(safe));
+      } catch {
+        /* ignore */
+      }
+      return safe;
+    });
+  }, []);
+
   const [users, setUsers] = useState([]);
   const [activeUid, setActiveUid] = useState("u1");
   const [tab, setTab] = useState("home");
@@ -192,17 +234,32 @@ export function useUserData() {
   const history = isFam ? [] : user?.history || [];
   const budgets = user?.budgets || {};
 
-  const totalExp = expenses.reduce((s, e) => s + e.amount, 0);
-  const paidExp = expenses.filter((e) => e.paid).reduce((s, e) => s + e.amount, 0);
-  const totalInc = incomes.reduce((s, i) => s + i.amount, 0);
-  const recvInc = incomes.filter((i) => i.received).reduce((s, i) => s + i.amount, 0);
+  // Convierte el importe de un ítem (en su moneda) a la moneda de visualización.
+  const toDisplay = useCallback(
+    (amount, currency) => convert(amount, currency, displayCurrency, rate),
+    [displayCurrency, rate]
+  );
+  // Suma una lista convirtiendo cada elemento a la moneda de visualización.
+  const sumDisplay = (list, pick) =>
+    list.reduce((s, x) => s + convert(pick(x), x.currency, displayCurrency, rate), 0);
+
+  const totalExp = sumDisplay(expenses, (e) => e.amount);
+  const paidExp = sumDisplay(expenses.filter((e) => e.paid), (e) => e.amount);
+  const totalInc = sumDisplay(incomes, (i) => i.amount);
+  const recvInc = sumDisplay(incomes.filter((i) => i.received), (i) => i.amount);
   const netBalance = totalInc - totalExp;
-  const totalCardMin = cards.reduce((s, c) => s + c.minPayment, 0);
-  const paidCardMin = cards.filter((c) => c.paid).reduce((s, c) => s + c.minPayment, 0);
-  const totalDebt = cards.reduce((s, c) => s + c.balance, 0);
-  const q1Total = expenses.filter((e) => e.frequency !== "2da").reduce((s, e) => s + e.amount, 0);
-  const q2Total = expenses.filter((e) => e.frequency !== "1ra").reduce((s, e) => s + e.amount, 0);
+  const totalCardMin = sumDisplay(cards, (c) => c.minPayment);
+  const paidCardMin = sumDisplay(cards.filter((c) => c.paid), (c) => c.minPayment);
+  const totalDebt = sumDisplay(cards, (c) => c.balance);
+  const q1Total = sumDisplay(expenses.filter((e) => e.frequency !== "2da"), (e) => e.amount);
+  const q2Total = sumDisplay(expenses.filter((e) => e.frequency !== "1ra"), (e) => e.amount);
   const pendingExp = expenses.filter((e) => !e.paid);
+
+  // Totales de gasto desglosados por moneda original (para mostrar ambos lados).
+  const totalsByCurrency = {
+    USD: expenses.filter((e) => normCur(e.currency) === "USD").reduce((s, e) => s + e.amount, 0),
+    VES: expenses.filter((e) => normCur(e.currency) === "VES").reduce((s, e) => s + e.amount, 0),
+  };
 
   const handleRegister = async ({ email, password, name, emoji, color }) => {
     isRegistering.current = true;
@@ -289,6 +346,7 @@ export function useUserData() {
       frequency: form.frequency,
       category: form.category,
       dueDay: form.dueDay ? parseInt(form.dueDay, 10) : null,
+      currency: normCur(form.currency ?? cur?.currency),
       paid: editId ? (form.paid !== undefined ? form.paid : cur?.paid) : false,
     };
     const dc = requireDc();
@@ -334,6 +392,7 @@ export function useUserData() {
       amount: parseMoney(form.amount),
       frequency: form.frequency,
       category: form.category,
+      currency: normCur(form.currency ?? cur?.currency),
       received: editId ? (form.received !== undefined ? form.received : cur?.received) : false,
     };
     const dc = requireDc();
@@ -370,6 +429,7 @@ export function useUserData() {
       balance: c.balance,
       minPayment: c.minPayment,
       dueDay: c.dueDay,
+      currency: normCur(c.currency),
       paid: !c.paid,
     });
     applyUsers(nu);
@@ -386,6 +446,7 @@ export function useUserData() {
       balance: parseMoney(form.balance === "" || form.balance == null ? "0" : form.balance),
       minPayment: parseMoney(form.minPayment === "" || form.minPayment == null ? "0" : form.minPayment),
       dueDay: parseInt(form.dueDay || 15, 10),
+      currency: normCur(form.currency ?? cur?.currency),
       paid: editId ? (form.paid !== undefined ? form.paid : cur?.paid) : false,
     };
     const dc = requireDc();
@@ -424,6 +485,7 @@ export function useUserData() {
       ),
       emoji: form.emoji ?? cur?.emoji,
       color: form.color ?? cur?.color,
+      currency: normCur(form.currency ?? cur?.currency),
     };
     const dc = requireDc();
     const { users: nu } = editId
@@ -522,7 +584,7 @@ export function useUserData() {
     requireMemberContext(u, householdId);
     if (!user) throw new Error(t("errors.noProfile"));
     const dc = requireDc();
-    const { users: nu } = await dcApi.resetMonth(dc, householdId, user);
+    const { users: nu } = await dcApi.resetMonth(dc, householdId, user, displayCurrency, rate);
     applyUsers(nu);
   };
 
@@ -530,6 +592,7 @@ export function useUserData() {
     const header = [
       t("csv.name"),
       t("csv.amount"),
+      t("csv.currency"),
       t("csv.frequency"),
       t("csv.category"),
       t("csv.paid"),
@@ -537,6 +600,7 @@ export function useUserData() {
     const rows = expenses.map((e) => [
       e.name,
       e.amount,
+      normCur(e.currency),
       e.frequency,
       e.category,
       e.paid ? t("csv.yes") : t("csv.no"),
@@ -555,6 +619,11 @@ export function useUserData() {
     setScreen,
     darkMode,
     setDarkMode,
+    displayCurrency,
+    setDisplayCurrency,
+    rate,
+    setRate,
+    toDisplay,
     handleRegister,
     handleEmailLogin,
     handleLogout,
@@ -598,6 +667,7 @@ export function useUserData() {
     q1Total,
     q2Total,
     pendingExp,
+    totalsByCurrency,
 
     toggleExpense,
     saveExpense,

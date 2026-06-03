@@ -21,7 +21,9 @@ export default function HomePage({ D }) {
   const byCategory = useMemo(() => {
     const map = new Map();
     for (const e of D.expenses || []) {
-      map.set(e.category, (map.get(e.category) || 0) + (e.amount || 0));
+      // Convertimos cada gasto a la moneda de visualización para no mezclar monedas.
+      const value = D.toDisplay(e.amount || 0, e.currency);
+      map.set(e.category, (map.get(e.category) || 0) + value);
     }
     return [...map.entries()]
       .map(([cat, value]) => ({
@@ -29,7 +31,7 @@ export default function HomePage({ D }) {
         value,
       }))
       .sort((a, b) => b.value - a.value);
-  }, [D.expenses, t]);
+  }, [D.expenses, D.toDisplay, t]);
 
   const lastMonths = useMemo(() => {
     if (!D.history?.length) return [];
@@ -52,10 +54,10 @@ export default function HomePage({ D }) {
       }}>
         <SectionTitle color={D.acc}>{t("home.quickSummary")}</SectionTitle>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-          <StatCard label={t("home.toPayExp")} value={fmt(D.pendingExp.reduce((s, e) => s + e.amount, 0))} color="#D97706" />
-          <StatCard label={t("home.q1")} value={fmt(D.q1Total)} />
-          <StatCard label={t("home.q2")} value={fmt(D.q2Total)} />
-          <StatCard label={t("home.cardDebt")} value={fmt(D.totalDebt)} color="#B45309" />
+          <StatCard label={t("home.toPayExp")} value={fmt(D.pendingExp.reduce((s, e) => s + D.toDisplay(e.amount, e.currency), 0), D.displayCurrency)} color="#D97706" />
+          <StatCard label={t("home.q1")} value={fmt(D.q1Total, D.displayCurrency)} />
+          <StatCard label={t("home.q2")} value={fmt(D.q2Total, D.displayCurrency)} />
+          <StatCard label={t("home.cardDebt")} value={fmt(D.totalDebt, D.displayCurrency)} color="#B45309" />
         </div>
       </div>
 
@@ -71,9 +73,9 @@ export default function HomePage({ D }) {
         >
           <SectionTitle color={D.acc}>{t("home.byCategory")}</SectionTitle>
           <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
-            <PieChart data={byCategory} size={170} formatValue={(n) => fmt(n)} />
+            <PieChart data={byCategory} size={170} formatValue={(n) => fmt(n, D.displayCurrency)} />
             <div style={{ flex: 1, minWidth: 180 }}>
-              <PieLegend data={byCategory} formatValue={(n) => fmt(n)} />
+              <PieLegend data={byCategory} formatValue={(n) => fmt(n, D.displayCurrency)} />
             </div>
           </div>
         </div>
@@ -90,7 +92,7 @@ export default function HomePage({ D }) {
           }}
         >
           <SectionTitle color={D.acc}>{t("home.expensesTrend")}</SectionTitle>
-          <BarChart data={lastMonths} color={D.acc} formatValue={(n) => fmt(n)} />
+          <BarChart data={lastMonths} color={D.acc} formatValue={(n) => fmt(n, D.displayCurrency)} />
         </div>
       )}
 
@@ -113,7 +115,7 @@ export default function HomePage({ D }) {
               }}
             >
               <span style={{ fontWeight: 800, color: "var(--text)", fontSize: 14 }}>{e.name}</span>
-              <span style={{ fontWeight: 900, color: "#D97706" }}>{fmt(e.amount)}</span>
+              <span style={{ fontWeight: 900, color: "#D97706" }}>{fmt(e.amount, e.currency)}</span>
             </div>
           ))}
         </div>

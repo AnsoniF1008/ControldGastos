@@ -26,6 +26,8 @@ type Income @table {
   frequency: String!
   category: String!
   received: Boolean!
+  # Moneda del importe: "USD" o "VES". Nullable: filas previas se tratan como USD.
+  currency: String
 }
 
 type Expense @table {
@@ -36,6 +38,8 @@ type Expense @table {
   category: String!
   paid: Boolean!
   dueDay: Int
+  # Moneda del importe: "USD" o "VES". Nullable: filas previas se tratan como USD.
+  currency: String
 }
 
 type Card @table {
@@ -47,6 +51,8 @@ type Card @table {
   minPayment: Float!
   dueDay: Int!
   paid: Boolean!
+  # Moneda del saldo/límite: "USD" o "VES". Nullable: filas previas se tratan como USD.
+  currency: String
 }
 
 type Goal @table {
@@ -57,6 +63,8 @@ type Goal @table {
   monthly: Float!
   emoji: String!
   color: String!
+  # Moneda de la meta: "USD" o "VES". Nullable: filas previas se tratan como USD.
+  currency: String
 }
 
 type MonthHistory @table {

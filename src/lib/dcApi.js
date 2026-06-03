@@ -29,7 +29,7 @@ import {
   resetUserIncomesReceived,
   resetUserCardsPaid,
 } from "./dataconnect/esm/index.esm.js";
-import { MONTHS } from "./constants";
+import { MONTHS, normCur, convert } from "./constants";
 import { sumBudgetsByCategory, splitTotalsEvenly } from "./budgetSplit";
 
 function parseBudgets(raw) {
@@ -50,6 +50,7 @@ function mapExpense(e) {
     frequency: e.frequency,
     paid: e.paid,
     category: e.category,
+    currency: normCur(e.currency),
   };
   if (e.dueDay != null) o.dueDay = e.dueDay;
   return o;
@@ -63,6 +64,7 @@ function mapIncome(i) {
     frequency: i.frequency,
     category: i.category,
     received: i.received,
+    currency: normCur(i.currency),
   };
 }
 
@@ -76,6 +78,7 @@ function mapCard(c) {
     minPayment: c.minPayment,
     dueDay: c.dueDay,
     paid: c.paid,
+    currency: normCur(c.currency),
   };
 }
 
@@ -88,6 +91,7 @@ function mapGoal(g) {
     monthly: g.monthly,
     emoji: g.emoji,
     color: g.color,
+    currency: normCur(g.currency),
   };
 }
 
@@ -214,6 +218,7 @@ export async function postExpense(dc, householdId, userId, body) {
     category: body.category,
     paid: Boolean(body.paid),
     dueDay: body.dueDay ?? null,
+    currency: normCur(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -228,6 +233,7 @@ export async function patchExpense(dc, householdId, expenseId, body) {
     category: body.category,
     paid: body.paid,
     dueDay: body.dueDay ?? null,
+    currency: normCur(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -246,6 +252,7 @@ export async function postIncome(dc, householdId, userId, body) {
     frequency: body.frequency,
     category: body.category,
     received: Boolean(body.received),
+    currency: normCur(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -259,6 +266,7 @@ export async function patchIncome(dc, householdId, incomeId, body) {
     frequency: body.frequency,
     category: body.category,
     received: body.received,
+    currency: normCur(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -279,6 +287,7 @@ export async function postCard(dc, householdId, userId, body) {
     minPayment: body.minPayment ?? 0,
     dueDay: body.dueDay ?? 15,
     paid: Boolean(body.paid),
+    currency: normCur(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -294,6 +303,7 @@ export async function patchCard(dc, householdId, cardId, body) {
     minPayment: body.minPayment,
     dueDay: body.dueDay,
     paid: body.paid,
+    currency: normCur(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -313,6 +323,7 @@ export async function postGoal(dc, householdId, userId, data) {
     monthly: data.monthly ?? 0,
     emoji: data.emoji ?? "🎯",
     color: data.color ?? "#7C3AED",
+    currency: normCur(data.currency),
   });
   return fetchUsers(dc);
 }
@@ -327,6 +338,7 @@ export async function patchGoal(dc, householdId, goalId, data) {
     monthly: data.monthly,
     emoji: data.emoji,
     color: data.color,
+    currency: normCur(data.currency),
   });
   return fetchUsers(dc);
 }
@@ -342,12 +354,13 @@ export async function removeGoal(dc, householdId, goalId) {
   return fetchUsers(dc);
 }
 
-export async function resetMonth(dc, householdId, userRow) {
-  const totalExp = userRow.expenses.reduce((s, e) => s + e.amount, 0);
-  const paidExp = userRow.expenses.filter((e) => e.paid).reduce((s, e) => s + e.amount, 0);
-  const totalInc = userRow.incomes.reduce((s, i) => s + i.amount, 0);
-  const recvInc = userRow.incomes.filter((i) => i.received).reduce((s, i) => s + i.amount, 0);
-  const totalDebt = userRow.cards.reduce((s, c) => s + c.balance, 0);
+export async function resetMonth(dc, householdId, userRow, displayCurrency = "USD", rate = 1) {
+  const conv = (amount, currency) => convert(amount, currency, displayCurrency, rate);
+  const totalExp = userRow.expenses.reduce((s, e) => s + conv(e.amount, e.currency), 0);
+  const paidExp = userRow.expenses.filter((e) => e.paid).reduce((s, e) => s + conv(e.amount, e.currency), 0);
+  const totalInc = userRow.incomes.reduce((s, i) => s + conv(i.amount, i.currency), 0);
+  const recvInc = userRow.incomes.filter((i) => i.received).reduce((s, i) => s + conv(i.amount, i.currency), 0);
+  const totalDebt = userRow.cards.reduce((s, c) => s + conv(c.balance, c.currency), 0);
   const now = new Date();
   const month = now.getMonth() + 1;
   const year = now.getFullYear();

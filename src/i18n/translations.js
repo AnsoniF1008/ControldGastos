@@ -165,6 +165,14 @@ export const TRANSLATIONS = {
       notifEnabled: "Recordatorios activados",
       notifDisabled: "Recordatorios desactivados",
       notifBlocked: "Permiso de notificaciones denegado",
+      currencyTitle: "Moneda y tasa de cambio",
+      currencyHint:
+        "Elige en qué moneda se muestran los totales del resumen. Cada gasto o ingreso conserva su propia moneda; la tasa convierte entre dólares y bolívares.",
+      displayCurrency: "Moneda de los totales",
+      exchangeRate: "Tasa de cambio (bolívares por 1 dólar)",
+      rateLine: "1 USD = {rate}",
+      saveRate: "Guardar tasa",
+      rateSaved: "Tasa de cambio guardada",
     },
     addSheet: {
       newExpense: "Nuevo gasto",
@@ -179,6 +187,7 @@ export const TRANSLATIONS = {
       amount: "Monto",
       amountHint:
         "Escribe nombre y monto; usa punto o coma para decimales (ej. 1500 o 1500,50).",
+      currency: "MONEDA",
       dueOptional: "Día de vencimiento (1-31, opcional)",
       markPaid: "Marcar como pagado",
       markReceived: "Marcar como recibido",
@@ -257,6 +266,7 @@ export const TRANSLATIONS = {
     csv: {
       name: "Nombre",
       amount: "Monto",
+      currency: "Moneda",
       frequency: "Frecuencia",
       category: "Categoría",
       paid: "Pagado",
@@ -457,6 +467,14 @@ export const TRANSLATIONS = {
       notifEnabled: "Reminders enabled",
       notifDisabled: "Reminders disabled",
       notifBlocked: "Notification permission denied",
+      currencyTitle: "Currency & exchange rate",
+      currencyHint:
+        "Choose which currency the summary totals are shown in. Each expense or income keeps its own currency; the rate converts between dollars and bolívars.",
+      displayCurrency: "Totals currency",
+      exchangeRate: "Exchange rate (bolívars per 1 dollar)",
+      rateLine: "1 USD = {rate}",
+      saveRate: "Save rate",
+      rateSaved: "Exchange rate saved",
     },
     addSheet: {
       newExpense: "New expense",
@@ -470,6 +488,7 @@ export const TRANSLATIONS = {
       name: "Name",
       amount: "Amount",
       amountHint: "Enter name and amount; use . or , for decimals (e.g. 1500 or 1500.50).",
+      currency: "CURRENCY",
       dueOptional: "Due day (1–31, optional)",
       markPaid: "Mark as paid",
       markReceived: "Mark as received",
@@ -548,6 +567,7 @@ export const TRANSLATIONS = {
     csv: {
       name: "Name",
       amount: "Amount",
+      currency: "Currency",
       frequency: "Frequency",
       category: "Category",
       paid: "Paid",

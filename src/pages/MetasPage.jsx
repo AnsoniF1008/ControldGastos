@@ -31,7 +31,7 @@ export default function MetasPage({ D }) {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ margin: 0, fontWeight: 900, fontSize: 15, color: "var(--text)" }}>{g.name}</p>
                   <p style={{ margin: "4px 0 0", fontSize: 12, color: "var(--muted)", fontWeight: 600 }}>
-                    {fmt(g.saved)} {t("metas.savedOf")} {fmt(g.target)} · +{fmt(g.monthly)}{t("metas.perMonth")}
+                    {fmt(g.saved, g.currency)} {t("metas.savedOf")} {fmt(g.target, g.currency)} · +{fmt(g.monthly, g.currency)}{t("metas.perMonth")}
                   </p>
                 </div>
               </div>

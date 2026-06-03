@@ -10,7 +10,7 @@ import { HFLogo }      from "./components/atoms";
 import { useI18n } from "./i18n/I18nContext.jsx";
 import { isPlaidTabVisible } from "./lib/plaidFeature";
 import { notifyDueExpenses } from "./lib/notifications";
-import { fmt } from "./lib/constants";
+import { fmt, CURRENCIES, normCur } from "./lib/constants";
 
 // HomePage y LoginPage son críticos para el primer render → bundle principal.
 // El resto se carga bajo demanda (mejora cold-start).
@@ -167,13 +167,13 @@ export default function App() {
             {[
               {
                 l: t("summary.income"),
-                v: `$${Math.round((D.totalInc / 1000) * 10) / 10}k`,
+                v: `${CURRENCIES[normCur(D.displayCurrency)].symbol}${Math.round((D.totalInc / 1000) * 10) / 10}k`,
                 c: "#A7F3D0",
                 s: `${D.totalInc > 0 ? Math.round((D.recvInc / D.totalInc) * 100) : 0}% ${t("summary.receivedPct")}`,
               },
               {
                 l: t("summary.expense"),
-                v: `$${Math.round((D.totalExp / 1000) * 10) / 10}k`,
+                v: `${CURRENCIES[normCur(D.displayCurrency)].symbol}${Math.round((D.totalExp / 1000) * 10) / 10}k`,
                 c: "#FCA5A5",
                 s: `${D.totalExp > 0 ? Math.round((D.paidExp / D.totalExp) * 100) : 0}% ${t("summary.paidPct")}`,
               },
@@ -181,16 +181,16 @@ export default function App() {
                 l: t("summary.balance"),
                 v:
                   D.netBalance >= 0
-                    ? `+$${Math.round(D.netBalance)}`
-                    : `-$${Math.round(Math.abs(D.netBalance))}`,
+                    ? `+${fmt(D.netBalance, D.displayCurrency)}`
+                    : `-${fmt(Math.abs(D.netBalance), D.displayCurrency)}`,
                 c: D.netBalance >= 0 ? "#A7F3D0" : "#FCA5A5",
                 s: D.netBalance >= 0 ? t("summary.positive") : t("summary.negative"),
               },
               {
                 l: t("summary.cards"),
-                v: `$${Math.round(D.totalDebt)}`,
+                v: fmt(D.totalDebt, D.displayCurrency),
                 c: "#FDE68A",
-                s: `${t("summary.min")} $${Math.round(D.totalCardMin)}`,
+                s: `${t("summary.min")} ${fmt(D.totalCardMin, D.displayCurrency)}`,
               },
             ].map((s) => (
               <div key={s.l} style={{ background: "rgba(255,255,255,0.13)", borderRadius: 12, padding: "10px 8px", textAlign: "center" }}>

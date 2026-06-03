@@ -9,8 +9,43 @@ export const NOW       = new Date();
 export const CUR_MONTH = MONTHS[NOW.getMonth()];
 export const CUR_YEAR  = NOW.getFullYear();
 
-export const fmt = (n = 0, locale = "en-US") =>
-  `$${Math.abs(n).toLocaleString(locale, { maximumFractionDigits: 0 })}`;
+// ── Monedas ──────────────────────────────────────────────────────────────────
+// La app maneja dos monedas: dólar (USD) y bolívar (VES). Cada gasto/ingreso/
+// tarjeta/meta guarda su moneda; los totales se consolidan a una "moneda de
+// visualización" usando la tasa de cambio (bolívares por 1 dólar).
+export const CURRENCIES = {
+  USD: { code: "USD", symbol: "$",  label: "Dólares",   labelEn: "Dollars",   prefix: true },
+  VES: { code: "VES", symbol: "Bs", label: "Bolívares", labelEn: "Bolívars",  prefix: false },
+};
+export const CURRENCY_CODES = Object.keys(CURRENCIES);
+export const DEFAULT_CURRENCY = "USD";
+// Tasa inicial sugerida (bolívares por dólar); el usuario la edita en «Más».
+export const DEFAULT_RATE = 36;
+
+/** Normaliza cualquier valor a un código de moneda soportado (default USD). */
+export const normCur = (c) => (c === "VES" ? "VES" : "USD");
+
+export const fmt = (n = 0, currency = DEFAULT_CURRENCY, locale = "en-US") => {
+  const cur = CURRENCIES[normCur(currency)];
+  const num = Math.abs(n).toLocaleString(locale, { maximumFractionDigits: 0 });
+  return cur.prefix ? `${cur.symbol}${num}` : `${cur.symbol} ${num}`;
+};
+
+/**
+ * Convierte un importe entre USD y VES.
+ * @param {number} amount importe en la moneda `from`
+ * @param {string} from   moneda origen ("USD" | "VES")
+ * @param {string} to     moneda destino ("USD" | "VES")
+ * @param {number} rate   bolívares por 1 dólar
+ */
+export const convert = (amount, from, to, rate) => {
+  const a = Number(amount) || 0;
+  const f = normCur(from);
+  const tCur = normCur(to);
+  if (f === tCur) return a;
+  if (!rate || rate <= 0) return a;
+  return f === "USD" ? a * rate : a / rate; // USD→VES multiplica; VES→USD divide
+};
 
 export const pct = (a, b) =>
   b > 0 ? Math.min(100, Math.round((a / b) * 100)) : 0;

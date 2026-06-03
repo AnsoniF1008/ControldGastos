@@ -106,6 +106,7 @@ mutation InsertExpense(
   $category: String!
   $paid: Boolean!
   $dueDay: Int
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -124,7 +125,8 @@ mutation InsertExpense(
     frequency: $frequency,
     category: $category,
     paid: $paid,
-    dueDay: $dueDay
+    dueDay: $dueDay,
+    currency: $currency
   })
 }
 
@@ -137,6 +139,7 @@ mutation UpdateExpense(
   $category: String!
   $paid: Boolean!
   $dueDay: Int
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -152,7 +155,8 @@ mutation UpdateExpense(
       frequency: $frequency,
       category: $category,
       paid: $paid,
-      dueDay: $dueDay
+      dueDay: $dueDay,
+      currency: $currency
     }
   )
 }
@@ -177,6 +181,7 @@ mutation InsertIncome(
   $frequency: String!
   $category: String!
   $received: Boolean!
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -194,7 +199,8 @@ mutation InsertIncome(
     amount: $amount,
     frequency: $frequency,
     category: $category,
-    received: $received
+    received: $received,
+    currency: $currency
   })
 }
 
@@ -206,6 +212,7 @@ mutation UpdateIncome(
   $frequency: String!
   $category: String!
   $received: Boolean!
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -220,7 +227,8 @@ mutation UpdateIncome(
       amount: $amount,
       frequency: $frequency,
       category: $category,
-      received: $received
+      received: $received,
+      currency: $currency
     }
   )
 }
@@ -245,6 +253,7 @@ mutation InsertCard(
   $minPayment: Float!
   $dueDay: Int!
   $paid: Boolean!
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -264,7 +273,8 @@ mutation InsertCard(
     balance: $balance,
     minPayment: $minPayment,
     dueDay: $dueDay,
-    paid: $paid
+    paid: $paid,
+    currency: $currency
   })
 }
 
@@ -278,6 +288,7 @@ mutation UpdateCard(
   $minPayment: Float!
   $dueDay: Int!
   $paid: Boolean!
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -294,7 +305,8 @@ mutation UpdateCard(
       balance: $balance,
       minPayment: $minPayment,
       dueDay: $dueDay,
-      paid: $paid
+      paid: $paid,
+      currency: $currency
     }
   )
 }
@@ -318,6 +330,7 @@ mutation InsertGoal(
   $monthly: Float!
   $emoji: String!
   $color: String!
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -336,7 +349,8 @@ mutation InsertGoal(
     saved: $saved,
     monthly: $monthly,
     emoji: $emoji,
-    color: $color
+    color: $color,
+    currency: $currency
   })
 }
 
@@ -349,6 +363,7 @@ mutation UpdateGoal(
   $monthly: Float!
   $emoji: String!
   $color: String!
+  $currency: String
 ) @auth(level: USER_ANON) @transaction {
   query @redact {
     households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
@@ -364,7 +379,8 @@ mutation UpdateGoal(
       saved: $saved,
       monthly: $monthly,
       emoji: $emoji,
-      color: $color
+      color: $color,
+      currency: $currency
     }
   )
 }

@@ -65,7 +65,7 @@ export default function DineroPage({ D }) {
                         </div>
                       </div>
                     </div>
-                    <span style={{ fontWeight: 900, fontSize: 15, color: "var(--text)", flexShrink: 0 }}>{fmt(e.amount)}</span>
+                    <span style={{ fontWeight: 900, fontSize: 15, color: "var(--text)", flexShrink: 0 }}>{fmt(e.amount, e.currency)}</span>
                   </div>
                   {!D.isFam && (
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
@@ -146,7 +146,7 @@ export default function DineroPage({ D }) {
                         </div>
                       </div>
                     </div>
-                    <span style={{ fontWeight: 900, fontSize: 15 }}>{fmt(i.amount)}</span>
+                    <span style={{ fontWeight: 900, fontSize: 15 }}>{fmt(i.amount, i.currency)}</span>
                   </div>
                   {!D.isFam && (
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
