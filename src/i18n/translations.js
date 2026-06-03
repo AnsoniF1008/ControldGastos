@@ -67,6 +67,8 @@ export const TRANSLATIONS = {
       noPending: "No hay gastos pendientes este mes",
       byCategory: "Gastos por categoría",
       expensesTrend: "Gastos por mes",
+      byCurrency: "Totales por moneda",
+      consolidatedHint: "Totales consolidados en {cur} usando la tasa de cambio.",
     },
     dinero: {
       expenses: "Gastos",
@@ -165,6 +167,15 @@ export const TRANSLATIONS = {
       notifEnabled: "Recordatorios activados",
       notifDisabled: "Recordatorios desactivados",
       notifBlocked: "Permiso de notificaciones denegado",
+      currencyTitle: "Moneda y tasa de cambio",
+      currencyHint:
+        "Define la tasa Dólar→Bolívar y la moneda en la que quieres ver los totales consolidados.",
+      currentRate: "Tasa actual",
+      rateLabel: "Tasa USD → VES (Bs por 1 $)",
+      baseCurrency: "Moneda para totales",
+      saveRate: "Guardar tasa",
+      rateSaved: "Tasa actualizada",
+      errRate: "Indica una tasa válida (número mayor a 0).",
     },
     addSheet: {
       newExpense: "Nuevo gasto",
@@ -177,6 +188,7 @@ export const TRANSLATIONS = {
       editGoal: "Editar meta",
       name: "Nombre",
       amount: "Monto",
+      currency: "Moneda",
       amountHint:
         "Escribe nombre y monto; usa punto o coma para decimales (ej. 1500 o 1500,50).",
       dueOptional: "Día de vencimiento (1-31, opcional)",
@@ -291,6 +303,10 @@ export const TRANSLATIONS = {
       discover: "Discover",
       otros: "Otros",
     },
+    currency: {
+      usd: "Dólar (USD)",
+      ves: "Bolívar (VES)",
+    },
   },
 
   en: {
@@ -359,6 +375,8 @@ export const TRANSLATIONS = {
       noPending: "No pending expenses this month",
       byCategory: "Expenses by category",
       expensesTrend: "Expenses by month",
+      byCurrency: "Totals by currency",
+      consolidatedHint: "Totals consolidated in {cur} using the exchange rate.",
     },
     dinero: {
       expenses: "Expenses",
@@ -457,6 +475,15 @@ export const TRANSLATIONS = {
       notifEnabled: "Reminders enabled",
       notifDisabled: "Reminders disabled",
       notifBlocked: "Notification permission denied",
+      currencyTitle: "Currency & exchange rate",
+      currencyHint:
+        "Set the Dollar→Bolívar rate and the currency used to show consolidated totals.",
+      currentRate: "Current rate",
+      rateLabel: "Rate USD → VES (Bs per $1)",
+      baseCurrency: "Currency for totals",
+      saveRate: "Save rate",
+      rateSaved: "Rate updated",
+      errRate: "Enter a valid rate (number greater than 0).",
     },
     addSheet: {
       newExpense: "New expense",
@@ -469,6 +496,7 @@ export const TRANSLATIONS = {
       editGoal: "Edit goal",
       name: "Name",
       amount: "Amount",
+      currency: "Currency",
       amountHint: "Enter name and amount; use . or , for decimals (e.g. 1500 or 1500.50).",
       dueOptional: "Due day (1–31, optional)",
       markPaid: "Mark as paid",
@@ -581,6 +609,10 @@ export const TRANSLATIONS = {
       amex: "Amex",
       discover: "Discover",
       otros: "Other",
+    },
+    currency: {
+      usd: "Dollar (USD)",
+      ves: "Bolívar (VES)",
     },
   },
 };

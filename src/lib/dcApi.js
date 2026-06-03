@@ -30,6 +30,7 @@ import {
   resetUserCardsPaid,
 } from "./dataconnect/esm/index.esm.js";
 import { MONTHS } from "./constants";
+import { normalizeCurrency } from "./currency";
 import { sumBudgetsByCategory, splitTotalsEvenly } from "./budgetSplit";
 
 function parseBudgets(raw) {
@@ -50,6 +51,7 @@ function mapExpense(e) {
     frequency: e.frequency,
     paid: e.paid,
     category: e.category,
+    currency: normalizeCurrency(e.currency),
   };
   if (e.dueDay != null) o.dueDay = e.dueDay;
   return o;
@@ -63,6 +65,7 @@ function mapIncome(i) {
     frequency: i.frequency,
     category: i.category,
     received: i.received,
+    currency: normalizeCurrency(i.currency),
   };
 }
 
@@ -76,6 +79,7 @@ function mapCard(c) {
     minPayment: c.minPayment,
     dueDay: c.dueDay,
     paid: c.paid,
+    currency: normalizeCurrency(c.currency),
   };
 }
 
@@ -88,6 +92,7 @@ function mapGoal(g) {
     monthly: g.monthly,
     emoji: g.emoji,
     color: g.color,
+    currency: normalizeCurrency(g.currency),
   };
 }
 
@@ -214,6 +219,7 @@ export async function postExpense(dc, householdId, userId, body) {
     category: body.category,
     paid: Boolean(body.paid),
     dueDay: body.dueDay ?? null,
+    currency: normalizeCurrency(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -228,6 +234,7 @@ export async function patchExpense(dc, householdId, expenseId, body) {
     category: body.category,
     paid: body.paid,
     dueDay: body.dueDay ?? null,
+    currency: normalizeCurrency(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -246,6 +253,7 @@ export async function postIncome(dc, householdId, userId, body) {
     frequency: body.frequency,
     category: body.category,
     received: Boolean(body.received),
+    currency: normalizeCurrency(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -259,6 +267,7 @@ export async function patchIncome(dc, householdId, incomeId, body) {
     frequency: body.frequency,
     category: body.category,
     received: body.received,
+    currency: normalizeCurrency(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -279,6 +288,7 @@ export async function postCard(dc, householdId, userId, body) {
     minPayment: body.minPayment ?? 0,
     dueDay: body.dueDay ?? 15,
     paid: Boolean(body.paid),
+    currency: normalizeCurrency(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -294,6 +304,7 @@ export async function patchCard(dc, householdId, cardId, body) {
     minPayment: body.minPayment,
     dueDay: body.dueDay,
     paid: body.paid,
+    currency: normalizeCurrency(body.currency),
   });
   return fetchUsers(dc);
 }
@@ -313,6 +324,7 @@ export async function postGoal(dc, householdId, userId, data) {
     monthly: data.monthly ?? 0,
     emoji: data.emoji ?? "🎯",
     color: data.color ?? "#7C3AED",
+    currency: normalizeCurrency(data.currency),
   });
   return fetchUsers(dc);
 }
@@ -327,6 +339,7 @@ export async function patchGoal(dc, householdId, goalId, data) {
     monthly: data.monthly,
     emoji: data.emoji,
     color: data.color,
+    currency: normalizeCurrency(data.currency),
   });
   return fetchUsers(dc);
 }

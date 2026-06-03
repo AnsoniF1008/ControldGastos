@@ -26,6 +26,8 @@ type Income @table {
   frequency: String!
   category: String!
   received: Boolean!
+  # Moneda del monto: "USD" o "VES". El default rellena las filas existentes.
+  currency: String! @default(value: "USD")
 }
 
 type Expense @table {
@@ -36,6 +38,7 @@ type Expense @table {
   category: String!
   paid: Boolean!
   dueDay: Int
+  currency: String! @default(value: "USD")
 }
 
 type Card @table {
@@ -47,6 +50,7 @@ type Card @table {
   minPayment: Float!
   dueDay: Int!
   paid: Boolean!
+  currency: String! @default(value: "USD")
 }
 
 type Goal @table {
@@ -57,6 +61,7 @@ type Goal @table {
   monthly: Float!
   emoji: String!
   color: String!
+  currency: String! @default(value: "USD")
 }
 
 type MonthHistory @table {

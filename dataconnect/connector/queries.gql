@@ -22,6 +22,7 @@ query GetHouseholdForMe @auth(level: USER_ANON) {
         category
         paid
         dueDay
+        currency
       }
       incomes_on_user {
         id
@@ -30,6 +31,7 @@ query GetHouseholdForMe @auth(level: USER_ANON) {
         frequency
         category
         received
+        currency
       }
       cards_on_user {
         id
@@ -40,6 +42,7 @@ query GetHouseholdForMe @auth(level: USER_ANON) {
         minPayment
         dueDay
         paid
+        currency
       }
       goals_on_user {
         id
@@ -49,6 +52,7 @@ query GetHouseholdForMe @auth(level: USER_ANON) {
         monthly
         emoji
         color
+        currency
       }
       monthHistories_on_user(orderBy: [{ year: ASC }, { month: ASC }]) {
         id

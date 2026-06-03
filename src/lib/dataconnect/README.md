@@ -136,6 +136,7 @@ export interface GetHouseholdForMeData {
         category: string;
         paid: boolean;
         dueDay?: number | null;
+        currency: string;
       } & Expense_Key)[];
         incomes_on_user: ({
           id: UUIDString;
@@ -144,6 +145,7 @@ export interface GetHouseholdForMeData {
           frequency: string;
           category: string;
           received: boolean;
+          currency: string;
         } & Income_Key)[];
           cards_on_user: ({
             id: UUIDString;
@@ -154,6 +156,7 @@ export interface GetHouseholdForMeData {
             minPayment: number;
             dueDay: number;
             paid: boolean;
+            currency: string;
           } & Card_Key)[];
             goals_on_user: ({
               id: UUIDString;
@@ -163,6 +166,7 @@ export interface GetHouseholdForMeData {
               monthly: number;
               emoji: string;
               color: string;
+              currency: string;
             } & Goal_Key)[];
               monthHistories_on_user: ({
                 id: UUIDString;
@@ -907,6 +911,7 @@ export interface InsertExpenseVariables {
   category: string;
   paid: boolean;
   dueDay?: number | null;
+  currency: string;
 }
 ```
 ### Return Type
@@ -934,13 +939,14 @@ const insertExpenseVars: InsertExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
+  currency: ..., 
 };
 
 // Call the `insertExpense()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await insertExpense(insertExpenseVars);
 // Variables can be defined inline as well.
-const { data } = await insertExpense({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., });
+const { data } = await insertExpense({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -971,12 +977,13 @@ const insertExpenseVars: InsertExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
+  currency: ..., 
 };
 
 // Call the `insertExpenseRef()` function to get a reference to the mutation.
 const ref = insertExpenseRef(insertExpenseVars);
 // Variables can be defined inline as well.
-const ref = insertExpenseRef({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., });
+const ref = insertExpenseRef({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1037,6 +1044,7 @@ export interface UpdateExpenseVariables {
   category: string;
   paid: boolean;
   dueDay?: number | null;
+  currency: string;
 }
 ```
 ### Return Type
@@ -1064,13 +1072,14 @@ const updateExpenseVars: UpdateExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
+  currency: ..., 
 };
 
 // Call the `updateExpense()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await updateExpense(updateExpenseVars);
 // Variables can be defined inline as well.
-const { data } = await updateExpense({ householdId: ..., expenseId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., });
+const { data } = await updateExpense({ householdId: ..., expenseId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1101,12 +1110,13 @@ const updateExpenseVars: UpdateExpenseVariables = {
   category: ..., 
   paid: ..., 
   dueDay: ..., // optional
+  currency: ..., 
 };
 
 // Call the `updateExpenseRef()` function to get a reference to the mutation.
 const ref = updateExpenseRef(updateExpenseVars);
 // Variables can be defined inline as well.
-const ref = updateExpenseRef({ householdId: ..., expenseId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., });
+const ref = updateExpenseRef({ householdId: ..., expenseId: ..., name: ..., amount: ..., frequency: ..., category: ..., paid: ..., dueDay: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1278,6 +1288,7 @@ export interface InsertIncomeVariables {
   frequency: string;
   category: string;
   received: boolean;
+  currency: string;
 }
 ```
 ### Return Type
@@ -1304,13 +1315,14 @@ const insertIncomeVars: InsertIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
+  currency: ..., 
 };
 
 // Call the `insertIncome()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await insertIncome(insertIncomeVars);
 // Variables can be defined inline as well.
-const { data } = await insertIncome({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., });
+const { data } = await insertIncome({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1340,12 +1352,13 @@ const insertIncomeVars: InsertIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
+  currency: ..., 
 };
 
 // Call the `insertIncomeRef()` function to get a reference to the mutation.
 const ref = insertIncomeRef(insertIncomeVars);
 // Variables can be defined inline as well.
-const ref = insertIncomeRef({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., });
+const ref = insertIncomeRef({ householdId: ..., userId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1405,6 +1418,7 @@ export interface UpdateIncomeVariables {
   frequency: string;
   category: string;
   received: boolean;
+  currency: string;
 }
 ```
 ### Return Type
@@ -1431,13 +1445,14 @@ const updateIncomeVars: UpdateIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
+  currency: ..., 
 };
 
 // Call the `updateIncome()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await updateIncome(updateIncomeVars);
 // Variables can be defined inline as well.
-const { data } = await updateIncome({ householdId: ..., incomeId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., });
+const { data } = await updateIncome({ householdId: ..., incomeId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1467,12 +1482,13 @@ const updateIncomeVars: UpdateIncomeVariables = {
   frequency: ..., 
   category: ..., 
   received: ..., 
+  currency: ..., 
 };
 
 // Call the `updateIncomeRef()` function to get a reference to the mutation.
 const ref = updateIncomeRef(updateIncomeVars);
 // Variables can be defined inline as well.
-const ref = updateIncomeRef({ householdId: ..., incomeId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., });
+const ref = updateIncomeRef({ householdId: ..., incomeId: ..., name: ..., amount: ..., frequency: ..., category: ..., received: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1646,6 +1662,7 @@ export interface InsertCardVariables {
   minPayment: number;
   dueDay: number;
   paid: boolean;
+  currency: string;
 }
 ```
 ### Return Type
@@ -1674,13 +1691,14 @@ const insertCardVars: InsertCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
+  currency: ..., 
 };
 
 // Call the `insertCard()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await insertCard(insertCardVars);
 // Variables can be defined inline as well.
-const { data } = await insertCard({ householdId: ..., userId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., });
+const { data } = await insertCard({ householdId: ..., userId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1712,12 +1730,13 @@ const insertCardVars: InsertCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
+  currency: ..., 
 };
 
 // Call the `insertCardRef()` function to get a reference to the mutation.
 const ref = insertCardRef(insertCardVars);
 // Variables can be defined inline as well.
-const ref = insertCardRef({ householdId: ..., userId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., });
+const ref = insertCardRef({ householdId: ..., userId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1779,6 +1798,7 @@ export interface UpdateCardVariables {
   minPayment: number;
   dueDay: number;
   paid: boolean;
+  currency: string;
 }
 ```
 ### Return Type
@@ -1807,13 +1827,14 @@ const updateCardVars: UpdateCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
+  currency: ..., 
 };
 
 // Call the `updateCard()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await updateCard(updateCardVars);
 // Variables can be defined inline as well.
-const { data } = await updateCard({ householdId: ..., cardId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., });
+const { data } = await updateCard({ householdId: ..., cardId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1845,12 +1866,13 @@ const updateCardVars: UpdateCardVariables = {
   minPayment: ..., 
   dueDay: ..., 
   paid: ..., 
+  currency: ..., 
 };
 
 // Call the `updateCardRef()` function to get a reference to the mutation.
 const ref = updateCardRef(updateCardVars);
 // Variables can be defined inline as well.
-const ref = updateCardRef({ householdId: ..., cardId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., });
+const ref = updateCardRef({ householdId: ..., cardId: ..., name: ..., brand: ..., creditLimit: ..., balance: ..., minPayment: ..., dueDay: ..., paid: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -2023,6 +2045,7 @@ export interface InsertGoalVariables {
   monthly: number;
   emoji: string;
   color: string;
+  currency: string;
 }
 ```
 ### Return Type
@@ -2050,13 +2073,14 @@ const insertGoalVars: InsertGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
+  currency: ..., 
 };
 
 // Call the `insertGoal()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await insertGoal(insertGoalVars);
 // Variables can be defined inline as well.
-const { data } = await insertGoal({ householdId: ..., userId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., });
+const { data } = await insertGoal({ householdId: ..., userId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -2087,12 +2111,13 @@ const insertGoalVars: InsertGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
+  currency: ..., 
 };
 
 // Call the `insertGoalRef()` function to get a reference to the mutation.
 const ref = insertGoalRef(insertGoalVars);
 // Variables can be defined inline as well.
-const ref = insertGoalRef({ householdId: ..., userId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., });
+const ref = insertGoalRef({ householdId: ..., userId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -2153,6 +2178,7 @@ export interface UpdateGoalVariables {
   monthly: number;
   emoji: string;
   color: string;
+  currency: string;
 }
 ```
 ### Return Type
@@ -2180,13 +2206,14 @@ const updateGoalVars: UpdateGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
+  currency: ..., 
 };
 
 // Call the `updateGoal()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await updateGoal(updateGoalVars);
 // Variables can be defined inline as well.
-const { data } = await updateGoal({ householdId: ..., goalId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., });
+const { data } = await updateGoal({ householdId: ..., goalId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -2217,12 +2244,13 @@ const updateGoalVars: UpdateGoalVariables = {
   monthly: ..., 
   emoji: ..., 
   color: ..., 
+  currency: ..., 
 };
 
 // Call the `updateGoalRef()` function to get a reference to the mutation.
 const ref = updateGoalRef(updateGoalVars);
 // Variables can be defined inline as well.
-const ref = updateGoalRef({ householdId: ..., goalId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., });
+const ref = updateGoalRef({ householdId: ..., goalId: ..., name: ..., target: ..., saved: ..., monthly: ..., emoji: ..., color: ..., currency: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);

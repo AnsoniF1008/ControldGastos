@@ -3,6 +3,14 @@
 
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { CUR_MONTH, CUR_YEAR, CATS } from "../lib/constants";
+import {
+  convert,
+  sumByCurrency,
+  normalizeCurrency,
+  normalizeRate,
+  DEFAULT_RATE,
+  DEFAULT_CURRENCY,
+} from "../lib/currency";
 import { splitTotalsEvenly, isHouseholdAdmin } from "../lib/budgetSplit";
 import { getHogarDataConnect } from "../lib/dataConnect";
 import * as dcApi from "../lib/dcApi";
@@ -67,6 +75,48 @@ export function useUserData() {
       return v;
     });
   }, []);
+  // ── Tasa de cambio USD->VES y moneda base de consolidación ──────────────────
+  // Se guardan en localStorage (no requieren backend) como darkMode/idioma.
+  const [rate, setRateState] = useState(() => {
+    try {
+      return normalizeRate(localStorage.getItem("hf_rate"));
+    } catch {
+      return DEFAULT_RATE;
+    }
+  });
+  const setRate = useCallback((next) => {
+    setRateState((prev) => {
+      const raw = typeof next === "function" ? next(prev) : next;
+      const v = normalizeRate(raw);
+      try {
+        localStorage.setItem("hf_rate", String(v));
+      } catch {
+        /* ignore */
+      }
+      return v;
+    });
+  }, []);
+
+  const [baseCurrency, setBaseCurrencyState] = useState(() => {
+    try {
+      return normalizeCurrency(localStorage.getItem("hf_base_currency"));
+    } catch {
+      return DEFAULT_CURRENCY;
+    }
+  });
+  const setBaseCurrency = useCallback((next) => {
+    setBaseCurrencyState((prev) => {
+      const raw = typeof next === "function" ? next(prev) : next;
+      const v = normalizeCurrency(raw);
+      try {
+        localStorage.setItem("hf_base_currency", v);
+      } catch {
+        /* ignore */
+      }
+      return v;
+    });
+  }, []);
+
   const [users, setUsers] = useState([]);
   const [activeUid, setActiveUid] = useState("u1");
   const [tab, setTab] = useState("home");
@@ -192,17 +242,40 @@ export function useUserData() {
   const history = isFam ? [] : user?.history || [];
   const budgets = user?.budgets || {};
 
-  const totalExp = expenses.reduce((s, e) => s + e.amount, 0);
-  const paidExp = expenses.filter((e) => e.paid).reduce((s, e) => s + e.amount, 0);
-  const totalInc = incomes.reduce((s, i) => s + i.amount, 0);
-  const recvInc = incomes.filter((i) => i.received).reduce((s, i) => s + i.amount, 0);
+  // Todos los totales escalares se consolidan a la moneda base (`baseCurrency`)
+  // usando la tasa. Con datos antiguos (todo USD) el resultado es idéntico al de
+  // antes, así que no se rompe la compatibilidad.
+  const conv = useCallback(
+    (amount, currency) => convert(amount, currency, baseCurrency, rate),
+    [baseCurrency, rate]
+  );
+
+  const totalExp = expenses.reduce((s, e) => s + conv(e.amount, e.currency), 0);
+  const paidExp = expenses
+    .filter((e) => e.paid)
+    .reduce((s, e) => s + conv(e.amount, e.currency), 0);
+  const totalInc = incomes.reduce((s, i) => s + conv(i.amount, i.currency), 0);
+  const recvInc = incomes
+    .filter((i) => i.received)
+    .reduce((s, i) => s + conv(i.amount, i.currency), 0);
   const netBalance = totalInc - totalExp;
-  const totalCardMin = cards.reduce((s, c) => s + c.minPayment, 0);
-  const paidCardMin = cards.filter((c) => c.paid).reduce((s, c) => s + c.minPayment, 0);
-  const totalDebt = cards.reduce((s, c) => s + c.balance, 0);
-  const q1Total = expenses.filter((e) => e.frequency !== "2da").reduce((s, e) => s + e.amount, 0);
-  const q2Total = expenses.filter((e) => e.frequency !== "1ra").reduce((s, e) => s + e.amount, 0);
+  const totalCardMin = cards.reduce((s, c) => s + conv(c.minPayment, c.currency), 0);
+  const paidCardMin = cards
+    .filter((c) => c.paid)
+    .reduce((s, c) => s + conv(c.minPayment, c.currency), 0);
+  const totalDebt = cards.reduce((s, c) => s + conv(c.balance, c.currency), 0);
+  const q1Total = expenses
+    .filter((e) => e.frequency !== "2da")
+    .reduce((s, e) => s + conv(e.amount, e.currency), 0);
+  const q2Total = expenses
+    .filter((e) => e.frequency !== "1ra")
+    .reduce((s, e) => s + conv(e.amount, e.currency), 0);
   const pendingExp = expenses.filter((e) => !e.paid);
+
+  // Subtotales por moneda (sin convertir) para mostrar "$ … / Bs …".
+  const expByCurrency = useMemo(() => sumByCurrency(expenses, "amount"), [expenses]);
+  const incByCurrency = useMemo(() => sumByCurrency(incomes, "amount"), [incomes]);
+  const debtByCurrency = useMemo(() => sumByCurrency(cards, "balance"), [cards]);
 
   const handleRegister = async ({ email, password, name, emoji, color }) => {
     isRegistering.current = true;
@@ -290,6 +363,7 @@ export function useUserData() {
       category: form.category,
       dueDay: form.dueDay ? parseInt(form.dueDay, 10) : null,
       paid: editId ? (form.paid !== undefined ? form.paid : cur?.paid) : false,
+      currency: normalizeCurrency(form.currency ?? cur?.currency),
     };
     const dc = requireDc();
     const { users: nu } = editId
@@ -335,6 +409,7 @@ export function useUserData() {
       frequency: form.frequency,
       category: form.category,
       received: editId ? (form.received !== undefined ? form.received : cur?.received) : false,
+      currency: normalizeCurrency(form.currency ?? cur?.currency),
     };
     const dc = requireDc();
     const { users: nu } = editId
@@ -371,6 +446,7 @@ export function useUserData() {
       minPayment: c.minPayment,
       dueDay: c.dueDay,
       paid: !c.paid,
+      currency: normalizeCurrency(c.currency),
     });
     applyUsers(nu);
   };
@@ -387,6 +463,7 @@ export function useUserData() {
       minPayment: parseMoney(form.minPayment === "" || form.minPayment == null ? "0" : form.minPayment),
       dueDay: parseInt(form.dueDay || 15, 10),
       paid: editId ? (form.paid !== undefined ? form.paid : cur?.paid) : false,
+      currency: normalizeCurrency(form.currency ?? cur?.currency),
     };
     const dc = requireDc();
     const { users: nu } = editId
@@ -424,6 +501,7 @@ export function useUserData() {
       ),
       emoji: form.emoji ?? cur?.emoji,
       color: form.color ?? cur?.color,
+      currency: normalizeCurrency(form.currency ?? cur?.currency),
     };
     const dc = requireDc();
     const { users: nu } = editId
@@ -598,6 +676,14 @@ export function useUserData() {
     q1Total,
     q2Total,
     pendingExp,
+
+    rate,
+    setRate,
+    baseCurrency,
+    setBaseCurrency,
+    expByCurrency,
+    incByCurrency,
+    debtByCurrency,
 
     toggleExpense,
     saveExpense,

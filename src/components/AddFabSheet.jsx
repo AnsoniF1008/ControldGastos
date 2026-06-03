@@ -7,6 +7,8 @@ import {
   BRAND_COLOR,
   GOAL_EMOJIS,
   PROFILE_COLORS,
+  CURRENCY_CODES,
+  normalizeCurrency,
 } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
@@ -14,6 +16,15 @@ function amountOk(s) {
   const n = parseFloat(String(s ?? "").replace(",", ".").trim());
   return Number.isFinite(n) && n >= 0;
 }
+
+const curLabelStyle = {
+  fontSize: 11,
+  fontWeight: 800,
+  color: "var(--muted)",
+  margin: "0 0 6px",
+  textTransform: "uppercase",
+  letterSpacing: 0.3,
+};
 
 export default function AddFabSheet({ D }) {
   const { t } = useI18n();
@@ -30,6 +41,7 @@ export default function AddFabSheet({ D }) {
   const [category, setCategory] = useState("otros");
   const [dueDay, setDueDay] = useState("");
   const [expPaid, setExpPaid] = useState(false);
+  const [currency, setCurrency] = useState("USD");
 
   const [brand, setBrand] = useState("visa");
   const [limit, setLimit] = useState("");
@@ -61,6 +73,11 @@ export default function AddFabSheet({ D }) {
     [t]
   );
 
+  const currencyOpts = useMemo(
+    () => CURRENCY_CODES.map((c) => [c, t(`currency.${c.toLowerCase()}`)]),
+    [t]
+  );
+
   useEffect(() => {
     if (!open || !kind) return;
 
@@ -71,6 +88,7 @@ export default function AddFabSheet({ D }) {
       setCategory("otros");
       setDueDay("");
       setExpPaid(false);
+      setCurrency("USD");
     };
     const resetIncome = () => {
       setName("");
@@ -78,6 +96,7 @@ export default function AddFabSheet({ D }) {
       setFrequency("mensual");
       setCategory("salario");
       setIncReceived(false);
+      setCurrency("USD");
     };
     const resetCard = () => {
       setName("");
@@ -87,6 +106,7 @@ export default function AddFabSheet({ D }) {
       setMinPayment("");
       setCardDue("15");
       setCardPaid(false);
+      setCurrency("USD");
     };
     const resetGoal = () => {
       setName("");
@@ -95,6 +115,7 @@ export default function AddFabSheet({ D }) {
       setMonthly("");
       setGEmoji(GOAL_EMOJIS[0]);
       setGColor(PROFILE_COLORS[0]);
+      setCurrency("USD");
     };
 
     if (kind === "expense") {
@@ -107,6 +128,7 @@ export default function AddFabSheet({ D }) {
           setCategory(e.category);
           setDueDay(e.dueDay != null ? String(e.dueDay) : "");
           setExpPaid(Boolean(e.paid));
+          setCurrency(normalizeCurrency(e.currency));
           return;
         }
       }
@@ -122,6 +144,7 @@ export default function AddFabSheet({ D }) {
           setFrequency(row.frequency);
           setCategory(row.category);
           setIncReceived(Boolean(row.received));
+          setCurrency(normalizeCurrency(row.currency));
           return;
         }
       }
@@ -139,6 +162,7 @@ export default function AddFabSheet({ D }) {
           setMinPayment(String(c.minPayment));
           setCardDue(String(c.dueDay ?? 15));
           setCardPaid(Boolean(c.paid));
+          setCurrency(normalizeCurrency(c.currency));
           return;
         }
       }
@@ -155,6 +179,7 @@ export default function AddFabSheet({ D }) {
           setMonthly(String(g.monthly ?? 0));
           setGEmoji(g.emoji || GOAL_EMOJIS[0]);
           setGColor(g.color || PROFILE_COLORS[0]);
+          setCurrency(normalizeCurrency(g.currency));
           return;
         }
       }
@@ -175,6 +200,7 @@ export default function AddFabSheet({ D }) {
             frequency,
             category,
             dueDay,
+            currency,
             ...(isEdit ? { paid: expPaid } : {}),
           },
           editId
@@ -186,6 +212,7 @@ export default function AddFabSheet({ D }) {
             amount,
             frequency,
             category,
+            currency,
             ...(isEdit ? { received: incReceived } : {}),
           },
           editId
@@ -199,6 +226,7 @@ export default function AddFabSheet({ D }) {
             balance,
             minPayment,
             dueDay: cardDue,
+            currency,
             ...(isEdit ? { paid: cardPaid } : {}),
           },
           editId
@@ -212,6 +240,7 @@ export default function AddFabSheet({ D }) {
             monthly: monthly || "0",
             emoji: gEmoji,
             color: gColor,
+            currency,
           },
           editId
         );
@@ -256,6 +285,8 @@ export default function AddFabSheet({ D }) {
           </p>
           <Sel val={frequency} set={setFrequency} opts={freqOpts} />
           <Sel val={category} set={setCategory} opts={catOpts} />
+          <p style={curLabelStyle}>{t("addSheet.currency")}</p>
+          <Sel val={currency} set={setCurrency} opts={currencyOpts} />
           {kind === "expense" && (
             <Inp ph={t("addSheet.dueOptional")} val={dueDay} set={setDueDay} type="number" />
           )}
@@ -278,6 +309,8 @@ export default function AddFabSheet({ D }) {
         <>
           <Inp ph={t("addSheet.cardName")} val={name} set={setName} />
           <Sel val={brand} set={setBrand} opts={brandOpts} />
+          <p style={curLabelStyle}>{t("addSheet.currency")}</p>
+          <Sel val={currency} set={setCurrency} opts={currencyOpts} />
           <Inp ph={t("addSheet.creditLimit")} val={limit} set={setLimit} type="number" />
           <Inp ph={t("addSheet.balance")} val={balance} set={setBalance} type="number" />
           <Inp ph={t("addSheet.minPayment")} val={minPayment} set={setMinPayment} type="number" />
@@ -294,6 +327,8 @@ export default function AddFabSheet({ D }) {
       {kind === "goal" && (
         <>
           <Inp ph={t("addSheet.goalName")} val={name} set={setName} />
+          <p style={curLabelStyle}>{t("addSheet.currency")}</p>
+          <Sel val={currency} set={setCurrency} opts={currencyOpts} />
           <Inp ph={t("addSheet.goalTarget")} val={target} set={setTarget} type="number" />
           <Inp ph={t("addSheet.savedSoFar")} val={saved} set={setSaved} type="number" />
           <Inp ph={t("addSheet.monthlyPlanned")} val={monthly} set={setMonthly} type="number" />

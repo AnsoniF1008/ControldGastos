@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { ActionRow, Toggle, Confirm, SectionTitle, Inp, BtnPrimary, Sheet } from "../components/atoms";
-import { CATS, CAT_ICON, PROFILE_COLORS, PROFILE_EMOJIS, fmt } from "../lib/constants";
+import { ActionRow, Toggle, Confirm, SectionTitle, Inp, BtnPrimary, Sheet, Sel } from "../components/atoms";
+import { CATS, CAT_ICON, PROFILE_COLORS, PROFILE_EMOJIS, fmt, CURRENCY_CODES, CURRENCIES } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 import {
   isPlaidBuildEnabled,
@@ -49,18 +49,25 @@ export default function MasPage({ D }) {
     Object.fromEntries(CATS.map((c) => [c, ""]))
   );
 
+  const [rateLocal, setRateLocal] = useState(() => String(D.rate));
+  useEffect(() => {
+    setRateLocal(String(D.rate));
+  }, [D.rate]);
+
   useEffect(() => {
     const b = D.budgets || {};
     setBudgetsLocal(Object.fromEntries(CATS.map((c) => [c, String(b[c] ?? "")])));
   }, [D.budgets, D.activeUid]);
 
+  const base = D.baseCurrency;
+
   const historyLine = (h) =>
     t("mas.historyLine")
-      .replace("{exp}", fmt(h.totalExp))
-      .replace("{paid}", fmt(h.paidExp))
-      .replace("{inc}", fmt(h.totalInc))
-      .replace("{recv}", fmt(h.recvInc))
-      .replace("{debt}", fmt(h.totalDebt));
+      .replace("{exp}", fmt(h.totalExp, base))
+      .replace("{paid}", fmt(h.paidExp, base))
+      .replace("{inc}", fmt(h.totalInc, base))
+      .replace("{recv}", fmt(h.recvInc, base))
+      .replace("{debt}", fmt(h.totalDebt, base));
 
   const monthlyBudgetTotal = CATS.reduce((sum, c) => {
     const n = parseFloat(String(budgetsLocal[c] ?? "").replace(",", "."));
@@ -83,6 +90,57 @@ export default function MasPage({ D }) {
             {t("login.langEn")}
           </button>
         </div>
+      </div>
+
+      <div style={{ background: "var(--card)", borderRadius: 20, border: "1px solid var(--border)", padding: "8px 16px 16px", marginBottom: 16 }}>
+        <SectionTitle color={D.acc}>{t("mas.currencyTitle")}</SectionTitle>
+        <p style={{ fontSize: 12, color: "var(--muted)", marginBottom: 10, lineHeight: 1.4 }}>
+          {t("mas.currencyHint")}
+        </p>
+        <div
+          style={{
+            background: "var(--sub)",
+            border: "1px solid var(--border)",
+            borderRadius: 12,
+            padding: "10px 12px",
+            marginBottom: 12,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--muted)" }}>
+            {t("mas.currentRate")}
+          </span>
+          <span style={{ fontSize: 15, fontWeight: 900, color: D.acc }}>
+            {fmt(1, "USD")} = {fmt(D.rate, "VES")}
+          </span>
+        </div>
+        <p style={{ fontSize: 11, fontWeight: 800, color: "var(--muted)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.3 }}>
+          {t("mas.rateLabel")}
+        </p>
+        <Inp ph="40" val={rateLocal} set={setRateLocal} type="text" inputMode="decimal" />
+        <p style={{ fontSize: 11, fontWeight: 800, color: "var(--muted)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.3 }}>
+          {t("mas.baseCurrency")}
+        </p>
+        <Sel
+          val={D.baseCurrency}
+          set={D.setBaseCurrency}
+          opts={CURRENCY_CODES.map((c) => [c, t(`currency.${c.toLowerCase()}`)])}
+        />
+        <BtnPrimary
+          onClick={() => {
+            const n = parseFloat(String(rateLocal).replace(",", ".").trim());
+            if (!Number.isFinite(n) || n <= 0) {
+              D.showToast?.(t("mas.errRate"), "err");
+              return;
+            }
+            D.setRate(n);
+            D.showToast?.(t("mas.rateSaved"));
+          }}
+        >
+          {t("mas.saveRate")}
+        </BtnPrimary>
       </div>
 
       {isPlaidBuildEnabled() && (
@@ -304,7 +362,7 @@ export default function MasPage({ D }) {
               {t("mas.budgetsTotal")}
             </span>
             <span style={{ fontSize: 16, fontWeight: 900, color: D.acc }}>
-              {fmt(monthlyBudgetTotal)}
+              {fmt(monthlyBudgetTotal, base)}
             </span>
           </div>
           <p
@@ -317,7 +375,7 @@ export default function MasPage({ D }) {
           >
             {isOverBudget ? t("mas.budgetOverBy") : t("mas.budgetRemaining")}
             {" "}
-            {fmt(Math.abs(budgetDelta))}
+            {fmt(Math.abs(budgetDelta), base)}
           </p>
           <p style={{ margin: "6px 2px 0", fontSize: 12, fontWeight: 700, color: "var(--muted)" }}>
             {t("mas.budgetUsedPct").replace("{pct}", String(budgetUsedPct))}

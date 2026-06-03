@@ -35,6 +35,15 @@ extend type Card {
     distinct: Boolean = false
   ): Int! @fdc_generated(from: "Card.creditLimit", purpose: QUERY_COUNT)
   """
+  ✨ Count the number of rows in the `Card` table where the `currency` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  currency_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Card.currency", purpose: QUERY_COUNT)
+  """
   ✨ Count the number of rows in the `Card` table where the `dueDay` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   dueDay_count(
@@ -225,6 +234,15 @@ extend type Expense {
     distinct: Boolean = false
   ): Int! @fdc_generated(from: "Expense.category", purpose: QUERY_COUNT)
   """
+  ✨ Count the number of rows in the `Expense` table where the `currency` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  currency_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Expense.currency", purpose: QUERY_COUNT)
+  """
   ✨ Count the number of rows in the `Expense` table where the `dueDay` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
   dueDay_count(
@@ -353,6 +371,15 @@ extend type Goal {
     """
     distinct: Boolean = false
   ): Int! @fdc_generated(from: "Goal.color", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Goal` table where the `currency` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  currency_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Goal.currency", purpose: QUERY_COUNT)
   """
   ✨ Count the number of rows in the `Goal` table where the `emoji` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """
@@ -609,6 +636,15 @@ extend type Income {
     """
     distinct: Boolean = false
   ): Int! @fdc_generated(from: "Income.category", purpose: QUERY_COUNT)
+  """
+  ✨ Count the number of rows in the `Income` table where the `currency` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
+  """
+  currency_count(
+    """
+    Set to true to count the number of distinct values.
+    """
+    distinct: Boolean = false
+  ): Int! @fdc_generated(from: "Income.currency", purpose: QUERY_COUNT)
   """
   ✨ Count the number of rows in the `Income` table where the `frequency` field is non-null. Pass the `distinct` argument to instead count the number of distinct values.
   """

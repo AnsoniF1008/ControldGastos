@@ -1,5 +1,21 @@
 // src/lib/constants.js
 
+// Formateo y conversión de moneda viven en currency.js. Se re-exportan aquí
+// para no romper los imports existentes `import { fmt } from "../lib/constants"`.
+export {
+  fmt,
+  convert,
+  CURRENCIES,
+  CURRENCY_CODES,
+  DEFAULT_RATE,
+  DEFAULT_CURRENCY,
+  normalizeCurrency,
+  normalizeRate,
+  sumByCurrency,
+  consolidate,
+  hasMixedCurrencies,
+} from "./currency.js";
+
 export const MONTHS = [
   "Enero","Febrero","Marzo","Abril","Mayo","Junio",
   "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
@@ -8,9 +24,6 @@ export const MONTHS = [
 export const NOW       = new Date();
 export const CUR_MONTH = MONTHS[NOW.getMonth()];
 export const CUR_YEAR  = NOW.getFullYear();
-
-export const fmt = (n = 0, locale = "en-US") =>
-  `$${Math.abs(n).toLocaleString(locale, { maximumFractionDigits: 0 })}`;
 
 export const pct = (a, b) =>
   b > 0 ? Math.min(100, Math.round((a / b) * 100)) : 0;
