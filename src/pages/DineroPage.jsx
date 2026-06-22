@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FreqBadge, StatusBadge, DueBadge, Toggle, SectionTitle, EmptyState, Confirm } from "../components/atoms";
 import { fmt, CAT_ICON, INC_ICON } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
@@ -15,15 +15,54 @@ const pill = (active, acc) => ({
   color: active ? "white" : "var(--muted)",
 });
 
-export default function DineroPage({ D }) {
+const filterPill = (active, acc) => ({
+  padding: "7px 14px",
+  borderRadius: 20,
+  border: active ? `1px solid ${acc}` : "1px solid var(--border)",
+  fontWeight: 800,
+  fontSize: 12,
+  cursor: "pointer",
+  whiteSpace: "nowrap",
+  background: active ? `${acc}18` : "var(--card)",
+  color: active ? acc : "var(--muted)",
+  fontFamily: "inherit",
+});
+
+export default function DineroPage({ D, isDesktop }) {
   const { t } = useI18n();
   const isGastos = D.subTab === "gastos";
   const [deletingId, setDeletingId] = useState(null);
   const [toDelete, setToDelete] = useState(null);
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("all"); // all | done | pending
+
+  const items = isGastos ? D.expenses : D.incomes;
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return items.filter((it) => {
+      if (q && !String(it.name || "").toLowerCase().includes(q)) return false;
+      const done = isGastos ? it.paid : it.received;
+      if (filter === "done" && !done) return false;
+      if (filter === "pending" && done) return false;
+      return true;
+    });
+  }, [items, query, filter, isGastos]);
+
+  const listStyle = isDesktop
+    ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }
+    : { display: "flex", flexDirection: "column", gap: 10 };
+
+  const cardBase = {
+    background: "var(--card)",
+    borderRadius: 16,
+    border: "1px solid var(--border)",
+    padding: "12px 14px",
+  };
 
   return (
     <div style={{ paddingTop: 8 }}>
-      <div style={{ display: "flex", gap: 8, marginBottom: 16, background: "var(--card)", padding: 6, borderRadius: 16, border: "1px solid var(--border)" }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 14, background: "var(--card)", padding: 6, borderRadius: 16, border: "1px solid var(--border)" }}>
         <button type="button" style={pill(isGastos, D.acc)} onClick={() => D.setSubTab("gastos")}>
           {t("dinero.expenses")}
         </button>
@@ -32,23 +71,42 @@ export default function DineroPage({ D }) {
         </button>
       </div>
 
+      {/* Búsqueda + filtros */}
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder={t("dinero.searchPh")}
+        style={{
+          width: "100%", padding: "12px 16px", borderRadius: 14,
+          border: "1.5px solid var(--inp-b)", fontSize: 14, fontWeight: 700,
+          background: "var(--inp)", color: "var(--text)", outline: "none",
+          marginBottom: 10, fontFamily: "inherit",
+        }}
+      />
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, overflowX: "auto", paddingBottom: 2 }}>
+        <button type="button" style={filterPill(filter === "all", D.acc)} onClick={() => setFilter("all")}>
+          {t("dinero.filterAll")}
+        </button>
+        <button type="button" style={filterPill(filter === "done", D.acc)} onClick={() => setFilter("done")}>
+          {isGastos ? t("dinero.filterPaid") : t("dinero.filterReceived")}
+        </button>
+        <button type="button" style={filterPill(filter === "pending", D.acc)} onClick={() => setFilter("pending")}>
+          {t("dinero.filterPending")}
+        </button>
+      </div>
+
       {isGastos ? (
         <>
-          <SectionTitle color={D.acc} count={D.expenses.length}>{t("dinero.movements")}</SectionTitle>
+          <SectionTitle color={D.acc} count={filtered.length}>{t("dinero.movements")}</SectionTitle>
           {D.expenses.length === 0 ? (
             <EmptyState icon="💸" msg={t("dinero.noExpenses")} />
+          ) : filtered.length === 0 ? (
+            <EmptyState icon="🔍" msg={t("dinero.noResults")} sub={t("dinero.noResultsSub")} />
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {D.expenses.map((e) => (
-                <div
-                  key={e.id}
-                  style={{
-                    background: "var(--card)",
-                    borderRadius: 16,
-                    border: "1px solid var(--border)",
-                    padding: "12px 14px",
-                  }}
-                >
+            <div style={listStyle}>
+              {filtered.map((e) => (
+                <div key={e.id} style={cardBase}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
                       <span style={{ fontSize: 22 }}>{CAT_ICON[e.category] || "📌"}</span>
@@ -74,14 +132,9 @@ export default function DineroPage({ D }) {
                           type="button"
                           onClick={() => D.openFabEdit("expense", e.id)}
                           style={{
-                            fontSize: 12,
-                            fontWeight: 800,
-                            color: D.acc,
-                            background: `${D.acc}14`,
-                            border: `1px solid ${D.acc}55`,
-                            borderRadius: 10,
-                            padding: "6px 12px",
-                            cursor: "pointer",
+                            fontSize: 12, fontWeight: 800, color: D.acc,
+                            background: `${D.acc}14`, border: `1px solid ${D.acc}55`,
+                            borderRadius: 10, padding: "6px 12px", cursor: "pointer",
                           }}
                         >
                           {t("dinero.edit")}
@@ -91,14 +144,9 @@ export default function DineroPage({ D }) {
                           disabled={deletingId === e.id}
                           onClick={() => setToDelete({ kind: "expense", id: e.id })}
                           style={{
-                            fontSize: 12,
-                            fontWeight: 800,
-                            color: "#B91C1C",
-                            background: "transparent",
-                            border: "1px solid var(--border)",
-                            borderRadius: 10,
-                            padding: "6px 10px",
-                            cursor: "pointer",
+                            fontSize: 12, fontWeight: 800, color: "#B91C1C",
+                            background: "transparent", border: "1px solid var(--border)",
+                            borderRadius: 10, padding: "6px 10px", cursor: "pointer",
                           }}
                         >
                           {t("dinero.delete")}
@@ -117,21 +165,15 @@ export default function DineroPage({ D }) {
         </>
       ) : (
         <>
-          <SectionTitle color={D.acc} count={D.incomes.length}>{t("dinero.incomes")}</SectionTitle>
+          <SectionTitle color={D.acc} count={filtered.length}>{t("dinero.incomes")}</SectionTitle>
           {D.incomes.length === 0 ? (
             <EmptyState icon="💰" msg={t("dinero.noIncomes")} />
+          ) : filtered.length === 0 ? (
+            <EmptyState icon="🔍" msg={t("dinero.noResults")} sub={t("dinero.noResultsSub")} />
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {D.incomes.map((i) => (
-                <div
-                  key={i.id}
-                  style={{
-                    background: "var(--card)",
-                    borderRadius: 16,
-                    border: "1px solid var(--border)",
-                    padding: "12px 14px",
-                  }}
-                >
+            <div style={listStyle}>
+              {filtered.map((i) => (
+                <div key={i.id} style={cardBase}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 22 }}>{INC_ICON[i.category] || "💰"}</span>
@@ -155,14 +197,9 @@ export default function DineroPage({ D }) {
                           type="button"
                           onClick={() => D.openFabEdit("income", i.id)}
                           style={{
-                            fontSize: 12,
-                            fontWeight: 800,
-                            color: D.acc,
-                            background: `${D.acc}14`,
-                            border: `1px solid ${D.acc}55`,
-                            borderRadius: 10,
-                            padding: "6px 12px",
-                            cursor: "pointer",
+                            fontSize: 12, fontWeight: 800, color: D.acc,
+                            background: `${D.acc}14`, border: `1px solid ${D.acc}55`,
+                            borderRadius: 10, padding: "6px 12px", cursor: "pointer",
                           }}
                         >
                           {t("dinero.edit")}
@@ -172,14 +209,9 @@ export default function DineroPage({ D }) {
                           disabled={deletingId === i.id}
                           onClick={() => setToDelete({ kind: "income", id: i.id })}
                           style={{
-                            fontSize: 12,
-                            fontWeight: 800,
-                            color: "#B91C1C",
-                            background: "transparent",
-                            border: "1px solid var(--border)",
-                            borderRadius: 10,
-                            padding: "6px 10px",
-                            cursor: "pointer",
+                            fontSize: 12, fontWeight: 800, color: "#B91C1C",
+                            background: "transparent", border: "1px solid var(--border)",
+                            borderRadius: 10, padding: "6px 10px", cursor: "pointer",
                           }}
                         >
                           {t("dinero.delete")}

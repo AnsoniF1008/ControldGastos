@@ -45,6 +45,10 @@ export const TRANSLATIONS = {
       familyView: "Vista Familiar 👨‍👩‍👧",
       hello: "Hola",
     },
+    theme: {
+      light: "Modo claro",
+      dark: "Modo oscuro",
+    },
     summary: {
       income: "Ingresos",
       expense: "Gastos",
@@ -83,6 +87,13 @@ export const TRANSLATIONS = {
       received: "Recibido",
       confirmDeleteExp: "¿Eliminar este gasto?",
       confirmDeleteInc: "¿Eliminar este ingreso?",
+      searchPh: "Buscar por nombre…",
+      filterAll: "Todos",
+      filterPaid: "Pagados",
+      filterPending: "Pendientes",
+      filterReceived: "Recibidos",
+      noResults: "Sin resultados",
+      noResultsSub: "Prueba con otra búsqueda o filtro",
     },
     tarjetas: {
       title: "Tarjetas",
@@ -353,6 +364,10 @@ export const TRANSLATIONS = {
       familyView: "Family view 👨‍👩‍👧",
       hello: "Hi",
     },
+    theme: {
+      light: "Light mode",
+      dark: "Dark mode",
+    },
     summary: {
       income: "Income",
       expense: "Expenses",
@@ -391,6 +406,13 @@ export const TRANSLATIONS = {
       received: "Received",
       confirmDeleteExp: "Delete this expense?",
       confirmDeleteInc: "Delete this income?",
+      searchPh: "Search by name…",
+      filterAll: "All",
+      filterPaid: "Paid",
+      filterPending: "Pending",
+      filterReceived: "Received",
+      noResults: "No results",
+      noResultsSub: "Try another search or filter",
     },
     tarjetas: {
       title: "Cards",

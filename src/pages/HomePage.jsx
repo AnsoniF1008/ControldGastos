@@ -15,7 +15,7 @@ function shortMonth(label, locale) {
   return d.toLocaleString(locale, { month: "short" }).replace(".", "");
 }
 
-export default function HomePage({ D }) {
+export default function HomePage({ D, isDesktop }) {
   const { t, locale } = useI18n();
   const base = D.baseCurrency;
   const rate = D.rate;
@@ -144,8 +144,10 @@ export default function HomePage({ D }) {
       {D.pendingExp.length === 0 ? (
         <EmptyState icon="✅" msg={t("home.allSet")} sub={t("home.noPending")} />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {D.pendingExp.slice(0, 5).map((e) => (
+        <div style={isDesktop
+          ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
+          : { display: "flex", flexDirection: "column", gap: 10 }}>
+          {D.pendingExp.slice(0, isDesktop ? 8 : 5).map((e) => (
             <div
               key={e.id}
               style={{
