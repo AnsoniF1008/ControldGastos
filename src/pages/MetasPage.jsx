@@ -3,11 +3,15 @@ import { SectionTitle, Bar, EmptyState, Inp, Confirm } from "../components/atoms
 import { fmt } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
-export default function MetasPage({ D }) {
+export default function MetasPage({ D, isDesktop }) {
   const { t } = useI18n();
   const [contribById, setContribById] = useState({});
   const [busyId, setBusyId] = useState(null);
   const [toDelete, setToDelete] = useState(null);
+
+  const listStyle = isDesktop
+    ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "start" }
+    : { display: "flex", flexDirection: "column", gap: 12 };
 
   return (
     <div style={{ paddingTop: 8 }}>
@@ -15,7 +19,7 @@ export default function MetasPage({ D }) {
       {D.goals.length === 0 ? (
         <EmptyState icon="🎯" msg={t("metas.noGoals")} />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={listStyle}>
           {D.goals.map((g) => (
             <div
               key={g.id}

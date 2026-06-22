@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { SectionTitle, StatCard, EmptyState } from "../components/atoms";
-import { PieChart, PieLegend, BarChart } from "../components/Charts";
+import { PieChart, PieLegend, BarChart, GroupedBarChart } from "../components/Charts";
 import { fmt, CAT_ICON, convert, CURRENCY_CODES } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
@@ -15,7 +15,7 @@ function shortMonth(label, locale) {
   return d.toLocaleString(locale, { month: "short" }).replace(".", "");
 }
 
-export default function HomePage({ D }) {
+export default function HomePage({ D, isDesktop }) {
   const { t, locale } = useI18n();
   const base = D.baseCurrency;
   const rate = D.rate;
@@ -57,6 +57,14 @@ export default function HomePage({ D }) {
     return D.history.slice(-6).map((h) => ({
       label: shortMonth(h.month, locale),
       value: h.totalExp || 0,
+    }));
+  }, [D.history, locale]);
+
+  const monthCompare = useMemo(() => {
+    if (!D.history?.length) return [];
+    return D.history.slice(-6).map((h) => ({
+      label: shortMonth(h.month, locale),
+      values: [h.totalInc || 0, h.totalExp || 0],
     }));
   }, [D.history, locale]);
 
@@ -140,12 +148,36 @@ export default function HomePage({ D }) {
         </div>
       )}
 
+      {monthCompare.length > 0 && (
+        <div
+          style={{
+            background: "var(--card)",
+            borderRadius: 20,
+            border: "1px solid var(--border)",
+            padding: 16,
+            marginBottom: 16,
+          }}
+        >
+          <SectionTitle color={D.acc}>{t("home.incomeVsExpense")}</SectionTitle>
+          <GroupedBarChart
+            data={monthCompare}
+            series={[
+              { name: t("summary.income"), color: "#10B981" },
+              { name: t("summary.expense"), color: "#EF4444" },
+            ]}
+            formatValue={(n) => fmt(n, base)}
+          />
+        </div>
+      )}
+
       <SectionTitle count={D.pendingExp.length} color={D.acc}>{t("home.pending")}</SectionTitle>
       {D.pendingExp.length === 0 ? (
         <EmptyState icon="✅" msg={t("home.allSet")} sub={t("home.noPending")} />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {D.pendingExp.slice(0, 5).map((e) => (
+        <div style={isDesktop
+          ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
+          : { display: "flex", flexDirection: "column", gap: 10 }}>
+          {D.pendingExp.slice(0, isDesktop ? 8 : 5).map((e) => (
             <div
               key={e.id}
               style={{

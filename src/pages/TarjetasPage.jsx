@@ -3,10 +3,14 @@ import { SectionTitle, StatusBadge, Toggle, Bar, EmptyState, Confirm } from "../
 import { fmt, BRAND_COLOR } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
-export default function TarjetasPage({ D }) {
+export default function TarjetasPage({ D, isDesktop }) {
   const { t } = useI18n();
   const [deletingId, setDeletingId] = useState(null);
   const [toDelete, setToDelete] = useState(null);
+
+  const listStyle = isDesktop
+    ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }
+    : { display: "flex", flexDirection: "column", gap: 12 };
 
   return (
     <div style={{ paddingTop: 8 }}>
@@ -14,7 +18,7 @@ export default function TarjetasPage({ D }) {
       {D.cards.length === 0 ? (
         <EmptyState icon="💳" msg={t("tarjetas.noCards")} />
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={listStyle}>
           {D.cards.map((c) => {
             const brand = BRAND_COLOR[c.brand] || BRAND_COLOR.otros;
             const util = c.limit > 0 ? Math.min(100, Math.round((c.balance / c.limit) * 100)) : 0;
