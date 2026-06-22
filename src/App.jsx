@@ -187,8 +187,8 @@ export default function App() {
       <div className="hf-page" key={D.tab}>
         {D.tab === "home"     && <HomePage     D={D} isDesktop={isDesktop} />}
         {D.tab === "dinero"   && <DineroPage   D={D} isDesktop={isDesktop} />}
-        {D.tab === "tarjetas" && <TarjetasPage D={D} />}
-        {D.tab === "metas"    && <MetasPage    D={D} />}
+        {D.tab === "tarjetas" && <TarjetasPage D={D} isDesktop={isDesktop} />}
+        {D.tab === "metas"    && <MetasPage    D={D} isDesktop={isDesktop} />}
         {D.tab === "bancos"   && isPlaidTabVisible() && (
           <PlaidPage
             userId={D.isFam ? D.users[0]?.id : D.activeUid}

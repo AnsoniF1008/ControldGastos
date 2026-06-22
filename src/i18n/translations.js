@@ -94,6 +94,7 @@ export const TRANSLATIONS = {
       filterReceived: "Recibidos",
       noResults: "Sin resultados",
       noResultsSub: "Prueba con otra búsqueda o filtro",
+      allCategories: "Todas las categorías",
     },
     tarjetas: {
       title: "Tarjetas",
@@ -413,6 +414,7 @@ export const TRANSLATIONS = {
       filterReceived: "Received",
       noResults: "No results",
       noResultsSub: "Try another search or filter",
+      allCategories: "All categories",
     },
     tarjetas: {
       title: "Cards",
