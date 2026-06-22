@@ -182,3 +182,50 @@ export function BarChart({ data, height = 140, color = "#7C3AED", formatValue = 
     </div>
   );
 }
+
+/**
+ * Barras agrupadas para comparar varias series por periodo.
+ * data:   [{ label: string, values: number[] }]   (values alineado con series)
+ * series: [{ name: string, color: string }]
+ */
+export function GroupedBarChart({ data, series = [], height = 150, formatValue = (n) => n }) {
+  if (!data?.length || !series.length) return null;
+  const max = Math.max(...data.flatMap((d) => d.values || []), 1);
+  const barArea = height - 22;
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 16, marginBottom: 12, flexWrap: "wrap" }}>
+        {series.map((s) => (
+          <span key={s.name} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, fontWeight: 700, color: "var(--muted)" }}>
+            <span style={{ width: 10, height: 10, borderRadius: 3, background: s.color, flexShrink: 0 }} />
+            {s.name}
+          </span>
+        ))}
+      </div>
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 8, height }}>
+        {data.map((d) => (
+          <div key={d.label} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4, justifyContent: "flex-end" }}>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: barArea, justifyContent: "center", width: "100%" }}>
+              {(d.values || []).map((v, i) => (
+                <div
+                  key={i}
+                  title={`${series[i]?.name ?? ""}: ${formatValue(v)}`}
+                  style={{
+                    width: 12,
+                    maxWidth: 16,
+                    flex: "0 1 16px",
+                    height: Math.max(((v || 0) / max) * barArea, 2),
+                    background: `linear-gradient(180deg, ${series[i]?.color}, ${series[i]?.color}AA)`,
+                    borderRadius: 4,
+                    minHeight: 2,
+                  }}
+                />
+              ))}
+            </div>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "var(--muted)" }}>{d.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

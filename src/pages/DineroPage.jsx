@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { FreqBadge, StatusBadge, DueBadge, Toggle, SectionTitle, EmptyState, Confirm } from "../components/atoms";
 import { fmt, CAT_ICON, INC_ICON } from "../lib/constants";
+import { filterAndSortItems } from "../lib/listFilter";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
 const pill = (active, acc) => ({
@@ -36,6 +37,7 @@ export default function DineroPage({ D, isDesktop }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all"); // all | done | pending
   const [cat, setCat] = useState("all");
+  const [sort, setSort] = useState("default");
 
   const items = isGastos ? D.expenses : D.incomes;
 
@@ -50,17 +52,17 @@ export default function DineroPage({ D, isDesktop }) {
     return [...present].map((c) => ({ value: c, icon: icons[c] || "📌", prefix }));
   }, [items, isGastos]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return items.filter((it) => {
-      if (q && !String(it.name || "").toLowerCase().includes(q)) return false;
-      if (cat !== "all" && it.category !== cat) return false;
-      const done = isGastos ? it.paid : it.received;
-      if (filter === "done" && !done) return false;
-      if (filter === "pending" && done) return false;
-      return true;
-    });
-  }, [items, query, filter, cat, isGastos]);
+  const filtered = useMemo(
+    () => filterAndSortItems(items, { query, category: cat, status: filter, sort, isExpense: isGastos }),
+    [items, query, filter, cat, sort, isGastos]
+  );
+
+  const selectStyle = {
+    width: "100%", padding: "11px 16px", borderRadius: 14,
+    border: "1.5px solid var(--inp-b)", fontSize: 14, fontWeight: 700,
+    background: "var(--inp)", color: "var(--text)", outline: "none",
+    marginBottom: 10, fontFamily: "inherit",
+  };
 
   const listStyle = isDesktop
     ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }
@@ -97,25 +99,33 @@ export default function DineroPage({ D, isDesktop }) {
           marginBottom: 10, fontFamily: "inherit",
         }}
       />
-      {catOptions.length > 1 && (
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        {catOptions.length > 1 && (
+          <select
+            value={cat}
+            onChange={(e) => setCat(e.target.value)}
+            style={{ ...selectStyle, flex: 1, minWidth: 150 }}
+          >
+            <option value="all">{t("dinero.allCategories")}</option>
+            {catOptions.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.icon} {t(`${o.prefix}.${o.value}`)}
+              </option>
+            ))}
+          </select>
+        )}
         <select
-          value={cat}
-          onChange={(e) => setCat(e.target.value)}
-          style={{
-            width: "100%", padding: "11px 16px", borderRadius: 14,
-            border: "1.5px solid var(--inp-b)", fontSize: 14, fontWeight: 700,
-            background: "var(--inp)", color: "var(--text)", outline: "none",
-            marginBottom: 10, fontFamily: "inherit",
-          }}
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          style={{ ...selectStyle, flex: 1, minWidth: 150 }}
         >
-          <option value="all">{t("dinero.allCategories")}</option>
-          {catOptions.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.icon} {t(`${o.prefix}.${o.value}`)}
-            </option>
-          ))}
+          <option value="default">{t("dinero.sortDefault")}</option>
+          <option value="amount-desc">{t("dinero.sortAmountDesc")}</option>
+          <option value="amount-asc">{t("dinero.sortAmountAsc")}</option>
+          <option value="name">{t("dinero.sortName")}</option>
+          <option value="status">{t("dinero.sortStatus")}</option>
         </select>
-      )}
+      </div>
       <div style={{ display: "flex", gap: 8, marginBottom: 16, overflowX: "auto", paddingBottom: 2 }}>
         <button type="button" style={filterPill(filter === "all", D.acc)} onClick={() => setFilter("all")}>
           {t("dinero.filterAll")}
