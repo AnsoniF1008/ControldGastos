@@ -14,6 +14,7 @@ import {
   enableNotifications,
   disableNotifications,
 } from "../lib/notifications";
+import { fetchBcvRate } from "../lib/bcv";
 
 const langPill = (active, acc) => ({
   flex: 1,
@@ -50,9 +51,28 @@ export default function MasPage({ D }) {
   );
 
   const [rateLocal, setRateLocal] = useState(() => String(D.rate));
+  const [bcvBusy, setBcvBusy] = useState(false);
   useEffect(() => {
     setRateLocal(String(D.rate));
   }, [D.rate]);
+
+  const updateRateFromBcv = async () => {
+    if (bcvBusy) return;
+    setBcvBusy(true);
+    try {
+      const { rate, date } = await fetchBcvRate({ force: true });
+      setRateLocal(String(rate));
+      D.setRate(rate);
+      const msg = date
+        ? t("mas.bcvUpdated").replace("{date}", date)
+        : t("mas.rateSaved");
+      D.showToast?.(msg);
+    } catch {
+      D.showToast?.(t("mas.bcvError"), "err");
+    } finally {
+      setBcvBusy(false);
+    }
+  };
 
   useEffect(() => {
     const b = D.budgets || {};
@@ -120,6 +140,26 @@ export default function MasPage({ D }) {
           {t("mas.rateLabel")}
         </p>
         <Inp ph="40" val={rateLocal} set={setRateLocal} type="text" inputMode="decimal" />
+        <button
+          type="button"
+          onClick={updateRateFromBcv}
+          disabled={bcvBusy}
+          style={{
+            width: "100%",
+            padding: "10px",
+            marginBottom: 12,
+            borderRadius: 12,
+            border: `1px solid ${D.acc}`,
+            background: "transparent",
+            color: D.acc,
+            fontWeight: 800,
+            fontSize: 13,
+            cursor: bcvBusy ? "default" : "pointer",
+            opacity: bcvBusy ? 0.6 : 1,
+          }}
+        >
+          {bcvBusy ? t("mas.bcvLoading") : t("mas.bcvButton")}
+        </button>
         <p style={{ fontSize: 11, fontWeight: 800, color: "var(--muted)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.3 }}>
           {t("mas.baseCurrency")}
         </p>

@@ -194,6 +194,10 @@ export const TRANSLATIONS = {
       saveRate: "Guardar tasa",
       rateSaved: "Tasa actualizada",
       errRate: "Indica una tasa válida (número mayor a 0).",
+      bcvButton: "Actualizar desde el BCV",
+      bcvLoading: "Consultando al BCV…",
+      bcvUpdated: "Tasa del BCV aplicada ({date})",
+      bcvError: "No se pudo obtener la tasa del BCV. Intenta de nuevo.",
     },
     addSheet: {
       newExpense: "Nuevo gasto",
@@ -520,6 +524,10 @@ export const TRANSLATIONS = {
       saveRate: "Save rate",
       rateSaved: "Rate updated",
       errRate: "Enter a valid rate (number greater than 0).",
+      bcvButton: "Update from the BCV",
+      bcvLoading: "Querying the BCV…",
+      bcvUpdated: "BCV rate applied ({date})",
+      bcvError: "Couldn't fetch the BCV rate. Please try again.",
     },
     addSheet: {
       newExpense: "New expense",

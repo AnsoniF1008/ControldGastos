@@ -8,6 +8,7 @@ import { loadHouseholdUsers, assertUserInHousehold } from "./householdRepo.js";
 import { sumBudgetsByCategory, splitTotalsEvenly } from "../../src/lib/budgetSplit.js";
 import { seedDemoHousehold, DEMO_HOUSEHOLD_ID } from "./seedDemo.js";
 import { mountPlaidRoutes } from "./plaidRoutes.js";
+import { getBcvRate } from "./bcvRate.js";
 
 initFirebaseAdmin();
 
@@ -56,6 +57,18 @@ app.get("/api/health", async (_req, res) => {
     res.json({ ok: true, db: true });
   } catch (e) {
     res.status(503).json({ ok: false, db: false, error: String(e.message) });
+  }
+});
+
+// Tasa oficial USD -> VES del Banco Central de Venezuela. Público (sin auth):
+// es información pública y no toca datos del hogar.
+app.get("/api/bcv-rate", async (req, res) => {
+  try {
+    const data = await getBcvRate({ force: req.query.force === "1" });
+    res.json(data);
+  } catch (e) {
+    console.error("[bcv]", e);
+    res.status(502).json({ error: "No se pudo obtener la tasa del BCV" });
   }
 });
 
