@@ -92,7 +92,7 @@ export default function TarjetasPage({ D, isDesktop }) {
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 700 }}>{t("tarjetas.minPayShort")}</span>
-                      <Toggle checked={c.paid} onChange={() => D.toggleCard(c.id)} color={D.acc} />
+                      <Toggle checked={c.paid} onChange={() => D.toggleCard(c.id)} color={D.acc} label={`${c.name} — ${t("tarjetas.minPayShort")}`} />
                     </div>
                   </div>
                 )}

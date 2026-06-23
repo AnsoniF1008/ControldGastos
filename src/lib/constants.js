@@ -4,6 +4,7 @@
 // para no romper los imports existentes `import { fmt } from "../lib/constants"`.
 export {
   fmt,
+  fmtCompact,
   convert,
   CURRENCIES,
   CURRENCY_CODES,

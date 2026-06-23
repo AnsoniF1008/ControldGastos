@@ -7,11 +7,11 @@ import { useUserData } from "./hooks/useUserData";
 import { useIsDesktop } from "./hooks/useMediaQuery";
 import { isFirebaseWebConfigured } from "./lib/firebase";
 import { THEME_CSS }   from "./lib/theme";
-import { HFLogo }      from "./components/atoms";
+import { HFLogo, CountUp } from "./components/atoms";
 import { useI18n } from "./i18n/I18nContext.jsx";
 import { isPlaidTabVisible } from "./lib/plaidFeature";
 import { notifyDueExpenses } from "./lib/notifications";
-import { fmt, CURRENCIES } from "./lib/constants";
+import { fmt, fmtCompact } from "./lib/constants";
 
 // HomePage y LoginPage son críticos para el primer render → bundle principal.
 // El resto se carga bajo demanda (mejora cold-start).
@@ -75,7 +75,6 @@ export default function App() {
 
   // ── FONTS + CSS VARIABLES ──────────────────────────────────────────────────
   const globalStyles = `
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 8px; }
@@ -91,6 +90,11 @@ export default function App() {
       outline: none;
       box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
     }
+    button:focus-visible, [role="switch"]:focus-visible, a:focus-visible {
+      outline: 2px solid #7C3AED;
+      outline-offset: 2px;
+    }
+    @keyframes hf-spin { to { transform: rotate(360deg); } }
     @keyframes hf-fade {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: none; }
@@ -134,8 +138,8 @@ export default function App() {
   );
 
   // ── APP ────────────────────────────────────────────────────────────────────
-  const m = CURRENCIES[D.baseCurrency] || CURRENCIES.USD;
-  const sym = `${m.symbol}${m.space}`;
+  const base = D.baseCurrency;
+  const money = (n) => fmtCompact(n, base, locale);
   const monthLabel = `${new Date().toLocaleString(locale, { month: "long" }).toUpperCase()} ${new Date().getFullYear()}`;
   const greetingText = D.isFam
     ? t("header.familyView")
@@ -144,29 +148,31 @@ export default function App() {
   const chipData = [
     {
       l: t("summary.income"),
-      v: `${sym}${Math.round((D.totalInc / 1000) * 10) / 10}k`,
+      raw: D.totalInc,
+      fmt: money,
       c: "#A7F3D0",
       s: `${D.totalInc > 0 ? Math.round((D.recvInc / D.totalInc) * 100) : 0}% ${t("summary.receivedPct")}`,
     },
     {
       l: t("summary.expense"),
-      v: `${sym}${Math.round((D.totalExp / 1000) * 10) / 10}k`,
+      raw: D.totalExp,
+      fmt: money,
       c: "#FCA5A5",
       s: `${D.totalExp > 0 ? Math.round((D.paidExp / D.totalExp) * 100) : 0}% ${t("summary.paidPct")}`,
     },
     {
       l: t("summary.balance"),
-      v: D.netBalance >= 0
-        ? `+${sym}${Math.round(D.netBalance)}`
-        : `-${sym}${Math.round(Math.abs(D.netBalance))}`,
+      raw: D.netBalance,
+      fmt: (n) => `${n >= 0 ? "+" : ""}${money(n)}`,
       c: D.netBalance >= 0 ? "#A7F3D0" : "#FCA5A5",
       s: D.netBalance >= 0 ? t("summary.positive") : t("summary.negative"),
     },
     {
       l: t("summary.cards"),
-      v: `${sym}${Math.round(D.totalDebt)}`,
+      raw: D.totalDebt,
+      fmt: money,
       c: "#FDE68A",
-      s: `${t("summary.min")} ${sym}${Math.round(D.totalCardMin)}`,
+      s: `${t("summary.min")} ${money(D.totalCardMin)}`,
     },
   ];
 
@@ -175,7 +181,9 @@ export default function App() {
       {chipData.map((s) => (
         <div key={s.l} style={{ background: "rgba(255,255,255,0.14)", borderRadius: 14, padding: big ? "14px 12px" : "10px 8px", textAlign: "center" }}>
           <span style={{ fontSize: big ? 11 : 10, opacity: 0.85, textTransform: "uppercase", letterSpacing: 0.4, fontWeight: 700, display: "block" }}>{s.l}</span>
-          <span style={{ fontSize: big ? 22 : 14, fontWeight: 900, color: s.c, display: "block", marginTop: 3, lineHeight: 1.2 }}>{s.v}</span>
+          <span style={{ fontSize: big ? 22 : 14, fontWeight: 900, color: s.c, display: "block", marginTop: 3, lineHeight: 1.2 }}>
+            <CountUp value={s.raw} format={s.fmt} />
+          </span>
           <span style={{ fontSize: big ? 10 : 9, opacity: 0.7, display: "block", marginTop: 2, fontWeight: 600 }}>{s.s}</span>
         </div>
       ))}
@@ -352,7 +360,7 @@ export default function App() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <HFLogo size={24} white />
             <div style={{ display: "flex", gap: 6 }}>
-              <button type="button" onClick={() => D.setDarkMode(v => !v)} style={hdrBtn}>{D.darkMode ? "☀️" : "🌙"}</button>
+              <button type="button" aria-label={D.darkMode ? t("theme.light") : t("theme.dark")} onClick={() => D.setDarkMode(v => !v)} style={hdrBtn}>{D.darkMode ? "☀️" : "🌙"}</button>
               <button type="button" onClick={() => D.setTab("mas")} style={hdrBtn}>
                 {D.isFam ? "👨‍👩‍👧" : (D.user?.emoji || "🙂")}{" "}
                 {D.isFam ? t("header.family") : firstName(D.user?.name, t("common.userFallback"))}

@@ -81,10 +81,10 @@ export default function HomePage({ D, isDesktop }) {
       }}>
         <SectionTitle color={D.acc}>{t("home.quickSummary")}</SectionTitle>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-          <StatCard label={t("home.toPayExp")} value={fmt(pendingTotal, base)} color="#D97706" />
-          <StatCard label={t("home.q1")} value={fmt(D.q1Total, base)} />
-          <StatCard label={t("home.q2")} value={fmt(D.q2Total, base)} />
-          <StatCard label={t("home.cardDebt")} value={fmt(D.totalDebt, base)} color="#B45309" />
+          <StatCard label={t("home.toPayExp")} raw={pendingTotal} format={(n) => fmt(n, base)} color="#D97706" />
+          <StatCard label={t("home.q1")} raw={D.q1Total} format={(n) => fmt(n, base)} />
+          <StatCard label={t("home.q2")} raw={D.q2Total} format={(n) => fmt(n, base)} />
+          <StatCard label={t("home.cardDebt")} raw={D.totalDebt} format={(n) => fmt(n, base)} color="#B45309" />
         </div>
         {showCurrencyBreakdown && (
           <p style={{ margin: "10px 2px 0", fontSize: 11, color: "var(--muted)", fontWeight: 600 }}>

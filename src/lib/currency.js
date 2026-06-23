@@ -51,6 +51,27 @@ export const fmt = (n = 0, currency = DEFAULT_CURRENCY, locale = "en-US") => {
 };
 
 /**
+ * Formato compacto y localizado para tableros: 950 -> "$950", 12345 -> "$12,3k",
+ * 1234567 -> "$1,2M". Respeta el símbolo/espacio de la moneda e incluye el signo
+ * negativo cuando corresponde (el positivo se deja a quien llama).
+ */
+export const fmtCompact = (n = 0, currency = DEFAULT_CURRENCY, locale = "en-US") => {
+  const meta = CURRENCIES[normalizeCurrency(currency)];
+  const num = Number(n) || 0;
+  const abs = Math.abs(num);
+  const sign = num < 0 ? "-" : "";
+  let body;
+  if (abs < 1000) {
+    body = abs.toLocaleString(locale, { maximumFractionDigits: 0 });
+  } else if (abs < 1_000_000) {
+    body = `${(abs / 1000).toLocaleString(locale, { maximumFractionDigits: 1 })}k`;
+  } else {
+    body = `${(abs / 1_000_000).toLocaleString(locale, { maximumFractionDigits: 1 })}M`;
+  }
+  return `${sign}${meta.symbol}${meta.space}${body}`;
+};
+
+/**
  * Convierte un monto entre monedas usando `rate` (bolívares por 1 dólar).
  * convert(100, "USD", "VES", 40) -> 4000 ; convert(4000, "VES", "USD", 40) -> 100
  */
