@@ -3,8 +3,25 @@ import { SectionTitle, Bar, EmptyState, Inp, Confirm } from "../components/atoms
 import { fmt } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
+/** Estima cuándo se alcanza la meta según el aporte mensual. */
+function goalEtaLabel(g, t, locale) {
+  const remaining = Number(g.target) - Number(g.saved);
+  if (remaining <= 0) return { text: t("metas.done"), done: true };
+  const monthly = Number(g.monthly) || 0;
+  if (monthly <= 0) return { text: t("metas.noMonthly"), done: false };
+  const months = Math.ceil(remaining / monthly);
+  const eta = new Date();
+  eta.setMonth(eta.getMonth() + months);
+  const date = eta.toLocaleDateString(locale, { month: "short", year: "numeric" });
+  const unit = months === 1 ? t("metas.etaMonth") : t("metas.etaMonths");
+  return {
+    text: t("metas.eta").replace("{n}", String(months)).replace("{unit}", unit).replace("{date}", date),
+    done: false,
+  };
+}
+
 export default function MetasPage({ D, isDesktop }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [contribById, setContribById] = useState({});
   const [busyId, setBusyId] = useState(null);
   const [toDelete, setToDelete] = useState(null);
@@ -40,6 +57,14 @@ export default function MetasPage({ D, isDesktop }) {
                 </div>
               </div>
               <Bar value={g.saved} max={g.target} color={g.color || D.acc} h={10} />
+              {(() => {
+                const eta = goalEtaLabel(g, t, locale);
+                return (
+                  <p style={{ margin: "8px 2px 0", fontSize: 12, fontWeight: 700, color: eta.done ? "#059669" : "var(--muted)" }}>
+                    {eta.text}
+                  </p>
+                );
+              })()}
               {!D.isFam && (
                 <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 10 }}>
                   <div style={{ display: "flex", gap: 8, alignItems: "flex-end", flexWrap: "wrap" }}>

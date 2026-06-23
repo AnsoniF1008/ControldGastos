@@ -100,6 +100,16 @@ export default function App() {
       to   { opacity: 1; transform: none; }
     }
     .hf-page { animation: hf-fade 0.28s ease both; }
+    @keyframes hf-shimmer {
+      0% { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .hf-skel {
+      background: linear-gradient(90deg, var(--sub) 0%, var(--border) 50%, var(--sub) 100%);
+      background-size: 800px 100%;
+      animation: hf-shimmer 1.4s linear infinite;
+      border-radius: 12px;
+    }
     @media (prefers-reduced-motion: reduce) {
       *, button, .hf-page { animation: none !important; transition: none !important; }
     }
@@ -423,23 +433,9 @@ export default function App() {
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-const skeletonAnim = `
-  @keyframes hf-shimmer {
-    0% { background-position: -400px 0; }
-    100% { background-position: 400px 0; }
-  }
-  .hf-skel {
-    background: linear-gradient(90deg, var(--sub) 0%, var(--border) 50%, var(--sub) 100%);
-    background-size: 800px 100%;
-    animation: hf-shimmer 1.4s linear infinite;
-    border-radius: 12px;
-  }
-`;
-
 function BootSkeleton() {
   return (
     <div>
-      <style>{skeletonAnim}</style>
       <div
         style={{
           background: "linear-gradient(150deg,var(--hdr0),var(--hdr1))",
@@ -461,22 +457,11 @@ function BootSkeleton() {
 
 function PageFallback({ label }) {
   return (
-    <div style={{ paddingTop: 8 }}>
-      <div
-        style={{
-          background: "var(--card)",
-          borderRadius: 20,
-          border: "1px solid var(--border)",
-          padding: 20,
-          marginBottom: 12,
-          minHeight: 120,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <span style={{ color: "var(--muted)", fontWeight: 700, fontSize: 13 }}>{label}</span>
-      </div>
+    <div style={{ paddingTop: 8 }} aria-busy="true" aria-label={label}>
+      <div className="hf-skel" style={{ height: 96, marginBottom: 12 }} />
+      <div className="hf-skel" style={{ height: 72, marginBottom: 12 }} />
+      <div className="hf-skel" style={{ height: 72, marginBottom: 12 }} />
+      <div className="hf-skel" style={{ height: 72 }} />
     </div>
   );
 }
