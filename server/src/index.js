@@ -48,15 +48,19 @@ function curMonthYear() {
   return { month: MONTHS[d.getMonth()], year: d.getFullYear() };
 }
 
+// `features` permite verificar desde el navegador qué versión del código corre
+// (p. ej. si el deploy con /api/bcv-rate ya está activo en Render).
+const FEATURES = { bcvRate: true };
+
 app.get("/api/health", async (_req, res) => {
   if (!process.env.DATABASE_URL) {
-    return res.json({ ok: true, db: false, plaid: process.env.ENABLE_PLAID === "true" });
+    return res.json({ ok: true, db: false, plaid: process.env.ENABLE_PLAID === "true", features: FEATURES });
   }
   try {
     await pool.query("SELECT 1");
-    res.json({ ok: true, db: true });
+    res.json({ ok: true, db: true, features: FEATURES });
   } catch (e) {
-    res.status(503).json({ ok: false, db: false, error: String(e.message) });
+    res.status(503).json({ ok: false, db: false, error: String(e.message), features: FEATURES });
   }
 });
 
@@ -67,8 +71,11 @@ app.get("/api/bcv-rate", async (req, res) => {
     const data = await getBcvRate({ force: req.query.force === "1" });
     res.json(data);
   } catch (e) {
-    console.error("[bcv]", e);
-    res.status(502).json({ error: "No se pudo obtener la tasa del BCV" });
+    console.error("[bcv]", e.message, e.detail || "");
+    res.status(502).json({
+      error: "No se pudo obtener la tasa del BCV",
+      detail: e.detail || [String(e.message)],
+    });
   }
 });
 
