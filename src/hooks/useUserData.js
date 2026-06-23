@@ -21,7 +21,11 @@ import {
   signOutFirebase,
   getFirebaseApp,
 } from "../lib/firebase";
+import { fetchBcvRate } from "../lib/bcv";
 import { useI18n } from "../i18n/I18nContext.jsx";
+
+/** Cada cuánto se refresca la tasa del BCV automáticamente al abrir la app. */
+const BCV_AUTO_TTL_MS = 6 * 60 * 60 * 1000; // 6 h
 
 /** Tras borrar, a veces la query de vuelta llega en caché y aún lista el ítem; lo quitamos en cliente. */
 function stripExpense(users, userId, expenseId) {
@@ -96,6 +100,49 @@ export function useUserData() {
       return v;
     });
   }, []);
+
+  // ── Tasa automática desde el Banco Central de Venezuela ─────────────────────
+  // `bcvInfo` guarda la última actualización exitosa (fecha valor y origen) para
+  // mostrarla en la UI. Se persiste junto con un timestamp para throttlear.
+  const [bcvInfo, setBcvInfo] = useState(() => {
+    try {
+      const raw = localStorage.getItem("hf_rate_bcv");
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Trae la tasa del BCV y la aplica. Devuelve la info o lanza si falla.
+  const refreshRateFromBcv = useCallback(async ({ force = false } = {}) => {
+    const { rate, date, source } = await fetchBcvRate({ force });
+    setRate(rate);
+    const info = { date: date ?? null, source: source ?? "bcv", ts: Date.now() };
+    setBcvInfo(info);
+    try {
+      localStorage.setItem("hf_rate_bcv", JSON.stringify(info));
+    } catch {
+      /* ignore */
+    }
+    return info;
+  }, [setRate]);
+
+  // Auto-actualización al abrir la app (silenciosa, throttleada a BCV_AUTO_TTL_MS).
+  const bcvAutoTried = useRef(false);
+  useEffect(() => {
+    if (bcvAutoTried.current) return;
+    bcvAutoTried.current = true;
+    let lastTs = 0;
+    try {
+      lastTs = JSON.parse(localStorage.getItem("hf_rate_bcv") || "{}")?.ts || 0;
+    } catch {
+      lastTs = 0;
+    }
+    if (Date.now() - lastTs < BCV_AUTO_TTL_MS) return;
+    refreshRateFromBcv().catch(() => {
+      /* sin red o BCV caído: conservamos la tasa actual sin molestar al usuario */
+    });
+  }, [refreshRateFromBcv]);
 
   const [baseCurrency, setBaseCurrencyState] = useState(() => {
     try {
@@ -679,6 +726,8 @@ export function useUserData() {
 
     rate,
     setRate,
+    bcvInfo,
+    refreshRateFromBcv,
     baseCurrency,
     setBaseCurrency,
     expByCurrency,
