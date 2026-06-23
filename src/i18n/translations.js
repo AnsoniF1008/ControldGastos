@@ -133,6 +133,11 @@ export const TRANSLATIONS = {
       deleteMeta: "Eliminar meta",
       confirmDelete: "¿Eliminar esta meta?",
       errContribute: "No se pudo aportar.",
+      done: "🎉 ¡Meta cumplida!",
+      eta: "Llegas en ~{n} {unit} ({date})",
+      etaMonth: "mes",
+      etaMonths: "meses",
+      noMonthly: "Define un aporte mensual para estimar la fecha.",
     },
     mas: {
       account: "Cuenta",
@@ -469,6 +474,11 @@ export const TRANSLATIONS = {
       deleteMeta: "Delete goal",
       confirmDelete: "Delete this goal?",
       errContribute: "Could not add contribution.",
+      done: "🎉 Goal reached!",
+      eta: "Reach it in ~{n} {unit} ({date})",
+      etaMonth: "month",
+      etaMonths: "months",
+      noMonthly: "Set a monthly contribution to estimate the date.",
     },
     mas: {
       account: "Account",
