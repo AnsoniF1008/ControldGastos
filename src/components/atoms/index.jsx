@@ -2,7 +2,46 @@
 // Todos los componentes pequeños y reutilizables de la app.
 // Importa solo lo que necesites: import { Toggle, Bar, Sheet } from "../atoms"
 
+import { useEffect, useRef, useState } from "react";
 import { FREQ_META, NOW } from "../../lib/constants";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COUNT-UP (anima un número hasta su valor; respeta prefers-reduced-motion)
+// ─────────────────────────────────────────────────────────────────────────────
+export const CountUp = ({ value = 0, format = (n) => String(Math.round(n)), duration = 650 }) => {
+  const [display, setDisplay] = useState(value);
+  const fromRef = useRef(value);
+  const rafRef = useRef(0);
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const from = fromRef.current;
+    const to = Number(value) || 0;
+    if (reduce || from === to) {
+      setDisplay(to);
+      fromRef.current = to;
+      return;
+    }
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      setDisplay(from + (to - from) * eased);
+      if (p < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        fromRef.current = to;
+      }
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [value, duration]);
+
+  return <>{format(display)}</>;
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BADGES
@@ -54,14 +93,18 @@ export const DueBadge = ({ dueDay, todayLabel, daysLabel }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 // TOGGLE SWITCH
 // ─────────────────────────────────────────────────────────────────────────────
-export const Toggle = ({ checked, onChange, color = "#7C3AED" }) => (
+export const Toggle = ({ checked, onChange, color = "#7C3AED", label }) => (
   <button
+    type="button"
+    role="switch"
+    aria-checked={checked}
+    aria-label={label}
     onClick={onChange}
     style={{
       width: 44, height: 24, borderRadius: 12,
       background: checked ? color : "#D1D5DB",
       position: "relative", cursor: "pointer",
-      border: "none", outline: "none",
+      border: "none",
       transition: "background 0.2s", flexShrink: 0,
     }}
   >
@@ -132,13 +175,14 @@ export const EmptyState = ({ icon, msg, sub }) => (
 // ─────────────────────────────────────────────────────────────────────────────
 // STAT CARD (número grande con label)
 // ─────────────────────────────────────────────────────────────────────────────
-export const StatCard = ({ label, value, color, bg }) => (
+// Si pasas `raw` (número) y `format` (fn), el valor se anima con count-up.
+export const StatCard = ({ label, value, raw, format, color, bg }) => (
   <div style={{ background: bg || "var(--sub)", borderRadius: 12, padding: "10px 12px", textAlign: "center" }}>
     <span style={{ fontSize: 9, color: "var(--muted)", fontWeight: 700, display: "block", textTransform: "uppercase", letterSpacing: 0.5 }}>
       {label}
     </span>
     <span style={{ fontSize: 20, fontWeight: 900, color: color || "var(--text)", display: "block", marginTop: 3 }}>
-      {value}
+      {raw != null && format ? <CountUp value={raw} format={format} /> : value}
     </span>
   </div>
 );
@@ -209,11 +253,12 @@ export const Confirm = ({
 // ─────────────────────────────────────────────────────────────────────────────
 // FORM ELEMENTS
 // ─────────────────────────────────────────────────────────────────────────────
-export const Inp = ({ ph, val, set, type = "text", inputMode, autoComplete }) => (
+export const Inp = ({ ph, val, set, type = "text", inputMode, autoComplete, label }) => (
   <input
     type={type} placeholder={ph} value={val}
     inputMode={inputMode}
     autoComplete={autoComplete}
+    aria-label={label ?? ph}
     onChange={e => set(e.target.value)}
     style={{
       width: "100%", padding: "14px 16px", borderRadius: 14,

@@ -116,24 +116,30 @@ export default function MasPage({ D }) {
         <p style={{ fontSize: 12, color: "var(--muted)", marginBottom: 10, lineHeight: 1.4 }}>
           {t("mas.currencyHint")}
         </p>
-        <div
-          style={{
-            background: "var(--sub)",
-            border: "1px solid var(--border)",
-            borderRadius: 12,
-            padding: "10px 12px",
-            marginBottom: 12,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--muted)" }}>
-            {t("mas.currentRate")}
-          </span>
-          <span style={{ fontSize: 15, fontWeight: 900, color: D.acc }}>
-            {fmt(1, "USD")} = {fmt(D.rate, "VES")}
-          </span>
+        <div style={{ marginBottom: 12 }}>
+          <div
+            style={{
+              background: "var(--sub)",
+              border: "1px solid var(--border)",
+              borderRadius: 12,
+              padding: "10px 12px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--muted)" }}>
+              {t("mas.currentRate")}
+            </span>
+            <span style={{ fontSize: 15, fontWeight: 900, color: D.acc }}>
+              {fmt(1, "USD")} = {fmt(D.rate, "VES")}
+            </span>
+          </div>
+          {D.bcvInfo?.date && (
+            <p style={{ fontSize: 11, color: "var(--muted)", margin: "6px 4px 0", textAlign: "right", fontWeight: 600 }}>
+              {t("mas.bcvAuto").replace("{date}", D.bcvInfo.date)}
+            </p>
+          )}
         </div>
         <p style={{ fontSize: 11, fontWeight: 800, color: "var(--muted)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.3 }}>
           {t("mas.rateLabel")}
@@ -145,25 +151,33 @@ export default function MasPage({ D }) {
           disabled={bcvBusy}
           style={{
             width: "100%",
-            padding: "10px",
+            padding: "12px",
             marginBottom: 12,
             borderRadius: 12,
-            border: `1px solid ${D.acc}`,
-            background: "transparent",
+            border: `1.5px solid ${D.acc}`,
+            background: `${D.acc}1A`,
             color: D.acc,
-            fontWeight: 800,
-            fontSize: 13,
+            fontWeight: 900,
+            fontSize: 14,
             cursor: bcvBusy ? "default" : "pointer",
             opacity: bcvBusy ? 0.6 : 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            fontFamily: "inherit",
           }}
         >
+          <span
+            style={{
+              display: "inline-block",
+              animation: bcvBusy ? "hf-spin 0.9s linear infinite" : "none",
+            }}
+          >
+            🔄
+          </span>
           {bcvBusy ? t("mas.bcvLoading") : t("mas.bcvButton")}
         </button>
-        {D.bcvInfo?.date && (
-          <p style={{ fontSize: 11, color: "var(--muted)", margin: "0 0 12px", textAlign: "center" }}>
-            {t("mas.bcvAuto").replace("{date}", D.bcvInfo.date)}
-          </p>
-        )}
         <p style={{ fontSize: 11, fontWeight: 800, color: "var(--muted)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.3 }}>
           {t("mas.baseCurrency")}
         </p>

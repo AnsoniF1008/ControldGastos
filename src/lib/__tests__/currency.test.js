@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   fmt,
+  fmtCompact,
   convert,
   sumByCurrency,
   consolidate,
@@ -8,6 +9,21 @@ import {
   normalizeRate,
   hasMixedCurrencies,
 } from "../currency.js";
+
+describe("fmtCompact", () => {
+  it("muestra el número completo por debajo de mil", () => {
+    expect(fmtCompact(950, "USD", "en-US")).toBe("$950");
+  });
+  it("abrevia miles con k", () => {
+    expect(fmtCompact(12345, "USD", "en-US")).toBe("$12.3k");
+  });
+  it("abrevia millones con M", () => {
+    expect(fmtCompact(1234567, "USD", "en-US")).toBe("$1.2M");
+  });
+  it("respeta el símbolo y espacio de VES y el signo negativo", () => {
+    expect(fmtCompact(-2500, "VES", "en-US")).toBe("-Bs 2.5k");
+  });
+});
 
 describe("fmt con moneda", () => {
   it("usa $ para USD (default y explícito)", () => {

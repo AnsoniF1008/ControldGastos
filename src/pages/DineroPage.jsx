@@ -196,7 +196,7 @@ export default function DineroPage({ D, isDesktop }) {
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 700 }}>{t("dinero.paid")}</span>
-                        <Toggle checked={e.paid} onChange={() => D.toggleExpense(e.id)} color={D.acc} />
+                        <Toggle checked={e.paid} onChange={() => D.toggleExpense(e.id)} color={D.acc} label={`${e.name} — ${t("dinero.paid")}`} />
                       </div>
                     </div>
                   )}
@@ -261,7 +261,7 @@ export default function DineroPage({ D, isDesktop }) {
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 700 }}>{t("dinero.received")}</span>
-                        <Toggle checked={i.received} onChange={() => D.toggleIncome(i.id)} color={D.acc} />
+                        <Toggle checked={i.received} onChange={() => D.toggleIncome(i.id)} color={D.acc} label={`${i.name} — ${t("dinero.received")}`} />
                       </div>
                     </div>
                   )}
