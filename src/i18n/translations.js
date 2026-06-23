@@ -74,6 +74,11 @@ export const TRANSLATIONS = {
       incomeVsExpense: "Ingresos vs Gastos",
       byCurrency: "Totales por moneda",
       consolidatedHint: "Totales consolidados en {cur} usando la tasa de cambio.",
+      budgetTitle: "Presupuesto del mes",
+      budgetLeft: "Disponible",
+      overBudget: "Sobregiro",
+      budgetOverAlert: "Te pasaste del presupuesto en {amount}.",
+      budgetHint: "Define presupuestos por categoría en la pestaña Más.",
     },
     dinero: {
       expenses: "Gastos",
@@ -405,6 +410,11 @@ export const TRANSLATIONS = {
       incomeVsExpense: "Income vs Expenses",
       byCurrency: "Totals by currency",
       consolidatedHint: "Totals consolidated in {cur} using the exchange rate.",
+      budgetTitle: "This month's budget",
+      budgetLeft: "Left",
+      overBudget: "Over budget",
+      budgetOverAlert: "You're over budget by {amount}.",
+      budgetHint: "Set per-category budgets in the More tab.",
     },
     dinero: {
       expenses: "Expenses",

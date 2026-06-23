@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { SectionTitle, StatCard, EmptyState } from "../components/atoms";
+import { SectionTitle, StatCard, EmptyState, Bar } from "../components/atoms";
 import { PieChart, PieLegend, BarChart, GroupedBarChart } from "../components/Charts";
-import { fmt, CAT_ICON, convert, CURRENCY_CODES } from "../lib/constants";
+import { fmt, CAT_ICON, CATS, convert, CURRENCY_CODES } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
 function shortMonth(label, locale) {
@@ -39,6 +39,24 @@ export default function HomePage({ D, isDesktop }) {
     () => (D.pendingExp || []).reduce((s, e) => s + convert(e.amount || 0, e.currency, base, rate), 0),
     [D.pendingExp, base, rate]
   );
+
+  // Presupuesto del mes: gasto real por categoría (en moneda base) vs presupuesto.
+  const budgetRows = useMemo(() => {
+    const spentByCat = {};
+    for (const e of D.expenses || []) {
+      spentByCat[e.category] = (spentByCat[e.category] || 0) + convert(e.amount || 0, e.currency, base, rate);
+    }
+    return CATS
+      .map((cat) => ({ cat, budget: Number(D.budgets?.[cat]) || 0, spent: spentByCat[cat] || 0 }))
+      .filter((r) => r.budget > 0)
+      .sort((a, b) => b.spent / b.budget - a.spent / a.budget);
+  }, [D.expenses, D.budgets, base, rate]);
+
+  const budgetTotals = useMemo(() => {
+    const budget = budgetRows.reduce((s, r) => s + r.budget, 0);
+    const spent = budgetRows.reduce((s, r) => s + r.spent, 0);
+    return { budget, spent, over: spent - budget };
+  }, [budgetRows]);
 
   // Subtotales por moneda (sin convertir) para gastos / ingresos / deuda.
   const currencyRows = useMemo(() => {
@@ -92,6 +110,41 @@ export default function HomePage({ D, isDesktop }) {
           </p>
         )}
       </div>
+
+      {budgetRows.length > 0 && (
+        <div style={{ background: "var(--card)", borderRadius: 20, border: "1px solid var(--border)", padding: 16, marginBottom: 16 }}>
+          <SectionTitle color={D.acc}>{t("home.budgetTitle")}</SectionTitle>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {budgetRows.map((r) => {
+              const over = r.spent > r.budget;
+              const pct = r.budget > 0 ? Math.round((r.spent / r.budget) * 100) : 0;
+              return (
+                <div key={r.cat}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5, gap: 8 }}>
+                    <span style={{ fontSize: 13, fontWeight: 800, color: "var(--text)" }}>
+                      {CAT_ICON[r.cat] || "📌"} {t(`cat.${r.cat}`)}
+                    </span>
+                    <span style={{ fontSize: 12, fontWeight: 800, color: over ? "#EF4444" : "var(--muted)", flexShrink: 0 }}>
+                      {fmt(r.spent, base)} / {fmt(r.budget, base)} · {pct}%
+                    </span>
+                  </div>
+                  <Bar value={r.spent} max={r.budget} color={over ? "#EF4444" : D.acc} h={8} />
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: "var(--muted)" }}>
+              {fmt(budgetTotals.spent, base)} / {fmt(budgetTotals.budget, base)}
+            </span>
+            <span style={{ fontSize: 12, fontWeight: 900, color: budgetTotals.over > 0 ? "#EF4444" : "#059669", flexShrink: 0 }}>
+              {budgetTotals.over > 0
+                ? `⚠ ${t("home.overBudget")} ${fmt(budgetTotals.over, base)}`
+                : `${t("home.budgetLeft")} ${fmt(-budgetTotals.over, base)}`}
+            </span>
+          </div>
+        </div>
+      )}
 
       {showCurrencyBreakdown && (
         <div style={{ background: "var(--card)", borderRadius: 20, border: "1px solid var(--border)", padding: 16, marginBottom: 16 }}>
