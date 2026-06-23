@@ -60,9 +60,8 @@ export default function MasPage({ D }) {
     if (bcvBusy) return;
     setBcvBusy(true);
     try {
-      const { rate, date } = await fetchBcvRate({ force: true });
-      setRateLocal(String(rate));
-      D.setRate(rate);
+      const refresh = D.refreshRateFromBcv ?? (() => fetchBcvRate({ force: true }));
+      const { date } = await refresh({ force: true });
       const msg = date
         ? t("mas.bcvUpdated").replace("{date}", date)
         : t("mas.rateSaved");
@@ -160,6 +159,11 @@ export default function MasPage({ D }) {
         >
           {bcvBusy ? t("mas.bcvLoading") : t("mas.bcvButton")}
         </button>
+        {D.bcvInfo?.date && (
+          <p style={{ fontSize: 11, color: "var(--muted)", margin: "0 0 12px", textAlign: "center" }}>
+            {t("mas.bcvAuto").replace("{date}", D.bcvInfo.date)}
+          </p>
+        )}
         <p style={{ fontSize: 11, fontWeight: 800, color: "var(--muted)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.3 }}>
           {t("mas.baseCurrency")}
         </p>
