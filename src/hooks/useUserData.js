@@ -12,6 +12,7 @@ import {
   DEFAULT_CURRENCY,
 } from "../lib/currency";
 import { splitTotalsEvenly, isHouseholdAdmin } from "../lib/budgetSplit";
+import { filterByMonth, currentMonthKey, totals as txTotals } from "../lib/transactions";
 import { getHogarDataConnect } from "../lib/dataConnect";
 import * as dcApi from "../lib/dcApi";
 import {
@@ -50,6 +51,13 @@ function stripCard(users, userId, cardId) {
 function stripGoal(users, userId, goalId) {
   return users.map((u) =>
     u.id !== userId ? u : { ...u, goals: (u.goals || []).filter((g) => g.id !== goalId) }
+  );
+}
+function stripTransaction(users, userId, txId) {
+  return users.map((u) =>
+    u.id !== userId
+      ? u
+      : { ...u, transactions: (u.transactions || []).filter((t) => t.id !== txId) }
   );
 }
 
@@ -317,6 +325,7 @@ export function useUserData() {
       incomes: users.flatMap((u) => u.incomes || []),
       cards: users.flatMap((u) => u.cards || []),
       goals: users.flatMap((u) => u.goals || []),
+      transactions: users.flatMap((u) => u.transactions || []),
     }),
     [users]
   );
@@ -325,8 +334,13 @@ export function useUserData() {
   const incomes = isFam ? allFam.incomes : user?.incomes || [];
   const cards = isFam ? allFam.cards : user?.cards || [];
   const goals = isFam ? allFam.goals : user?.goals || [];
+  const transactions = isFam ? allFam.transactions : user?.transactions || [];
   const history = isFam ? [] : user?.history || [];
   const budgets = user?.budgets || {};
+
+  // Mes seleccionado para la pestaña de Movimientos ("YYYY-MM").
+  const [txMonth, setTxMonth] = useState(() => currentMonthKey());
+  const txOfMonth = useMemo(() => filterByMonth(transactions, txMonth), [transactions, txMonth]);
 
   // Todos los totales escalares se consolidan a la moneda base (`baseCurrency`)
   // usando la tasa. Con datos antiguos (todo USD) el resultado es idéntico al de
@@ -335,6 +349,9 @@ export function useUserData() {
     (amount, currency) => convert(amount, currency, baseCurrency, rate),
     [baseCurrency, rate]
   );
+
+  // Totales del mes seleccionado de movimientos (convertidos a la moneda base).
+  const txMonthTotals = useMemo(() => txTotals(txOfMonth, conv), [txOfMonth, conv]);
 
   const totalExp = expenses.reduce((s, e) => s + conv(e.amount, e.currency), 0);
   const paidExp = expenses
@@ -401,6 +418,8 @@ export function useUserData() {
     if (activeUid === "familia") return;
     if (tab === "dinero") {
       setFabSheet({ kind: subTab === "gastos" ? "expense" : "income" });
+    } else if (tab === "movimientos") {
+      setFabSheet({ kind: "transaction" });
     } else if (tab === "tarjetas") {
       setFabSheet({ kind: "card" });
     } else if (tab === "metas") {
@@ -469,6 +488,42 @@ export function useUserData() {
       showToast(t("toast.expenseDeleted"), "ok", undoAction(saveExpense, item));
     } catch (e) {
       showToast(e?.message || t("toast.expenseDeleteErr"), "err");
+      throw e;
+    }
+  };
+
+  const saveTransaction = async (form, editId) => {
+    const u = uidOrSkip();
+    requireMemberContext(u, householdId);
+    const cur = (user?.transactions || []).find((t) => t.id === editId);
+    const data = {
+      kind: form.kind === "income" ? "income" : "expense",
+      name: form.name,
+      amount: parseMoney(form.amount),
+      category: form.category,
+      date: form.date || cur?.date,
+      currency: normalizeCurrency(form.currency ?? cur?.currency),
+      note: form.note?.trim() ? form.note.trim() : null,
+    };
+    if (!data.date) throw new Error(t("errors.invalidAmount"));
+    const dc = requireDc();
+    const { users: nu } = editId
+      ? await dcApi.patchTransaction(dc, householdId, editId, data)
+      : await dcApi.postTransaction(dc, householdId, u, data);
+    applyUsers(nu);
+  };
+
+  const deleteTransaction = async (id) => {
+    const u = uidOrSkip();
+    if (!u || !householdId) return;
+    const item = transactions.find((x) => x.id === id);
+    try {
+      const dc = requireDc();
+      const { users: nu } = await dcApi.removeTransaction(dc, householdId, id);
+      applyUsers(stripTransaction(nu, u, id));
+      showToast(t("toast.txDeleted"), "ok", undoAction(saveTransaction, item));
+    } catch (e) {
+      showToast(e?.message || t("toast.txDeleteErr"), "err");
       throw e;
     }
   };
@@ -845,6 +900,11 @@ export function useUserData() {
     incomes,
     cards,
     goals,
+    transactions,
+    txMonth,
+    setTxMonth,
+    txOfMonth,
+    txMonthTotals,
     history,
     budgets,
     allFam,
@@ -878,6 +938,8 @@ export function useUserData() {
     toggleIncome,
     saveIncome,
     deleteIncome,
+    saveTransaction,
+    deleteTransaction,
     toggleCard,
     saveCard,
     deleteCard,

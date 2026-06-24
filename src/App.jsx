@@ -19,6 +19,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 
 const DineroPage   = lazy(() => import("./pages/DineroPage"));
+const MovimientosPage = lazy(() => import("./pages/MovimientosPage"));
 const TarjetasPage = lazy(() => import("./pages/TarjetasPage"));
 const MetasPage    = lazy(() => import("./pages/MetasPage"));
 const MasPage      = lazy(() => import("./pages/MasPage"));
@@ -65,6 +66,7 @@ export default function App() {
     const tabs = [
       { id: "home", icon: "🏠", label: t("nav.home") },
       { id: "dinero", icon: "💸", label: t("nav.money") },
+      { id: "movimientos", icon: "🧾", label: t("nav.movements") },
       { id: "tarjetas", icon: "💳", label: t("nav.cards") },
       { id: "metas", icon: "🎯", label: t("nav.goals") },
     ];
@@ -205,6 +207,7 @@ export default function App() {
       <div className="hf-page" key={D.tab}>
         {D.tab === "home"     && <HomePage     D={D} isDesktop={isDesktop} />}
         {D.tab === "dinero"   && <DineroPage   D={D} isDesktop={isDesktop} />}
+        {D.tab === "movimientos" && <MovimientosPage D={D} isDesktop={isDesktop} />}
         {D.tab === "tarjetas" && <TarjetasPage D={D} isDesktop={isDesktop} />}
         {D.tab === "metas"    && <MetasPage    D={D} isDesktop={isDesktop} />}
         {D.tab === "bancos"   && isPlaidTabVisible() && (

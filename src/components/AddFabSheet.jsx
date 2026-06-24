@@ -10,12 +10,26 @@ import {
   CURRENCY_CODES,
   normalizeCurrency,
 } from "../lib/constants";
+import { todayISO } from "../lib/transactions";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
 function amountOk(s) {
   const n = parseFloat(String(s ?? "").replace(",", ".").trim());
   return Number.isFinite(n) && n >= 0;
 }
+
+const txKindBtn = (active, color) => ({
+  flex: 1,
+  padding: "11px",
+  borderRadius: 12,
+  border: active ? `2px solid ${color}` : "1.5px solid var(--inp-b)",
+  background: active ? `${color}14` : "var(--inp)",
+  color: active ? color : "var(--muted)",
+  fontWeight: 800,
+  fontSize: 14,
+  cursor: "pointer",
+  fontFamily: "inherit",
+});
 
 const curLabelStyle = {
   fontSize: 11,
@@ -52,6 +66,11 @@ export default function AddFabSheet({ D }) {
 
   const [incReceived, setIncReceived] = useState(false);
 
+  // Movimiento con fecha (kind: expense | income).
+  const [txKind, setTxKind] = useState("expense");
+  const [txDate, setTxDate] = useState(todayISO());
+  const [note, setNote] = useState("");
+
   const [target, setTarget] = useState("");
   const [saved, setSaved] = useState("0");
   const [monthly, setMonthly] = useState("");
@@ -64,9 +83,11 @@ export default function AddFabSheet({ D }) {
   );
 
   const catOpts = useMemo(() => {
-    if (kind === "expense") return CATS.map((c) => [c, t(`cat.${c}`)]);
+    const asExpense =
+      kind === "expense" || (kind === "transaction" && txKind === "expense");
+    if (asExpense) return CATS.map((c) => [c, t(`cat.${c}`)]);
     return Object.keys(INC_ICON).map((k) => [k, t(`inc.${k}`)]);
-  }, [kind, t]);
+  }, [kind, txKind, t]);
 
   const brandOpts = useMemo(
     () => Object.keys(BRAND_COLOR).map((k) => [k, t(`brand.${k}`)]),
@@ -151,6 +172,29 @@ export default function AddFabSheet({ D }) {
       resetIncome();
       return;
     }
+    if (kind === "transaction") {
+      if (editId) {
+        const tx = D.transactions.find((x) => x.id === editId);
+        if (tx) {
+          setTxKind(tx.kind === "income" ? "income" : "expense");
+          setName(tx.name);
+          setAmount(String(tx.amount));
+          setCategory(tx.category);
+          setTxDate(tx.date || todayISO());
+          setCurrency(normalizeCurrency(tx.currency));
+          setNote(tx.note || "");
+          return;
+        }
+      }
+      setTxKind("expense");
+      setName("");
+      setAmount("");
+      setCategory("otros");
+      setTxDate(todayISO());
+      setCurrency("USD");
+      setNote("");
+      return;
+    }
     if (kind === "card") {
       if (editId) {
         const c = D.cards.find((x) => x.id === editId);
@@ -185,7 +229,7 @@ export default function AddFabSheet({ D }) {
       }
       resetGoal();
     }
-  }, [open, kind, editId, D.expenses, D.incomes, D.cards, D.goals]);
+  }, [open, kind, editId, D.expenses, D.incomes, D.cards, D.goals, D.transactions]);
 
   const close = () => D.closeFabSheet();
 
@@ -231,6 +275,19 @@ export default function AddFabSheet({ D }) {
           },
           editId
         );
+      } else if (kind === "transaction") {
+        await D.saveTransaction(
+          {
+            kind: txKind,
+            name: name.trim(),
+            amount,
+            category,
+            date: txDate,
+            currency,
+            note,
+          },
+          editId
+        );
       } else if (kind === "goal") {
         await D.saveGoal(
           {
@@ -254,7 +311,11 @@ export default function AddFabSheet({ D }) {
   };
 
   const title =
-    kind === "expense"
+    kind === "transaction"
+      ? isEdit
+        ? t("addSheet.editTx")
+        : t("addSheet.newTx")
+      : kind === "expense"
       ? isEdit
         ? t("addSheet.editExpense")
         : t("addSheet.newExpense")
@@ -302,6 +363,38 @@ export default function AddFabSheet({ D }) {
               <Toggle checked={incReceived} onChange={() => setIncReceived((v) => !v)} color={acc} />
             </div>
           )}
+        </>
+      )}
+
+      {kind === "transaction" && (
+        <>
+          <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+            <button
+              type="button"
+              onClick={() => { setTxKind("expense"); setCategory("otros"); }}
+              style={txKindBtn(txKind === "expense", "#DC2626")}
+            >
+              {t("addSheet.txExpense")}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setTxKind("income"); setCategory("salario"); }}
+              style={txKindBtn(txKind === "income", "#059669")}
+            >
+              {t("addSheet.txIncome")}
+            </button>
+          </div>
+          <Inp ph={t("addSheet.name")} val={name} set={setName} />
+          <Inp ph={t("addSheet.amount")} val={amount} set={setAmount} type="text" inputMode="decimal" />
+          <p style={{ fontSize: 12, color: "var(--muted)", marginTop: -6, marginBottom: 10, lineHeight: 1.35 }}>
+            {t("addSheet.amountHint")}
+          </p>
+          <Sel val={category} set={setCategory} opts={catOpts} />
+          <p style={curLabelStyle}>{t("addSheet.date")}</p>
+          <Inp ph={t("addSheet.date")} val={txDate} set={setTxDate} type="date" label={t("addSheet.date")} />
+          <p style={curLabelStyle}>{t("addSheet.currency")}</p>
+          <Sel val={currency} set={setCurrency} opts={currencyOpts} />
+          <Inp ph={t("addSheet.noteOptional")} val={note} set={setNote} />
         </>
       )}
 
@@ -380,6 +473,7 @@ export default function AddFabSheet({ D }) {
           busy ||
           !name.trim() ||
           ((kind === "expense" || kind === "income") && !amountOk(amount)) ||
+          (kind === "transaction" && (!amountOk(amount) || !txDate)) ||
           (kind === "card" && !amountOk(limit)) ||
           (kind === "goal" && !amountOk(target))
         }

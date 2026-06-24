@@ -36,6 +36,17 @@ jobs:
         env:
           VITE_ENABLE_PLAID: ${{ secrets.VITE_ENABLE_PLAID }}
 
+      # Aplica el esquema/conector de Data Connect a Cloud SQL antes de publicar
+      # el frontend, para que producción quede consistente (el front nuevo usa la
+      # tabla Transaction). Es aditivo (schemaValidation COMPATIBLE), no borra
+      # datos. La service account necesita los roles "Firebase Data Connect Admin"
+      # y "Cloud SQL Client" además de los de Hosting.
+      - name: Deploy Data Connect (schema + connector)
+        run: |
+          printf '%s' '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > "$RUNNER_TEMP/fdc-sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/fdc-sa.json"
+          npx -y firebase-tools@latest deploy --only dataconnect --force --non-interactive --project controldgastos
+
       - name: Deploy to Firebase Hosting (live)
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
