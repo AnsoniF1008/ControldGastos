@@ -752,6 +752,63 @@ export function useUserData() {
     a.click();
   };
 
+  // Respaldo completo (JSON) del perfil activo: gastos, ingresos, tarjetas,
+  // metas y presupuestos. La restauración re-crea los ítems (los suma a los
+  // existentes; no borra), útil para respaldo o mover a otra cuenta.
+  const exportBackup = () => {
+    const payload = {
+      app: "hogar-finance",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      profile: user ? { name: user.name, emoji: user.emoji } : null,
+      data: {
+        expenses: (expenses || []).map(({ name, amount, frequency, category, dueDay, paid, currency }) =>
+          ({ name, amount, frequency, category, dueDay, paid, currency })),
+        incomes: (incomes || []).map(({ name, amount, frequency, category, received, currency }) =>
+          ({ name, amount, frequency, category, received, currency })),
+        cards: (cards || []).map(({ name, brand, limit, balance, minPayment, dueDay, paid, currency }) =>
+          ({ name, brand, limit, balance, minPayment, dueDay, paid, currency })),
+        goals: (goals || []).map(({ name, target, saved, monthly, emoji, color, currency }) =>
+          ({ name, target, saved, monthly, emoji, color, currency })),
+        budgets,
+      },
+    };
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
+    a.download = `hogar-finance-backup-${CUR_YEAR}-${String(NOW.getMonth() + 1).padStart(2, "0")}.json`;
+    a.click();
+  };
+
+  const importBackup = async (parsed) => {
+    if (!parsed || parsed.app !== "hogar-finance" || !parsed.data) {
+      throw new Error(t("mas.backupInvalid"));
+    }
+    requireMemberContext(uidOrSkip(), householdId);
+    const d = parsed.data;
+    let ok = 0;
+    let fail = 0;
+    const run = async (fn, item) => {
+      try {
+        await fn(item);
+        ok++;
+      } catch {
+        fail++;
+      }
+    };
+    for (const e of d.expenses || []) await run(saveExpense, e);
+    for (const i of d.incomes || []) await run(saveIncome, i);
+    for (const c of d.cards || []) await run(saveCard, c);
+    for (const g of d.goals || []) await run(saveGoal, g);
+    if (d.budgets && typeof d.budgets === "object") {
+      try {
+        await saveBudgets(d.budgets);
+      } catch {
+        /* ignore */
+      }
+    }
+    return { ok, fail };
+  };
+
   return {
     booting,
     sessionError,
@@ -833,6 +890,8 @@ export function useUserData() {
     confirmMonthRollover,
     acknowledgeMonth,
     exportCSV,
+    exportBackup,
+    importBackup,
 
     toast,
   };
