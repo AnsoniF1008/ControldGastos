@@ -2,7 +2,7 @@
 // Estado + CRUD vía Firebase Data Connect (Cloud SQL).
 
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
-import { CUR_MONTH, CUR_YEAR, CATS } from "../lib/constants";
+import { CUR_MONTH, CUR_YEAR, CATS, NOW } from "../lib/constants";
 import {
   convert,
   sumByCurrency,
@@ -694,6 +694,42 @@ export function useUserData() {
     applyUsers(nu);
   };
 
+  // ── Aviso de cambio de mes ──────────────────────────────────────────────────
+  // Guarda el mes "visto" en el dispositivo; si cambió, sugiere archivar y
+  // reiniciar (sin forzarlo). El usuario puede confirmar o posponer.
+  const MONTH_KEY = `${CUR_YEAR}-${NOW.getMonth()}`;
+  const [lastSeenMonth, setLastSeenMonth] = useState(() => {
+    try {
+      return localStorage.getItem("hf_last_month");
+    } catch {
+      return null;
+    }
+  });
+  useEffect(() => {
+    if (lastSeenMonth == null) {
+      try {
+        localStorage.setItem("hf_last_month", MONTH_KEY);
+      } catch {
+        /* ignore */
+      }
+      setLastSeenMonth(MONTH_KEY);
+    }
+  }, [lastSeenMonth, MONTH_KEY]);
+  const acknowledgeMonth = useCallback(() => {
+    try {
+      localStorage.setItem("hf_last_month", MONTH_KEY);
+    } catch {
+      /* ignore */
+    }
+    setLastSeenMonth(MONTH_KEY);
+  }, [MONTH_KEY]);
+  const confirmMonthRollover = async () => {
+    await resetMonth();
+    acknowledgeMonth();
+  };
+  const monthRolloverPending =
+    !isFam && lastSeenMonth != null && lastSeenMonth !== MONTH_KEY;
+
   const exportCSV = () => {
     const header = [
       t("csv.name"),
@@ -793,6 +829,9 @@ export function useUserData() {
     contributeGoal,
     saveBudgets,
     resetMonth,
+    monthRolloverPending,
+    confirmMonthRollover,
+    acknowledgeMonth,
     exportCSV,
 
     toast,

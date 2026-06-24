@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { SectionTitle, StatCard, EmptyState, Bar } from "../components/atoms";
 import { PieChart, PieLegend, BarChart, GroupedBarChart } from "../components/Charts";
 import { fmt, CAT_ICON, CATS, convert, CURRENCY_CODES } from "../lib/constants";
@@ -19,6 +19,7 @@ export default function HomePage({ D, isDesktop }) {
   const { t, locale } = useI18n();
   const base = D.baseCurrency;
   const rate = D.rate;
+  const [rolloverBusy, setRolloverBusy] = useState(false);
 
   // Para mezclar monedas en un solo gráfico/total convertimos todo a la moneda base.
   const byCategory = useMemo(() => {
@@ -90,6 +91,58 @@ export default function HomePage({ D, isDesktop }) {
 
   return (
     <div style={{ paddingTop: 8 }}>
+      {D.monthRolloverPending && (
+        <div style={{
+          background: `linear-gradient(135deg, ${D.acc}1A, ${D.acc}0D)`,
+          border: `1px solid ${D.acc}55`,
+          borderRadius: 16,
+          padding: 14,
+          marginBottom: 16,
+        }}>
+          <p style={{ margin: 0, fontWeight: 900, color: "var(--text)", fontSize: 14 }}>
+            🗓️ {t("home.rolloverTitle")}
+          </p>
+          <p style={{ margin: "4px 0 12px", fontSize: 12, color: "var(--muted)", fontWeight: 600, lineHeight: 1.4 }}>
+            {t("home.rolloverMsg")}
+          </p>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              type="button"
+              disabled={rolloverBusy}
+              onClick={async () => {
+                setRolloverBusy(true);
+                try {
+                  await D.confirmMonthRollover();
+                  D.showToast?.(t("home.rolloverDone"));
+                } catch (e) {
+                  D.showToast?.(e?.message || t("home.rolloverErr"), "err");
+                } finally {
+                  setRolloverBusy(false);
+                }
+              }}
+              style={{
+                flex: 1, padding: "10px", borderRadius: 10, border: "none",
+                background: `linear-gradient(135deg, ${D.acc}, ${D.acc}AA)`, color: "white",
+                fontWeight: 900, fontSize: 13, cursor: rolloverBusy ? "default" : "pointer",
+                opacity: rolloverBusy ? 0.6 : 1, fontFamily: "inherit",
+              }}
+            >
+              {t("home.rolloverConfirm")}
+            </button>
+            <button
+              type="button"
+              onClick={() => D.acknowledgeMonth()}
+              style={{
+                padding: "10px 14px", borderRadius: 10, border: "1px solid var(--border)",
+                background: "transparent", color: "var(--muted)", fontWeight: 800, fontSize: 13,
+                cursor: "pointer", fontFamily: "inherit",
+              }}
+            >
+              {t("home.rolloverDismiss")}
+            </button>
+          </div>
+        </div>
+      )}
       <div style={{
         background: "var(--card)",
         borderRadius: 20,
