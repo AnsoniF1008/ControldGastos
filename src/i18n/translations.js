@@ -6,6 +6,7 @@ export const TRANSLATIONS = {
       userFallback: "Usuario",
       loading: "Cargando…",
       addAria: "Agregar",
+      undo: "Deshacer",
     },
     login: {
       tagline: "Finanzas del hogar en un solo lugar",
@@ -272,6 +273,7 @@ export const TRANSLATIONS = {
       cardDeleteErr: "No se pudo eliminar la tarjeta",
       goalDeleted: "Meta eliminada",
       goalDeleteErr: "No se pudo eliminar la meta",
+      undoErr: "No se pudo deshacer",
     },
     freq: {
       mensual: "Mensual",
@@ -348,6 +350,7 @@ export const TRANSLATIONS = {
       userFallback: "User",
       loading: "Loading…",
       addAria: "Add",
+      undo: "Undo",
     },
     login: {
       tagline: "Household finances in one place",
@@ -613,6 +616,7 @@ export const TRANSLATIONS = {
       cardDeleteErr: "Could not delete card",
       goalDeleted: "Goal deleted",
       goalDeleteErr: "Could not delete goal",
+      undoErr: "Could not undo",
     },
     freq: {
       mensual: "Monthly",

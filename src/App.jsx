@@ -256,10 +256,37 @@ export default function App() {
               : "linear-gradient(135deg, #ECFDF5, #D1FAE5)",
           color: D.toast.tone === "err" ? "#991B1B" : "#065F46",
           borderColor: D.toast.tone === "err" ? "#FECACA" : "#A7F3D0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 12,
         }}
       >
-        {D.toast.tone === "ok" ? "✓ " : ""}
-        {D.toast.message}
+        <span>
+          {D.toast.tone === "ok" ? "✓ " : ""}
+          {D.toast.message}
+        </span>
+        {D.toast.action && (
+          <button
+            type="button"
+            onClick={() => { D.toast.action.run(); D.hideToast(); }}
+            style={{
+              pointerEvents: "auto",
+              flexShrink: 0,
+              border: "none",
+              background: "rgba(6, 95, 70, 0.12)",
+              color: "inherit",
+              fontWeight: 900,
+              fontSize: 13,
+              padding: "6px 12px",
+              borderRadius: 10,
+              cursor: "pointer",
+              fontFamily: "inherit",
+            }}
+          >
+            {D.toast.action.label}
+          </button>
+        )}
       </div>
     </div>
   );

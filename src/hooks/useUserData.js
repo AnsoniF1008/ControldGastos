@@ -216,14 +216,33 @@ export function useUserData() {
     return n;
   }, [t]);
 
-  const showToast = useCallback((message, tone = "ok") => {
+  const showToast = useCallback((message, tone = "ok", action = null) => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
-    setToast({ message, tone });
+    setToast({ message, tone, action });
     toastTimerRef.current = setTimeout(() => {
       setToast(null);
       toastTimerRef.current = null;
-    }, 2800);
+    }, action ? 6000 : 2800);
   }, []);
+
+  const hideToast = useCallback(() => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = null;
+    setToast(null);
+  }, []);
+
+  // Acción "Deshacer": re-crea el ítem borrado a partir de sus datos (queda con
+  // nuevo id; "pagado/recibido" vuelve a pendiente, igual que una alta normal).
+  const undoAction = (saveFn, item) =>
+    item
+      ? {
+          label: t("common.undo"),
+          run: () =>
+            Promise.resolve(saveFn(item)).catch((e) =>
+              showToast(e?.message || t("toast.undoErr"), "err")
+            ),
+        }
+      : null;
 
   const applyUsers = useCallback((list, preferUid) => {
     setUsers(list);
@@ -442,11 +461,12 @@ export function useUserData() {
   const deleteExpense = async (id) => {
     const u = uidOrSkip();
     if (!u || !householdId) return;
+    const item = expenses.find((x) => x.id === id);
     try {
       const dc = requireDc();
       const { users: nu } = await dcApi.removeExpense(dc, householdId, id);
       applyUsers(stripExpense(nu, u, id));
-      showToast(t("toast.expenseDeleted"));
+      showToast(t("toast.expenseDeleted"), "ok", undoAction(saveExpense, item));
     } catch (e) {
       showToast(e?.message || t("toast.expenseDeleteErr"), "err");
       throw e;
@@ -488,11 +508,12 @@ export function useUserData() {
   const deleteIncome = async (id) => {
     const u = uidOrSkip();
     if (!u || !householdId) return;
+    const item = incomes.find((x) => x.id === id);
     try {
       const dc = requireDc();
       const { users: nu } = await dcApi.removeIncome(dc, householdId, id);
       applyUsers(stripIncome(nu, u, id));
-      showToast(t("toast.incomeDeleted"));
+      showToast(t("toast.incomeDeleted"), "ok", undoAction(saveIncome, item));
     } catch (e) {
       showToast(e?.message || t("toast.incomeDeleteErr"), "err");
       throw e;
@@ -542,11 +563,12 @@ export function useUserData() {
   const deleteCard = async (id) => {
     const u = uidOrSkip();
     if (!u || !householdId) return;
+    const item = cards.find((x) => x.id === id);
     try {
       const dc = requireDc();
       const { users: nu } = await dcApi.removeCard(dc, householdId, id);
       applyUsers(stripCard(nu, u, id));
-      showToast(t("toast.cardDeleted"));
+      showToast(t("toast.cardDeleted"), "ok", undoAction(saveCard, item));
     } catch (e) {
       showToast(e?.message || t("toast.cardDeleteErr"), "err");
       throw e;
@@ -580,11 +602,12 @@ export function useUserData() {
   const deleteGoal = async (id) => {
     const u = uidOrSkip();
     if (!u || !householdId) return;
+    const item = goals.find((x) => x.id === id);
     try {
       const dc = requireDc();
       const { users: nu } = await dcApi.removeGoal(dc, householdId, id);
       applyUsers(stripGoal(nu, u, id));
-      showToast(t("toast.goalDeleted"));
+      showToast(t("toast.goalDeleted"), "ok", undoAction(saveGoal, item));
     } catch (e) {
       showToast(e?.message || t("toast.goalDeleteErr"), "err");
       throw e;
@@ -719,6 +742,7 @@ export function useUserData() {
     updateUser,
     deleteUser,
     showToast,
+    hideToast,
 
     tab,
     setTab,
