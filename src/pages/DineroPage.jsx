@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { FreqBadge, StatusBadge, DueBadge, Toggle, SectionTitle, EmptyState, Confirm } from "../components/atoms";
+import { FreqBadge, StatusBadge, DueBadge, Toggle, SectionTitle, EmptyState, Confirm, EditButton, DeleteButton } from "../components/atoms";
 import { fmt, CAT_ICON, INC_ICON } from "../lib/constants";
 import { filterAndSortItems } from "../lib/listFilter";
 import { useI18n } from "../i18n/I18nContext.jsx";
@@ -170,29 +170,12 @@ export default function DineroPage({ D, isDesktop }) {
                   {!D.isFam && (
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        <button
-                          type="button"
-                          onClick={() => D.openFabEdit("expense", e.id)}
-                          style={{
-                            fontSize: 12, fontWeight: 800, color: D.acc,
-                            background: `${D.acc}14`, border: `1px solid ${D.acc}55`,
-                            borderRadius: 10, padding: "6px 12px", cursor: "pointer",
-                          }}
-                        >
+                        <EditButton acc={D.acc} onClick={() => D.openFabEdit("expense", e.id)}>
                           {t("dinero.edit")}
-                        </button>
-                        <button
-                          type="button"
-                          disabled={deletingId === e.id}
-                          onClick={() => setToDelete({ kind: "expense", id: e.id })}
-                          style={{
-                            fontSize: 12, fontWeight: 800, color: "#B91C1C",
-                            background: "transparent", border: "1px solid var(--border)",
-                            borderRadius: 10, padding: "6px 10px", cursor: "pointer",
-                          }}
-                        >
+                        </EditButton>
+                        <DeleteButton disabled={deletingId === e.id} onClick={() => setToDelete({ kind: "expense", id: e.id })}>
                           {t("dinero.delete")}
-                        </button>
+                        </DeleteButton>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 700 }}>{t("dinero.paid")}</span>
@@ -235,29 +218,12 @@ export default function DineroPage({ D, isDesktop }) {
                   {!D.isFam && (
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        <button
-                          type="button"
-                          onClick={() => D.openFabEdit("income", i.id)}
-                          style={{
-                            fontSize: 12, fontWeight: 800, color: D.acc,
-                            background: `${D.acc}14`, border: `1px solid ${D.acc}55`,
-                            borderRadius: 10, padding: "6px 12px", cursor: "pointer",
-                          }}
-                        >
+                        <EditButton acc={D.acc} onClick={() => D.openFabEdit("income", i.id)}>
                           {t("dinero.edit")}
-                        </button>
-                        <button
-                          type="button"
-                          disabled={deletingId === i.id}
-                          onClick={() => setToDelete({ kind: "income", id: i.id })}
-                          style={{
-                            fontSize: 12, fontWeight: 800, color: "#B91C1C",
-                            background: "transparent", border: "1px solid var(--border)",
-                            borderRadius: 10, padding: "6px 10px", cursor: "pointer",
-                          }}
-                        >
+                        </EditButton>
+                        <DeleteButton disabled={deletingId === i.id} onClick={() => setToDelete({ kind: "income", id: i.id })}>
                           {t("dinero.delete")}
-                        </button>
+                        </DeleteButton>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 700 }}>{t("dinero.received")}</span>

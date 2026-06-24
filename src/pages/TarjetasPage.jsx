@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SectionTitle, StatusBadge, Toggle, Bar, EmptyState, Confirm } from "../components/atoms";
+import { SectionTitle, StatusBadge, Toggle, Bar, EmptyState, Confirm, EditButton, DeleteButton } from "../components/atoms";
 import { fmt, BRAND_COLOR } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
@@ -56,39 +56,12 @@ export default function TarjetasPage({ D, isDesktop }) {
                 {!D.isFam && (
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                      <button
-                        type="button"
-                        onClick={() => D.openFabEdit("card", c.id)}
-                        style={{
-                          fontSize: 12,
-                          fontWeight: 800,
-                          color: D.acc,
-                          background: `${D.acc}14`,
-                          border: `1px solid ${D.acc}55`,
-                          borderRadius: 10,
-                          padding: "6px 12px",
-                          cursor: "pointer",
-                        }}
-                      >
+                      <EditButton acc={D.acc} onClick={() => D.openFabEdit("card", c.id)}>
                         {t("tarjetas.edit")}
-                      </button>
-                      <button
-                        type="button"
-                        disabled={deletingId === c.id}
-                        onClick={() => setToDelete(c.id)}
-                        style={{
-                          fontSize: 12,
-                          fontWeight: 800,
-                          color: "#B91C1C",
-                          background: "transparent",
-                          border: "1px solid var(--border)",
-                          borderRadius: 10,
-                          padding: "6px 10px",
-                          cursor: "pointer",
-                        }}
-                      >
+                      </EditButton>
+                      <DeleteButton disabled={deletingId === c.id} onClick={() => setToDelete(c.id)}>
                         {t("tarjetas.delete")}
-                      </button>
+                      </DeleteButton>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 12, color: "var(--muted)", fontWeight: 700 }}>{t("tarjetas.minPayShort")}</span>

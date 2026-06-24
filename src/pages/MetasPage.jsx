@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SectionTitle, Bar, EmptyState, Inp, Confirm } from "../components/atoms";
+import { SectionTitle, Bar, EmptyState, Inp, Confirm, EditButton, DeleteButton } from "../components/atoms";
 import { fmt } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 
@@ -112,39 +112,12 @@ export default function MetasPage({ D, isDesktop }) {
                     </button>
                   </div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    <button
-                      type="button"
-                      onClick={() => D.openFabEdit("goal", g.id)}
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 800,
-                        color: D.acc,
-                        background: `${D.acc}14`,
-                        border: `1px solid ${D.acc}55`,
-                        borderRadius: 10,
-                        padding: "6px 12px",
-                        cursor: "pointer",
-                      }}
-                    >
+                    <EditButton acc={D.acc} onClick={() => D.openFabEdit("goal", g.id)}>
                       {t("metas.edit")}
-                    </button>
-                    <button
-                      type="button"
-                      disabled={busyId === g.id}
-                      onClick={() => setToDelete(g.id)}
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 800,
-                        color: "#B91C1C",
-                        background: "transparent",
-                        border: "1px solid var(--border)",
-                        borderRadius: 10,
-                        padding: "6px 10px",
-                        cursor: "pointer",
-                      }}
-                    >
+                    </EditButton>
+                    <DeleteButton disabled={busyId === g.id} onClick={() => setToDelete(g.id)}>
                       {t("metas.deleteMeta")}
-                    </button>
+                    </DeleteButton>
                   </div>
                 </div>
               )}

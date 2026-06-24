@@ -315,6 +315,38 @@ export const BtnGhost = ({ onClick, children }) => (
   </button>
 );
 
+// Botones de fila (Editar / Borrar) reutilizados en Dinero, Tarjetas y Metas.
+export const EditButton = ({ onClick, acc = "#7C3AED", children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    style={{
+      fontSize: 12, fontWeight: 800, color: acc,
+      background: `${acc}14`, border: `1px solid ${acc}55`,
+      borderRadius: 10, padding: "6px 12px", cursor: "pointer", fontFamily: "inherit",
+    }}
+  >
+    {children}
+  </button>
+);
+
+export const DeleteButton = ({ onClick, disabled, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={disabled}
+    style={{
+      fontSize: 12, fontWeight: 800, color: "#B91C1C",
+      background: "transparent", border: "1px solid var(--border)",
+      borderRadius: 10, padding: "6px 10px",
+      cursor: disabled ? "default" : "pointer", opacity: disabled ? 0.6 : 1,
+      fontFamily: "inherit",
+    }}
+  >
+    {children}
+  </button>
+);
+
 export const BtnIcon = ({ onClick, label, icon, color, bg }) => (
   <button
     onClick={onClick}
