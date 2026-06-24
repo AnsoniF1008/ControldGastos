@@ -52,6 +52,7 @@ export default function MasPage({ D }) {
 
   const [rateLocal, setRateLocal] = useState(() => String(D.rate));
   const [bcvBusy, setBcvBusy] = useState(false);
+  const [importBusy, setImportBusy] = useState(false);
   useEffect(() => {
     setRateLocal(String(D.rate));
   }, [D.rate]);
@@ -268,6 +269,56 @@ export default function MasPage({ D }) {
             >
               {t("mas.export")}
             </button>
+          }
+        />
+        <ActionRow
+          icon="🗂️"
+          label={t("mas.backupExport")}
+          action={
+            <button
+              type="button"
+              onClick={D.exportBackup}
+              style={{ fontSize: 12, fontWeight: 800, color: D.acc, background: `${D.acc}18`, border: "none", borderRadius: 10, padding: "6px 12px", cursor: "pointer" }}
+            >
+              {t("mas.export")}
+            </button>
+          }
+        />
+        <ActionRow
+          icon="📥"
+          label={t("mas.backupImport")}
+          action={
+            <label
+              style={{
+                fontSize: 12, fontWeight: 800, color: D.acc, background: `${D.acc}18`,
+                border: "none", borderRadius: 10, padding: "6px 12px",
+                cursor: importBusy || D.isFam ? "default" : "pointer",
+                opacity: importBusy || D.isFam ? 0.6 : 1,
+              }}
+            >
+              {importBusy ? t("mas.backupImporting") : t("mas.backupChoose")}
+              <input
+                type="file"
+                accept="application/json,.json"
+                disabled={importBusy || D.isFam}
+                style={{ display: "none" }}
+                onChange={async (ev) => {
+                  const file = ev.target.files?.[0];
+                  ev.target.value = "";
+                  if (!file) return;
+                  setImportBusy(true);
+                  try {
+                    const parsed = JSON.parse(await file.text());
+                    const { ok, fail } = await D.importBackup(parsed);
+                    D.showToast?.(t("mas.backupDone").replace("{ok}", String(ok)).replace("{fail}", String(fail)));
+                  } catch (e) {
+                    D.showToast?.(e?.message || t("mas.backupInvalid"), "err");
+                  } finally {
+                    setImportBusy(false);
+                  }
+                }}
+              />
+            </label>
           }
         />
         <ActionRow
