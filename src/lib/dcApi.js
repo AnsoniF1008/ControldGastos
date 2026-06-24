@@ -29,6 +29,11 @@ import {
   resetUserIncomesReceived,
   resetUserCardsPaid,
 } from "./dataconnect/esm/index.esm.js";
+import {
+  insertTransaction,
+  updateTransaction,
+  deleteTransaction,
+} from "./dcTransactions.js";
 import { MONTHS } from "./constants";
 import { normalizeCurrency } from "./currency";
 import { sumBudgetsByCategory, splitTotalsEvenly } from "./budgetSplit";
@@ -96,6 +101,28 @@ function mapGoal(g) {
   };
 }
 
+// La fecha llega del backend como Date ("YYYY-MM-DD") o Timestamp ISO; la
+// dejamos siempre en "YYYY-MM-DD" para agrupar/ordenar en cliente.
+function normalizeDate(raw) {
+  if (!raw) return "";
+  const s = String(raw);
+  return s.length >= 10 ? s.slice(0, 10) : s;
+}
+
+function mapTransaction(tx) {
+  const o = {
+    id: tx.id,
+    kind: tx.kind === "income" ? "income" : "expense",
+    name: tx.name,
+    amount: tx.amount,
+    category: tx.category,
+    date: normalizeDate(tx.date),
+    currency: normalizeCurrency(tx.currency),
+  };
+  if (tx.note != null && tx.note !== "") o.note = tx.note;
+  return o;
+}
+
 function mapHistory(m) {
   const monthLabel =
     m.month >= 1 && m.month <= 12 ? MONTHS[m.month - 1] : String(m.month);
@@ -124,6 +151,7 @@ function mapHouseholdUsers(h) {
     incomes: (u.incomes_on_user || []).map(mapIncome),
     cards: (u.cards_on_user || []).map(mapCard),
     goals: (u.goals_on_user || []).map(mapGoal),
+    transactions: (u.transactions_on_user || []).map(mapTransaction),
     history: (u.monthHistories_on_user || []).map(mapHistory),
   }));
 }
@@ -352,6 +380,41 @@ export async function postGoalContribute(dc, householdId, goalId, amount, goal) 
 
 export async function removeGoal(dc, householdId, goalId) {
   await deleteGoal(dc, { householdId, goalId });
+  return fetchUsers(dc);
+}
+
+export async function postTransaction(dc, householdId, userId, body) {
+  await insertTransaction(dc, {
+    householdId,
+    userId,
+    kind: body.kind === "income" ? "income" : "expense",
+    name: body.name,
+    amount: body.amount,
+    category: body.category,
+    date: body.date,
+    currency: normalizeCurrency(body.currency),
+    note: body.note ?? null,
+  });
+  return fetchUsers(dc);
+}
+
+export async function patchTransaction(dc, householdId, transactionId, body) {
+  await updateTransaction(dc, {
+    householdId,
+    transactionId,
+    kind: body.kind === "income" ? "income" : "expense",
+    name: body.name,
+    amount: body.amount,
+    category: body.category,
+    date: body.date,
+    currency: normalizeCurrency(body.currency),
+    note: body.note ?? null,
+  });
+  return fetchUsers(dc);
+}
+
+export async function removeTransaction(dc, householdId, transactionId) {
+  await deleteTransaction(dc, { householdId, transactionId });
   return fetchUsers(dc);
 }
 

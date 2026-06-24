@@ -54,6 +54,17 @@ query GetHouseholdForMe @auth(level: USER_ANON) {
         color
         currency
       }
+      transactions_on_user(orderBy: [{ date: DESC }, { createdAt: DESC }]) {
+        id
+        kind
+        name
+        amount
+        category
+        date
+        currency
+        note
+        createdAt
+      }
       monthHistories_on_user(orderBy: [{ year: ASC }, { month: ASC }]) {
         id
         month

@@ -80,6 +80,7 @@ mutation DeleteHouseholdMember($householdId: UUID!, $userId: UUID!) @auth(level:
   income_deleteMany(where: { user: { id: { eq: $userId } } })
   card_deleteMany(where: { user: { id: { eq: $userId } } })
   goal_deleteMany(where: { user: { id: { eq: $userId } } })
+  transaction_deleteMany(where: { user: { id: { eq: $userId } } })
   monthHistory_deleteMany(where: { user: { id: { eq: $userId } } })
   user_delete(first: { where: { id: { eq: $userId }, household: { id: { eq: $householdId } } } })
 }
@@ -406,6 +407,83 @@ mutation DeleteGoal($householdId: UUID!, $goalId: UUID!) @auth(level: USER_ANON)
     }
   }
   goal_delete(first: { where: { id: { eq: $goalId }, user: { household: { id: { eq: $householdId } } } } })
+}
+
+mutation InsertTransaction(
+  $householdId: UUID!
+  $userId: UUID!
+  $kind: String!
+  $name: String!
+  $amount: Float!
+  $category: String!
+  $date: Date!
+  $currency: String! = "USD"
+  $note: String
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    access: households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+    targetUser: users(where: { id: { eq: $userId }, household: { id: { eq: $householdId } } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Usuario inválido") {
+      id
+    }
+  }
+  transaction_insert(data: {
+    userId: $userId,
+    kind: $kind,
+    name: $name,
+    amount: $amount,
+    category: $category,
+    date: $date,
+    currency: $currency,
+    note: $note,
+    createdAt_expr: "request.time"
+  })
+}
+
+mutation UpdateTransaction(
+  $householdId: UUID!
+  $transactionId: UUID!
+  $kind: String!
+  $name: String!
+  $amount: Float!
+  $category: String!
+  $date: Date!
+  $currency: String! = "USD"
+  $note: String
+) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  transaction_update(
+    first: { where: { id: { eq: $transactionId }, user: { household: { id: { eq: $householdId } } } } },
+    data: {
+      kind: $kind,
+      name: $name,
+      amount: $amount,
+      category: $category,
+      date: $date,
+      currency: $currency,
+      note: $note
+    }
+  )
+}
+
+mutation DeleteTransaction($householdId: UUID!, $transactionId: UUID!) @auth(level: USER_ANON) @transaction {
+  query @redact {
+    households(where: { id: { eq: $householdId }, ownerUid: { eq_expr: "auth.uid" } }, limit: 1)
+      @check(expr: "size(this) > 0", message: "Sin acceso") {
+      id
+    }
+  }
+  transaction_delete(
+    first: { where: { id: { eq: $transactionId }, user: { household: { id: { eq: $householdId } } } } }
+  )
 }
 
 mutation InsertMonthHistory(

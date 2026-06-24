@@ -64,6 +64,20 @@ type Goal @table {
   currency: String! @default(value: "USD")
 }
 
+# Movimiento puntual con fecha (gasto o ingreso real del día a día), aparte de
+# los gastos/ingresos recurrentes del mes. kind: "expense" | "income".
+type Transaction @table {
+  user: User!
+  kind: String!
+  name: String!
+  amount: Float!
+  category: String!
+  date: Date!
+  currency: String! @default(value: "USD")
+  note: String
+  createdAt: Timestamp!
+}
+
 type MonthHistory @table {
   user: User!
   month: Int!
