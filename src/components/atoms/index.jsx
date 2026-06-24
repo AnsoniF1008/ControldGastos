@@ -135,6 +135,28 @@ export const Bar = ({ value, max, color = "#7C3AED", bg, h = 10 }) => {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// SPARKLINE (mini-gráfico de línea a partir de una lista de números)
+// ─────────────────────────────────────────────────────────────────────────────
+export const Sparkline = ({ data = [], color = "#7C3AED", width = 120, height = 32 }) => {
+  if (!data || data.length < 2) return null;
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const span = max - min || 1;
+  const pts = data
+    .map((v, i) => {
+      const x = (i / (data.length - 1)) * (width - 4) + 2;
+      const y = height - 2 - ((v - min) / span) * (height - 4);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} aria-hidden="true" style={{ display: "block" }}>
+      <polyline points={pts} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // SECTION TITLE
 // ─────────────────────────────────────────────────────────────────────────────
 export const SectionTitle = ({ children, count, action, onAction, color = "#7C3AED" }) => (

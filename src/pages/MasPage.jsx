@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ActionRow, Toggle, Confirm, SectionTitle, Inp, BtnPrimary, Sheet, Sel } from "../components/atoms";
+import { ActionRow, Toggle, Confirm, SectionTitle, Inp, BtnPrimary, Sheet, Sel, Sparkline } from "../components/atoms";
 import { CATS, CAT_ICON, PROFILE_COLORS, PROFILE_EMOJIS, fmt, CURRENCY_CODES, CURRENCIES } from "../lib/constants";
 import { useI18n } from "../i18n/I18nContext.jsx";
 import {
@@ -140,6 +140,23 @@ export default function MasPage({ D }) {
               {t("mas.bcvAuto").replace("{date}", D.bcvInfo.date)}
             </p>
           )}
+          {D.bcvHistory && D.bcvHistory.length >= 2 && (() => {
+            const rates = D.bcvHistory.map((h) => Number(h.rate));
+            const last = rates[rates.length - 1];
+            const prev = rates[rates.length - 2];
+            const up = last >= prev;
+            return (
+              <div style={{ marginTop: 8, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "var(--muted)" }}>{t("mas.bcvTrend")}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Sparkline data={rates} color={up ? "#EF4444" : "#059669"} width={104} height={26} />
+                  <span style={{ fontSize: 12, fontWeight: 900, color: up ? "#EF4444" : "#059669" }}>
+                    {up ? "▲" : "▼"} {fmt(last, "VES")}
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
         </div>
         <p style={{ fontSize: 11, fontWeight: 800, color: "var(--muted)", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.3 }}>
           {t("mas.rateLabel")}

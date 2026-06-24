@@ -113,6 +113,15 @@ export function useUserData() {
     }
   });
 
+  // Histórico de las últimas tasas del BCV (para la mini-tendencia en Más).
+  const [bcvHistory, setBcvHistory] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("hf_rate_history") || "[]");
+    } catch {
+      return [];
+    }
+  });
+
   // Trae la tasa del BCV y la aplica. Devuelve la info o lanza si falla.
   const refreshRateFromBcv = useCallback(async ({ force = false } = {}) => {
     const { rate, date, source } = await fetchBcvRate({ force });
@@ -124,6 +133,17 @@ export function useUserData() {
     } catch {
       /* ignore */
     }
+    setBcvHistory((prev) => {
+      const last = prev[prev.length - 1];
+      if (last && Math.abs(Number(last.rate) - rate) < 1e-9) return prev; // sin cambios
+      const next = [...prev, { rate, date: date ?? null, ts: Date.now() }].slice(-12);
+      try {
+        localStorage.setItem("hf_rate_history", JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
     return info;
   }, [setRate]);
 
@@ -727,6 +747,7 @@ export function useUserData() {
     rate,
     setRate,
     bcvInfo,
+    bcvHistory,
     refreshRateFromBcv,
     baseCurrency,
     setBaseCurrency,

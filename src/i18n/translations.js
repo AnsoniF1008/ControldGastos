@@ -209,6 +209,7 @@ export const TRANSLATIONS = {
       bcvUpdated: "Tasa del BCV aplicada ({date})",
       bcvError: "No se pudo obtener la tasa del BCV. Intenta de nuevo.",
       bcvAuto: "Tasa oficial del BCV · {date} (se actualiza sola al abrir)",
+      bcvTrend: "Tendencia (últimas tasas)",
     },
     addSheet: {
       newExpense: "Nuevo gasto",
@@ -550,6 +551,7 @@ export const TRANSLATIONS = {
       bcvUpdated: "BCV rate applied ({date})",
       bcvError: "Couldn't fetch the BCV rate. Please try again.",
       bcvAuto: "Official BCV rate · {date} (auto-updates on open)",
+      bcvTrend: "Trend (recent rates)",
     },
     addSheet: {
       newExpense: "New expense",
